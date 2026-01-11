@@ -17,17 +17,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      # 2. 设置 Node.js + pnpm 环境
-      - name: Setup Node.js & pnpm
+      # ✅ 关键修复：使用官方 pnpm 安装器
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2  # 官方维护的 Action
+        with:
+          version: 8  # 指定稳定版本
+      
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'pnpm'  # ✅ 启用 pnpm 缓存
-          cache-dependency-path: pnpm-lock.yaml  # ✅ 指定 lockfile 位置
-      
-      # 3. 安装 pnpm（如果 setup-node 未自动安装）
-      - name: Install pnpm
-        run: npm install -g pnpm@8  # 使用最新 LTS 版本
+          cache: 'pnpm'  # 启用 pnpm 专属缓存
+          cache-dependency-path: pnpm-lock.yaml
       
       # 4. 安装依赖（pnpm 版）
       - name: Install dependencies
