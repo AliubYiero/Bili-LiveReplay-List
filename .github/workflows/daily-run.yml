@@ -28,7 +28,26 @@ jobs:
         with:
           node-version: '18'
           cache: 'pnpm'  # 启用 pnpm 专属缓存
-          cache-dependency-path: pnpm-lock.yaml
+          # ✅ 安全处理 lockfile 不存在的情况
+          cache-dependency-path: |
+            pnpm-lock.yaml
+            package.json
+            
+      # 🔍 关键诊断步骤 (立即失败并提示)
+      - name: Verify lockfile
+        run: |
+          if [ ! -f pnpm-lock.yaml ]; then
+            echo "❌ CRITICAL ERROR: pnpm-lock.yaml is missing!"
+            echo "FIX STEPS:"
+            echo "1. Run 'pnpm install' locally"
+            echo "2. Check your .gitignore does NOT contain 'pnpm-lock.yaml'"
+            echo "3. Commit and push the file:"
+            echo "   git add pnpm-lock.yaml"
+            echo "   git commit -m 'chore: add lockfile'"
+            echo "   git push"
+            exit 1
+          fi
+          echo "✅ Found pnpm-lock.yaml (size: $(du -h pnpm-lock.yaml))"
       
       # 4. 安装依赖（pnpm 版）
       - name: Install dependencies
