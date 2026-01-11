@@ -4,6 +4,7 @@ import { writeMarkdown } from './writeMarkdown.ts';
 import { group } from 'radash';
 import { formatTime } from './formatTime.ts';
 import { SpellingCorrection } from './SpellingCorrection.ts';
+import { formatDate } from './formatDate.ts';
 
 /**
  * 生成 Markdown 文件
@@ -38,14 +39,10 @@ export const generateMarkdownRecord = (
 | 主播 | ${ liver } |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **${ userName }** |
-| **数据更新时间** | **${ new Date( configStore.cache.timestamp ).toLocaleString() }** |
+| **数据更新时间** | **${ formatDate( configStore.cache.timestamp ) }** |
 | **累积计入视频数量** | **${ recordList.length }** |
 | **最旧视频** | [${ oldestVideo.title }](https://www.bilibili.com/video/av${ oldestVideo.aid }/) |
 | **最新视频** | [${ latestVideo.title }](https://www.bilibili.com/video/av${ latestVideo.aid }/) |
-
----
-
-[TOC]
 
 ---
 
@@ -55,7 +52,7 @@ ${ Object.entries( gameList ).map( ( [ game, infoList ] ) => `
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
 ${ infoList!.reverse().map( ( info, index ) => `
-| ${ game } | ${ new Date( info.liveTime ).toLocaleDateString() } | ${ formatTime( info.liveDuration ) } | Part ${ index + 1 } | [${ info.title }](https://www.bilibili.com/video/av${ info.aid }/) |
+| ${ game } | ${ formatDate( info.liveTime ) } | ${ formatTime( info.liveDuration ) } | Part ${ index + 1 } | [${ info.title }](https://www.bilibili.com/video/av${ info.aid }/) |
 `.trim() ).join( '\n' ) }
 `.trim() ).join( '\n\n' ) }
 

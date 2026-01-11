@@ -11,8 +11,12 @@ export const generateREADME = () => {
 		const liverDocxDirPath = join( docxDirPath, liver );
 		return `- [[**${ liver }**]](./docx/${ liver }):\n` +
 			readdirSync( liverDocxDirPath ).map(
-				docx => `\t- [${ basename( docx ) }](./docx/${ liver }/${ docx })`,
-			).join('\n');
+				docx => {
+					const showTitle = basename( docx, '.md' ).replace( / /g, '%20' );
+					const docxPath = encodeURI( './docx/${ liver }/${ docx }' );
+					return `\t- [${ showTitle }](${ docxPath })`;
+				},
+			).join( '\n' );
 	} ).join( '\n' );
 	
 	const content = `
@@ -61,7 +65,7 @@ interface RecordItem {
 
 > 数据储存在本项目的 *[config/<uid>.record.json]* 文件下, 想要进一步处理可以使用.
 
-3. 生成可视化文档, 详细文档见 [[分组列表](#分组列表)], 分组规则为:
+3. 生成可视化文档, 详细文档见 [[分组目录](#分组目录)], 分组规则为:
 \t1. 通过 **主播** 生成对应的目录
 \t2. 每个主播目录下, 不同的 **上传者*(录播Man)*** 生成对应的文档
 \t3. 按直播时间降序 (从最新到最旧) 顺序排序数据

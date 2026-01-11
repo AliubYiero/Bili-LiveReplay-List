@@ -3,14 +3,10 @@
 | 主播 | 机皇 |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **胧黑** |
-| **数据更新时间** | **1/11/2026, 6:24:25 PM** |
+| **数据更新时间** | **2026-01-12** |
 | **累积计入视频数量** | **62** |
 | **最旧视频** | [【Quin？机皇！】2023年1月13日《Dogs Organized Neatly/井然有狗》+《哆啦A梦 牧场物语：自然王国与和乐家人》弹幕录像](https://www.bilibili.com/video/av435372960/) |
 | **最新视频** | [【Quin？机皇！】2024年2月14日《全网公敌2：新世界》Demo 弹幕录像](https://www.bilibili.com/video/av1050631568/) |
-
----
-
-[TOC]
 
 ---
 
@@ -18,349 +14,349 @@
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 全网公敌2：新世界 | 2/14/2024 | 04:01:07 | Part 1 | [【Quin？机皇！】2024年2月14日《全网公敌2：新世界》Demo 弹幕录像](https://www.bilibili.com/video/av1050631568/) |
+| 全网公敌2：新世界 | 2024-02-14 | 04:01:07 | Part 1 | [【Quin？机皇！】2024年2月14日《全网公敌2：新世界》Demo 弹幕录像](https://www.bilibili.com/video/av1050631568/) |
 
 ## Murders on the Yangtze River/山河旅探
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Murders on the Yangtze River/山河旅探 | 2/8/2024 | 04:24:12 | Part 1 | [【Quin？机皇！】2024年2月8日《Murders on the Yangtze River/山河旅探》弹幕录像](https://www.bilibili.com/video/av1750313675/) |
-| Murders on the Yangtze River/山河旅探 | 2/9/2024 | 04:59:07 | Part 2 | [【Quin？机皇！】2024年2月9日《Murders on the Yangtze River/山河旅探》弹幕录像](https://www.bilibili.com/video/av1350477584/) |
-| Murders on the Yangtze River/山河旅探 | 2/10/2024 | 04:34:42 | Part 3 | [【Quin？机皇！】2024年2月10日《Murders on the Yangtze River/山河旅探》弹幕录像](https://www.bilibili.com/video/av1850515962/) |
-| Murders on the Yangtze River/山河旅探 | 2/11/2024 | 05:43:27 | Part 4 | [【Quin？机皇！】2024年2月11日《Murders on the Yangtze River/山河旅探》弹幕录像](https://www.bilibili.com/video/av1700694712/) |
+| Murders on the Yangtze River/山河旅探 | 2024-02-08 | 04:24:12 | Part 1 | [【Quin？机皇！】2024年2月8日《Murders on the Yangtze River/山河旅探》弹幕录像](https://www.bilibili.com/video/av1750313675/) |
+| Murders on the Yangtze River/山河旅探 | 2024-02-09 | 04:59:07 | Part 2 | [【Quin？机皇！】2024年2月9日《Murders on the Yangtze River/山河旅探》弹幕录像](https://www.bilibili.com/video/av1350477584/) |
+| Murders on the Yangtze River/山河旅探 | 2024-02-10 | 04:34:42 | Part 3 | [【Quin？机皇！】2024年2月10日《Murders on the Yangtze River/山河旅探》弹幕录像](https://www.bilibili.com/video/av1850515962/) |
+| Murders on the Yangtze River/山河旅探 | 2024-02-11 | 05:43:27 | Part 4 | [【Quin？机皇！】2024年2月11日《Murders on the Yangtze River/山河旅探》弹幕录像](https://www.bilibili.com/video/av1700694712/) |
 
 ## Sea of Stars/星之海
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Sea of Stars/星之海 | 8/29/2023 | 04:23:52 | Part 1 | [【Quin？机皇！】2023年8月29日《Sea of Stars/星之海》弹幕录像](https://www.bilibili.com/video/av960455959/) |
+| Sea of Stars/星之海 | 2023-08-29 | 04:23:52 | Part 1 | [【Quin？机皇！】2023年8月29日《Sea of Stars/星之海》弹幕录像](https://www.bilibili.com/video/av960455959/) |
 
 ## 影子诡局：被诅咒的海盗
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 影子诡局：被诅咒的海盗 | 8/19/2023 | 04:11:21 | Part 1 | [【Quin？机皇！】2023年8月19日《影子诡局：被诅咒的海盗》+《Broforce/武装原型》弹幕录像](https://www.bilibili.com/video/av447455527/) |
+| 影子诡局：被诅咒的海盗 | 2023-08-19 | 04:11:21 | Part 1 | [【Quin？机皇！】2023年8月19日《影子诡局：被诅咒的海盗》+《Broforce/武装原型》弹幕录像](https://www.bilibili.com/video/av447455527/) |
 
 ## Broforce/武装原型
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Broforce/武装原型 | 8/19/2023 | 04:11:21 | Part 1 | [【Quin？机皇！】2023年8月19日《影子诡局：被诅咒的海盗》+《Broforce/武装原型》弹幕录像](https://www.bilibili.com/video/av447455527/) |
+| Broforce/武装原型 | 2023-08-19 | 04:11:21 | Part 1 | [【Quin？机皇！】2023年8月19日《影子诡局：被诅咒的海盗》+《Broforce/武装原型》弹幕录像](https://www.bilibili.com/video/av447455527/) |
 
 ## 一字不落
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 一字不落 | 8/12/2023 | 06:22:07 | Part 1 | [【Quin？机皇！】2023年8月12日《一字不落》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av702154474/) |
+| 一字不落 | 2023-08-12 | 06:22:07 | Part 1 | [【Quin？机皇！】2023年8月12日《一字不落》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av702154474/) |
 
 ## 超侦探事件簿：雾雨迷宫
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 超侦探事件簿：雾雨迷宫 | 6/30/2023 | 04:17:45 | Part 1 | [【Quin？机皇！】2023年6月30日《Shogun Showdown/将军 对决》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av230376909/) |
-| 超侦探事件簿：雾雨迷宫 | 7/5/2023 | 04:11:21 | Part 2 | [【Quin？机皇！】2023年7月5日《梦蝶》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av785585051/) |
-| 超侦探事件簿：雾雨迷宫 | 7/13/2023 | 04:07:45 | Part 3 | [【Quin？机皇！】2023年7月13日《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av573419356/) |
-| 超侦探事件簿：雾雨迷宫 | 7/20/2023 | 04:30:55 | Part 4 | [【Quin？机皇！】2023年7月20日《索尼克 起源》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av273630873/) |
-| 超侦探事件簿：雾雨迷宫 | 7/21/2023 | 04:54:22 | Part 5 | [【Quin？机皇！】2023年7月21日《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av316199591/) |
-| 超侦探事件簿：雾雨迷宫 | 7/29/2023 | 04:36:18 | Part 6 | [【Quin？机皇！】2023年7月29日《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av914053824/) |
-| 超侦探事件簿：雾雨迷宫 | 7/30/2023 | 04:12:32 | Part 7 | [【Quin？机皇！】2023年7月30日《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av956590582/) |
-| 超侦探事件簿：雾雨迷宫 | 7/31/2023 | 03:56:19 | Part 8 | [【Quin？机皇！】2023年7月31日《超侦探事件簿：雾雨迷宫》+《似曾相识的「那些游戏」都换火柴人当主角了，你真的能够顺利通关吗？》弹幕录像](https://www.bilibili.com/video/av786684744/) |
-| 超侦探事件簿：雾雨迷宫 | 8/9/2023 | 03:27:58 | Part 9 | [【Quin？机皇！】2023年8月9日《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av744610963/) |
-| 超侦探事件簿：雾雨迷宫 | 8/12/2023 | 06:22:07 | Part 10 | [【Quin？机皇！】2023年8月12日《一字不落》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av702154474/) |
+| 超侦探事件簿：雾雨迷宫 | 2023-06-30 | 04:17:45 | Part 1 | [【Quin？机皇！】2023年6月30日《Shogun Showdown/将军 对决》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av230376909/) |
+| 超侦探事件簿：雾雨迷宫 | 2023-07-05 | 04:11:21 | Part 2 | [【Quin？机皇！】2023年7月5日《梦蝶》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av785585051/) |
+| 超侦探事件簿：雾雨迷宫 | 2023-07-13 | 04:07:45 | Part 3 | [【Quin？机皇！】2023年7月13日《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av573419356/) |
+| 超侦探事件簿：雾雨迷宫 | 2023-07-20 | 04:30:55 | Part 4 | [【Quin？机皇！】2023年7月20日《索尼克 起源》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av273630873/) |
+| 超侦探事件簿：雾雨迷宫 | 2023-07-21 | 04:54:22 | Part 5 | [【Quin？机皇！】2023年7月21日《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av316199591/) |
+| 超侦探事件簿：雾雨迷宫 | 2023-07-29 | 04:36:18 | Part 6 | [【Quin？机皇！】2023年7月29日《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av914053824/) |
+| 超侦探事件簿：雾雨迷宫 | 2023-07-30 | 04:12:32 | Part 7 | [【Quin？机皇！】2023年7月30日《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av956590582/) |
+| 超侦探事件簿：雾雨迷宫 | 2023-07-31 | 03:56:19 | Part 8 | [【Quin？机皇！】2023年7月31日《超侦探事件簿：雾雨迷宫》+《似曾相识的「那些游戏」都换火柴人当主角了，你真的能够顺利通关吗？》弹幕录像](https://www.bilibili.com/video/av786684744/) |
+| 超侦探事件簿：雾雨迷宫 | 2023-08-09 | 03:27:58 | Part 9 | [【Quin？机皇！】2023年8月9日《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av744610963/) |
+| 超侦探事件簿：雾雨迷宫 | 2023-08-12 | 06:22:07 | Part 10 | [【Quin？机皇！】2023年8月12日《一字不落》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av702154474/) |
 
 ## 似曾相识的「那些游戏」都换火柴人当主角了，你真的能够顺利通关吗？
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 似曾相识的「那些游戏」都换火柴人当主角了，你真的能够顺利通关吗？ | 7/31/2023 | 03:56:19 | Part 1 | [【Quin？机皇！】2023年7月31日《超侦探事件簿：雾雨迷宫》+《似曾相识的「那些游戏」都换火柴人当主角了，你真的能够顺利通关吗？》弹幕录像](https://www.bilibili.com/video/av786684744/) |
+| 似曾相识的「那些游戏」都换火柴人当主角了，你真的能够顺利通关吗？ | 2023-07-31 | 03:56:19 | Part 1 | [【Quin？机皇！】2023年7月31日《超侦探事件簿：雾雨迷宫》+《似曾相识的「那些游戏」都换火柴人当主角了，你真的能够顺利通关吗？》弹幕录像](https://www.bilibili.com/video/av786684744/) |
 
 ## 三伏
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 三伏 | 7/28/2023 | 04:48:35 | Part 1 | [【Quin？机皇！】2023年7月28日《三伏》弹幕录像](https://www.bilibili.com/video/av659041733/) |
+| 三伏 | 2023-07-28 | 04:48:35 | Part 1 | [【Quin？机皇！】2023年7月28日《三伏》弹幕录像](https://www.bilibili.com/video/av659041733/) |
 
 ## 索尼克 起源
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 索尼克 起源 | 7/20/2023 | 04:30:55 | Part 1 | [【Quin？机皇！】2023年7月20日《索尼克 起源》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av273630873/) |
+| 索尼克 起源 | 2023-07-20 | 04:30:55 | Part 1 | [【Quin？机皇！】2023年7月20日《索尼克 起源》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av273630873/) |
 
 ## 梦蝶
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 梦蝶 | 7/5/2023 | 04:11:21 | Part 1 | [【Quin？机皇！】2023年7月5日《梦蝶》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av785585051/) |
+| 梦蝶 | 2023-07-05 | 04:11:21 | Part 1 | [【Quin？机皇！】2023年7月5日《梦蝶》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av785585051/) |
 
 ## Shogun Showdown/将军 对决
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Shogun Showdown/将军 对决 | 6/30/2023 | 04:17:45 | Part 1 | [【Quin？机皇！】2023年6月30日《Shogun Showdown/将军 对决》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av230376909/) |
+| Shogun Showdown/将军 对决 | 2023-06-30 | 04:17:45 | Part 1 | [【Quin？机皇！】2023年6月30日《Shogun Showdown/将军 对决》+《超侦探事件簿：雾雨迷宫》弹幕录像](https://www.bilibili.com/video/av230376909/) |
 
 ## LIVE A LIVE/时空勇士
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| LIVE A LIVE/时空勇士 | 5/31/2023 | 04:09:02 | Part 1 | [【Quin？机皇！】2023年5月31日《Poly Bridge 3/桥梁建筑师3》+《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av399272565/) |
-| LIVE A LIVE/时空勇士 | 6/9/2023 | 05:47:25 | Part 2 | [【Quin？机皇！】2023年6月9日《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av699541148/) |
-| LIVE A LIVE/时空勇士 | 6/13/2023 | 04:09:04 | Part 3 | [【Quin？机皇！】2023年6月13日《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av357272152/) |
-| LIVE A LIVE/时空勇士 | 6/20/2023 | 04:01:01 | Part 4 | [【Quin？机皇！】2023年6月20日《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av572548426/) |
-| LIVE A LIVE/时空勇士 | 6/24/2023 | 05:35:42 | Part 5 | [【Quin？机皇！】2023年6月24日《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av870135262/) |
-| LIVE A LIVE/时空勇士 | 6/26/2023 | 04:14:02 | Part 6 | [【Quin？机皇！】2023年6月26日《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av742682021/) |
-| LIVE A LIVE/时空勇士 | 6/27/2023 | 05:40:06 | Part 7 | [【Quin？机皇！】2023年6月27日《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av700265699/) |
+| LIVE A LIVE/时空勇士 | 2023-05-31 | 04:09:02 | Part 1 | [【Quin？机皇！】2023年5月31日《Poly Bridge 3/桥梁建筑师3》+《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av399272565/) |
+| LIVE A LIVE/时空勇士 | 2023-06-09 | 05:47:25 | Part 2 | [【Quin？机皇！】2023年6月9日《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av699541148/) |
+| LIVE A LIVE/时空勇士 | 2023-06-13 | 04:09:04 | Part 3 | [【Quin？机皇！】2023年6月13日《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av357272152/) |
+| LIVE A LIVE/时空勇士 | 2023-06-20 | 04:01:01 | Part 4 | [【Quin？机皇！】2023年6月20日《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av572548426/) |
+| LIVE A LIVE/时空勇士 | 2023-06-24 | 05:35:42 | Part 5 | [【Quin？机皇！】2023年6月24日《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av870135262/) |
+| LIVE A LIVE/时空勇士 | 2023-06-26 | 04:14:02 | Part 6 | [【Quin？机皇！】2023年6月26日《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av742682021/) |
+| LIVE A LIVE/时空勇士 | 2023-06-27 | 05:40:06 | Part 7 | [【Quin？机皇！】2023年6月27日《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av700265699/) |
 
 ## Poly Bridge 3/桥梁建筑师3
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Poly Bridge 3/桥梁建筑师3 | 5/31/2023 | 04:09:02 | Part 1 | [【Quin？机皇！】2023年5月31日《Poly Bridge 3/桥梁建筑师3》+《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av399272565/) |
+| Poly Bridge 3/桥梁建筑师3 | 2023-05-31 | 04:09:02 | Part 1 | [【Quin？机皇！】2023年5月31日《Poly Bridge 3/桥梁建筑师3》+《LIVE A LIVE/时空勇士》弹幕录像](https://www.bilibili.com/video/av399272565/) |
 
 ## Do Not Feed The Monkeys 2099/不要喂猴子2099
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Do Not Feed The Monkeys 2099/不要喂猴子2099 | 5/30/2023 | 04:09:33 | Part 1 | [【Quin？机皇！】2023年5月30日《Do Not Feed The Monkeys 2099/不要喂猴子2099》+《塞尔达传说：王国之泪》弹幕录像](https://www.bilibili.com/video/av869208253/) |
+| Do Not Feed The Monkeys 2099/不要喂猴子2099 | 2023-05-30 | 04:09:33 | Part 1 | [【Quin？机皇！】2023年5月30日《Do Not Feed The Monkeys 2099/不要喂猴子2099》+《塞尔达传说：王国之泪》弹幕录像](https://www.bilibili.com/video/av869208253/) |
 
 ## 塞尔达传说：王国之泪
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 塞尔达传说：王国之泪 | 5/18/2023 | 04:42:04 | Part 1 | [【Quin？机皇！】2023年5月18日《Tin Hearts/锡之心》+《塞尔达传说：王国之泪》弹幕录像](https://www.bilibili.com/video/av486332277/) |
-| 塞尔达传说：王国之泪 | 5/23/2023 | 03:42:22 | Part 2 | [【Quin？机皇！】2023年5月23日《塞尔达传说：御天之剑 HD》+《塞尔达传说：王国之泪》弹幕录像](https://www.bilibili.com/video/av313940451/) |
-| 塞尔达传说：王国之泪 | 5/30/2023 | 04:09:33 | Part 3 | [【Quin？机皇！】2023年5月30日《Do Not Feed The Monkeys 2099/不要喂猴子2099》+《塞尔达传说：王国之泪》弹幕录像](https://www.bilibili.com/video/av869208253/) |
+| 塞尔达传说：王国之泪 | 2023-05-18 | 04:42:04 | Part 1 | [【Quin？机皇！】2023年5月18日《Tin Hearts/锡之心》+《塞尔达传说：王国之泪》弹幕录像](https://www.bilibili.com/video/av486332277/) |
+| 塞尔达传说：王国之泪 | 2023-05-23 | 03:42:22 | Part 2 | [【Quin？机皇！】2023年5月23日《塞尔达传说：御天之剑 HD》+《塞尔达传说：王国之泪》弹幕录像](https://www.bilibili.com/video/av313940451/) |
+| 塞尔达传说：王国之泪 | 2023-05-30 | 04:09:33 | Part 3 | [【Quin？机皇！】2023年5月30日《Do Not Feed The Monkeys 2099/不要喂猴子2099》+《塞尔达传说：王国之泪》弹幕录像](https://www.bilibili.com/video/av869208253/) |
 
 ## 塞尔达传说：御天之剑 HD
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 塞尔达传说：御天之剑 HD | 4/17/2023 | 04:11:58 | Part 1 | [【Quin？机皇！】2023年4月17日《塞尔达传说：御天之剑 HD》+《火焰纹章 Engage》DLC 邪龙之章 弹幕录像](https://www.bilibili.com/video/av655234413/) |
-| 塞尔达传说：御天之剑 HD | 4/18/2023 | 04:47:05 | Part 2 | [【Quin？机皇！】2023年4月18日《塞尔达传说：御天之剑 HD》+《饥饿派画家2：迷失》弹幕录像](https://www.bilibili.com/video/av867664866/) |
-| 塞尔达传说：御天之剑 HD | 4/24/2023 | 03:36:44 | Part 3 | [【Quin？机皇！】2023年4月24日《塞尔达传说：御天之剑 HD》+《饥饿派画家2：迷失》弹幕录像](https://www.bilibili.com/video/av995410171/) |
-| 塞尔达传说：御天之剑 HD | 4/27/2023 | 04:14:22 | Part 4 | [【Quin？机皇！】2023年4月27日《塞尔达传说：御天之剑 HD》+《Nobodies》+《Trailmakers/机械制造者》弹幕录像](https://www.bilibili.com/video/av485547435/) |
-| 塞尔达传说：御天之剑 HD | 4/29/2023 | 03:59:04 | Part 5 | [【Quin？机皇！】2023年4月29日《塞尔达传说：御天之剑 HD》+《纸嫁衣4 红丝缠》弹幕录像](https://www.bilibili.com/video/av698119984/) |
-| 塞尔达传说：御天之剑 HD | 4/30/2023 | 04:11:03 | Part 6 | [【Quin？机皇！】2023年4月30日《塞尔达传说：御天之剑 HD》+《纸嫁衣4 红丝缠》弹幕录像](https://www.bilibili.com/video/av655575564/) |
-| 塞尔达传说：御天之剑 HD | 5/3/2023 | 03:51:11 | Part 7 | [【Quin？机皇！】2023年5月3日《塞尔达传说：御天之剑 HD》+《Trailmakers/机械制造者》弹幕录像](https://www.bilibili.com/video/av783190883/) |
-| 塞尔达传说：御天之剑 HD | 5/10/2023 | 03:57:27 | Part 8 | [【Quin？机皇！】2023年5月10日《Trailmakers/机械制造者》+《塞尔达传说：御天之剑 HD》弹幕录像](https://www.bilibili.com/video/av656052287/) |
-| 塞尔达传说：御天之剑 HD | 5/23/2023 | 03:42:22 | Part 9 | [【Quin？机皇！】2023年5月23日《塞尔达传说：御天之剑 HD》+《塞尔达传说：王国之泪》弹幕录像](https://www.bilibili.com/video/av313940451/) |
+| 塞尔达传说：御天之剑 HD | 2023-04-17 | 04:11:58 | Part 1 | [【Quin？机皇！】2023年4月17日《塞尔达传说：御天之剑 HD》+《火焰纹章 Engage》DLC 邪龙之章 弹幕录像](https://www.bilibili.com/video/av655234413/) |
+| 塞尔达传说：御天之剑 HD | 2023-04-18 | 04:47:05 | Part 2 | [【Quin？机皇！】2023年4月18日《塞尔达传说：御天之剑 HD》+《饥饿派画家2：迷失》弹幕录像](https://www.bilibili.com/video/av867664866/) |
+| 塞尔达传说：御天之剑 HD | 2023-04-24 | 03:36:44 | Part 3 | [【Quin？机皇！】2023年4月24日《塞尔达传说：御天之剑 HD》+《饥饿派画家2：迷失》弹幕录像](https://www.bilibili.com/video/av995410171/) |
+| 塞尔达传说：御天之剑 HD | 2023-04-27 | 04:14:22 | Part 4 | [【Quin？机皇！】2023年4月27日《塞尔达传说：御天之剑 HD》+《Nobodies》+《Trailmakers/机械制造者》弹幕录像](https://www.bilibili.com/video/av485547435/) |
+| 塞尔达传说：御天之剑 HD | 2023-04-29 | 03:59:04 | Part 5 | [【Quin？机皇！】2023年4月29日《塞尔达传说：御天之剑 HD》+《纸嫁衣4 红丝缠》弹幕录像](https://www.bilibili.com/video/av698119984/) |
+| 塞尔达传说：御天之剑 HD | 2023-04-30 | 04:11:03 | Part 6 | [【Quin？机皇！】2023年4月30日《塞尔达传说：御天之剑 HD》+《纸嫁衣4 红丝缠》弹幕录像](https://www.bilibili.com/video/av655575564/) |
+| 塞尔达传说：御天之剑 HD | 2023-05-03 | 03:51:11 | Part 7 | [【Quin？机皇！】2023年5月3日《塞尔达传说：御天之剑 HD》+《Trailmakers/机械制造者》弹幕录像](https://www.bilibili.com/video/av783190883/) |
+| 塞尔达传说：御天之剑 HD | 2023-05-10 | 03:57:27 | Part 8 | [【Quin？机皇！】2023年5月10日《Trailmakers/机械制造者》+《塞尔达传说：御天之剑 HD》弹幕录像](https://www.bilibili.com/video/av656052287/) |
+| 塞尔达传说：御天之剑 HD | 2023-05-23 | 03:42:22 | Part 9 | [【Quin？机皇！】2023年5月23日《塞尔达传说：御天之剑 HD》+《塞尔达传说：王国之泪》弹幕录像](https://www.bilibili.com/video/av313940451/) |
 
 ## Tin Hearts/锡之心
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Tin Hearts/锡之心 | 5/18/2023 | 04:42:04 | Part 1 | [【Quin？机皇！】2023年5月18日《Tin Hearts/锡之心》+《塞尔达传说：王国之泪》弹幕录像](https://www.bilibili.com/video/av486332277/) |
+| Tin Hearts/锡之心 | 2023-05-18 | 04:42:04 | Part 1 | [【Quin？机皇！】2023年5月18日《Tin Hearts/锡之心》+《塞尔达传说：王国之泪》弹幕录像](https://www.bilibili.com/video/av486332277/) |
 
 ## Trailmakers/机械制造者
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Trailmakers/机械制造者 | 4/27/2023 | 04:14:22 | Part 1 | [【Quin？机皇！】2023年4月27日《塞尔达传说：御天之剑 HD》+《Nobodies》+《Trailmakers/机械制造者》弹幕录像](https://www.bilibili.com/video/av485547435/) |
-| Trailmakers/机械制造者 | 5/3/2023 | 03:51:11 | Part 2 | [【Quin？机皇！】2023年5月3日《塞尔达传说：御天之剑 HD》+《Trailmakers/机械制造者》弹幕录像](https://www.bilibili.com/video/av783190883/) |
-| Trailmakers/机械制造者 | 5/10/2023 | 03:57:27 | Part 3 | [【Quin？机皇！】2023年5月10日《Trailmakers/机械制造者》+《塞尔达传说：御天之剑 HD》弹幕录像](https://www.bilibili.com/video/av656052287/) |
+| Trailmakers/机械制造者 | 2023-04-27 | 04:14:22 | Part 1 | [【Quin？机皇！】2023年4月27日《塞尔达传说：御天之剑 HD》+《Nobodies》+《Trailmakers/机械制造者》弹幕录像](https://www.bilibili.com/video/av485547435/) |
+| Trailmakers/机械制造者 | 2023-05-03 | 03:51:11 | Part 2 | [【Quin？机皇！】2023年5月3日《塞尔达传说：御天之剑 HD》+《Trailmakers/机械制造者》弹幕录像](https://www.bilibili.com/video/av783190883/) |
+| Trailmakers/机械制造者 | 2023-05-10 | 03:57:27 | Part 3 | [【Quin？机皇！】2023年5月10日《Trailmakers/机械制造者》+《塞尔达传说：御天之剑 HD》弹幕录像](https://www.bilibili.com/video/av656052287/) |
 
 ## 纸嫁衣4 红丝缠
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 纸嫁衣4 红丝缠 | 4/29/2023 | 03:59:04 | Part 1 | [【Quin？机皇！】2023年4月29日《塞尔达传说：御天之剑 HD》+《纸嫁衣4 红丝缠》弹幕录像](https://www.bilibili.com/video/av698119984/) |
-| 纸嫁衣4 红丝缠 | 4/30/2023 | 04:11:03 | Part 2 | [【Quin？机皇！】2023年4月30日《塞尔达传说：御天之剑 HD》+《纸嫁衣4 红丝缠》弹幕录像](https://www.bilibili.com/video/av655575564/) |
+| 纸嫁衣4 红丝缠 | 2023-04-29 | 03:59:04 | Part 1 | [【Quin？机皇！】2023年4月29日《塞尔达传说：御天之剑 HD》+《纸嫁衣4 红丝缠》弹幕录像](https://www.bilibili.com/video/av698119984/) |
+| 纸嫁衣4 红丝缠 | 2023-04-30 | 04:11:03 | Part 2 | [【Quin？机皇！】2023年4月30日《塞尔达传说：御天之剑 HD》+《纸嫁衣4 红丝缠》弹幕录像](https://www.bilibili.com/video/av655575564/) |
 
 ## Nobodies
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Nobodies | 4/27/2023 | 04:14:22 | Part 1 | [【Quin？机皇！】2023年4月27日《塞尔达传说：御天之剑 HD》+《Nobodies》+《Trailmakers/机械制造者》弹幕录像](https://www.bilibili.com/video/av485547435/) |
+| Nobodies | 2023-04-27 | 04:14:22 | Part 1 | [【Quin？机皇！】2023年4月27日《塞尔达传说：御天之剑 HD》+《Nobodies》+《Trailmakers/机械制造者》弹幕录像](https://www.bilibili.com/video/av485547435/) |
 
 ## 饥饿派画家2：迷失
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 饥饿派画家2：迷失 | 4/10/2023 | 04:10:32 | Part 1 | [【Quin？机皇！】2023年4月10日《饥饿派画家2：迷失》+《火焰纹章 Engage》DLC 邪龙之章 弹幕录像](https://www.bilibili.com/video/av612283143/) |
-| 饥饿派画家2：迷失 | 4/18/2023 | 04:47:05 | Part 2 | [【Quin？机皇！】2023年4月18日《塞尔达传说：御天之剑 HD》+《饥饿派画家2：迷失》弹幕录像](https://www.bilibili.com/video/av867664866/) |
-| 饥饿派画家2：迷失 | 4/24/2023 | 03:36:44 | Part 3 | [【Quin？机皇！】2023年4月24日《塞尔达传说：御天之剑 HD》+《饥饿派画家2：迷失》弹幕录像](https://www.bilibili.com/video/av995410171/) |
+| 饥饿派画家2：迷失 | 2023-04-10 | 04:10:32 | Part 1 | [【Quin？机皇！】2023年4月10日《饥饿派画家2：迷失》+《火焰纹章 Engage》DLC 邪龙之章 弹幕录像](https://www.bilibili.com/video/av612283143/) |
+| 饥饿派画家2：迷失 | 2023-04-18 | 04:47:05 | Part 2 | [【Quin？机皇！】2023年4月18日《塞尔达传说：御天之剑 HD》+《饥饿派画家2：迷失》弹幕录像](https://www.bilibili.com/video/av867664866/) |
+| 饥饿派画家2：迷失 | 2023-04-24 | 03:36:44 | Part 3 | [【Quin？机皇！】2023年4月24日《塞尔达传说：御天之剑 HD》+《饥饿派画家2：迷失》弹幕录像](https://www.bilibili.com/video/av995410171/) |
 
 ## 火焰纹章 Engage
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 火焰纹章 Engage | 1/19/2023 | 04:26:30 | Part 1 | [【Quin？机皇！】2023年1月19日《真探》+《角色扮演游戏时间！～光之传说～》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av820507967/) |
-| 火焰纹章 Engage | 1/20/2023 | 05:22:42 | Part 2 | [【Quin？机皇！】2023年1月20日《Into the Breach/陷阵之志》+《火焰纹章 Engage》+《Raft/木筏求生》弹幕录像](https://www.bilibili.com/video/av820746776/) |
-| 火焰纹章 Engage | 1/21/2023 | 04:26:18 | Part 3 | [【Quin？机皇！】2023年1月21日《Into the Breach/陷阵之志》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av735680112/) |
-| 火焰纹章 Engage | 1/22/2023 | 04:55:28 | Part 4 | [【Quin？机皇！】2023年1月22日《Into the Breach/陷阵之志》+《角色扮演游戏时间！～光之传说～》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av308226587/) |
-| 火焰纹章 Engage | 1/23/2023 | 04:17:01 | Part 5 | [【Quin？机皇！】2023年1月23日《A Space for the Unbound/无垠之心》+《火焰纹章 Engage》弹幕录像（重传）](https://www.bilibili.com/video/av650866845/) |
-| 火焰纹章 Engage | 1/23/2023 | 04:17:01 | Part 6 | [【Quin？机皇！】2023年1月23日《A Space for the Unbound/无垠之心》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av265865986/) |
-| 火焰纹章 Engage | 2/9/2023 | 04:46:07 | Part 7 | [【Quin？机皇！】2023年2月9日《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av224168439/) |
-| 火焰纹章 Engage | 2/14/2023 | 05:01:29 | Part 8 | [【Quin？机皇！】2023年2月14日《火焰纹章 Engage》+《Karagon》+《Song of Farca/罪城骇客》弹幕录像](https://www.bilibili.com/video/av949439567/) |
-| 火焰纹章 Engage | 2/23/2023 | 04:26:31 | Part 9 | [【Quin？机皇！】2023年2月23日《Chef Lifer》+《火焰纹章 Engage》+《飞禽律师之事件簿》弹幕录像](https://www.bilibili.com/video/av524935205/) |
-| 火焰纹章 Engage | 3/11/2023 | 04:31:26 | Part 10 | [【Quin？机皇！】2023年3月11日《Dark Chess/后翼弃兵：迷雾棋局》+《叛逆AI模拟器》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av438316931/) |
-| 火焰纹章 Engage | 3/27/2023 | 03:16:42 | Part 11 | [【Quin？机皇！】2023年3月27日《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av526670336/) |
-| 火焰纹章 Engage | 3/28/2023 | 04:47:10 | Part 12 | [【Quin？机皇！】2023年3月28日《Storyteller》+《The Mortuary Assistant》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av484281108/) |
-| 火焰纹章 Engage | 3/31/2023 | 03:32:17 | Part 13 | [【Quin？机皇！】2023年3月31日《宝可梦：紫》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av994396330/) |
-| 火焰纹章 Engage | 4/10/2023 | 04:10:32 | Part 14 | [【Quin？机皇！】2023年4月10日《饥饿派画家2：迷失》+《火焰纹章 Engage》DLC 邪龙之章 弹幕录像](https://www.bilibili.com/video/av612283143/) |
-| 火焰纹章 Engage | 4/17/2023 | 04:11:58 | Part 15 | [【Quin？机皇！】2023年4月17日《塞尔达传说：御天之剑 HD》+《火焰纹章 Engage》DLC 邪龙之章 弹幕录像](https://www.bilibili.com/video/av655234413/) |
+| 火焰纹章 Engage | 2023-01-19 | 04:26:30 | Part 1 | [【Quin？机皇！】2023年1月19日《真探》+《角色扮演游戏时间！～光之传说～》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av820507967/) |
+| 火焰纹章 Engage | 2023-01-20 | 05:22:42 | Part 2 | [【Quin？机皇！】2023年1月20日《Into the Breach/陷阵之志》+《火焰纹章 Engage》+《Raft/木筏求生》弹幕录像](https://www.bilibili.com/video/av820746776/) |
+| 火焰纹章 Engage | 2023-01-21 | 04:26:18 | Part 3 | [【Quin？机皇！】2023年1月21日《Into the Breach/陷阵之志》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av735680112/) |
+| 火焰纹章 Engage | 2023-01-22 | 04:55:28 | Part 4 | [【Quin？机皇！】2023年1月22日《Into the Breach/陷阵之志》+《角色扮演游戏时间！～光之传说～》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av308226587/) |
+| 火焰纹章 Engage | 2023-01-23 | 04:17:01 | Part 5 | [【Quin？机皇！】2023年1月23日《A Space for the Unbound/无垠之心》+《火焰纹章 Engage》弹幕录像（重传）](https://www.bilibili.com/video/av650866845/) |
+| 火焰纹章 Engage | 2023-01-23 | 04:17:01 | Part 6 | [【Quin？机皇！】2023年1月23日《A Space for the Unbound/无垠之心》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av265865986/) |
+| 火焰纹章 Engage | 2023-02-09 | 04:46:07 | Part 7 | [【Quin？机皇！】2023年2月9日《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av224168439/) |
+| 火焰纹章 Engage | 2023-02-14 | 05:01:29 | Part 8 | [【Quin？机皇！】2023年2月14日《火焰纹章 Engage》+《Karagon》+《Song of Farca/罪城骇客》弹幕录像](https://www.bilibili.com/video/av949439567/) |
+| 火焰纹章 Engage | 2023-02-23 | 04:26:31 | Part 9 | [【Quin？机皇！】2023年2月23日《Chef Lifer》+《火焰纹章 Engage》+《飞禽律师之事件簿》弹幕录像](https://www.bilibili.com/video/av524935205/) |
+| 火焰纹章 Engage | 2023-03-11 | 04:31:26 | Part 10 | [【Quin？机皇！】2023年3月11日《Dark Chess/后翼弃兵：迷雾棋局》+《叛逆AI模拟器》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av438316931/) |
+| 火焰纹章 Engage | 2023-03-27 | 03:16:42 | Part 11 | [【Quin？机皇！】2023年3月27日《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av526670336/) |
+| 火焰纹章 Engage | 2023-03-28 | 04:47:10 | Part 12 | [【Quin？机皇！】2023年3月28日《Storyteller》+《The Mortuary Assistant》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av484281108/) |
+| 火焰纹章 Engage | 2023-03-31 | 03:32:17 | Part 13 | [【Quin？机皇！】2023年3月31日《宝可梦：紫》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av994396330/) |
+| 火焰纹章 Engage | 2023-04-10 | 04:10:32 | Part 14 | [【Quin？机皇！】2023年4月10日《饥饿派画家2：迷失》+《火焰纹章 Engage》DLC 邪龙之章 弹幕录像](https://www.bilibili.com/video/av612283143/) |
+| 火焰纹章 Engage | 2023-04-17 | 04:11:58 | Part 15 | [【Quin？机皇！】2023年4月17日《塞尔达传说：御天之剑 HD》+《火焰纹章 Engage》DLC 邪龙之章 弹幕录像](https://www.bilibili.com/video/av655234413/) |
 
 ## Creature Creator
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Creature Creator | 4/4/2023 | 03:54:01 | Part 1 | [【Quin？机皇！】2023年4月4日《Creature Creator》+《DREDGE/渔帆暗涌》弹幕录像](https://www.bilibili.com/video/av867044242/) |
+| Creature Creator | 2023-04-04 | 03:54:01 | Part 1 | [【Quin？机皇！】2023年4月4日《Creature Creator》+《DREDGE/渔帆暗涌》弹幕录像](https://www.bilibili.com/video/av867044242/) |
 
 ## DREDGE/渔帆暗涌
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| DREDGE/渔帆暗涌 | 4/4/2023 | 03:54:01 | Part 1 | [【Quin？机皇！】2023年4月4日《Creature Creator》+《DREDGE/渔帆暗涌》弹幕录像](https://www.bilibili.com/video/av867044242/) |
+| DREDGE/渔帆暗涌 | 2023-04-04 | 03:54:01 | Part 1 | [【Quin？机皇！】2023年4月4日《Creature Creator》+《DREDGE/渔帆暗涌》弹幕录像](https://www.bilibili.com/video/av867044242/) |
 
 ## 宝可梦：紫
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 宝可梦：紫 | 3/31/2023 | 03:32:17 | Part 1 | [【Quin？机皇！】2023年3月31日《宝可梦：紫》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av994396330/) |
+| 宝可梦：紫 | 2023-03-31 | 03:32:17 | Part 1 | [【Quin？机皇！】2023年3月31日《宝可梦：紫》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av994396330/) |
 
 ## Storyteller
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Storyteller | 3/28/2023 | 04:47:10 | Part 1 | [【Quin？机皇！】2023年3月28日《Storyteller》+《The Mortuary Assistant》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av484281108/) |
+| Storyteller | 2023-03-28 | 04:47:10 | Part 1 | [【Quin？机皇！】2023年3月28日《Storyteller》+《The Mortuary Assistant》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av484281108/) |
 
 ## The Mortuary Assistant
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| The Mortuary Assistant | 3/28/2023 | 04:47:10 | Part 1 | [【Quin？机皇！】2023年3月28日《Storyteller》+《The Mortuary Assistant》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av484281108/) |
+| The Mortuary Assistant | 2023-03-28 | 04:47:10 | Part 1 | [【Quin？机皇！】2023年3月28日《Storyteller》+《The Mortuary Assistant》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av484281108/) |
 
 ## 探案法：加拿大档案
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 探案法：加拿大档案 | 3/20/2023 | 03:21:38 | Part 1 | [【Quin？机皇！】2023年3月20日《探案法：加拿大档案》+《战争交响曲：尼菲林传奇》弹幕录像](https://www.bilibili.com/video/av781314879/) |
+| 探案法：加拿大档案 | 2023-03-20 | 03:21:38 | Part 1 | [【Quin？机皇！】2023年3月20日《探案法：加拿大档案》+《战争交响曲：尼菲林传奇》弹幕录像](https://www.bilibili.com/video/av781314879/) |
 
 ## 战争交响曲：尼菲林传奇
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 战争交响曲：尼菲林传奇 | 3/20/2023 | 03:21:38 | Part 1 | [【Quin？机皇！】2023年3月20日《探案法：加拿大档案》+《战争交响曲：尼菲林传奇》弹幕录像](https://www.bilibili.com/video/av781314879/) |
+| 战争交响曲：尼菲林传奇 | 2023-03-20 | 03:21:38 | Part 1 | [【Quin？机皇！】2023年3月20日《探案法：加拿大档案》+《战争交响曲：尼菲林传奇》弹幕录像](https://www.bilibili.com/video/av781314879/) |
 
 ## Song of Farca/罪城骇客
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Song of Farca/罪城骇客 | 2/14/2023 | 05:01:29 | Part 1 | [【Quin？机皇！】2023年2月14日《火焰纹章 Engage》+《Karagon》+《Song of Farca/罪城骇客》弹幕录像](https://www.bilibili.com/video/av949439567/) |
-| Song of Farca/罪城骇客 | 3/19/2023 | 03:37:57 | Part 2 | [【Quin？机皇！】2023年3月19日《Song of Farca/罪城骇客》+《无极道人》+《纷争终结者：被遗弃的孩子们》弹幕录像](https://www.bilibili.com/video/av781264702/) |
+| Song of Farca/罪城骇客 | 2023-02-14 | 05:01:29 | Part 1 | [【Quin？机皇！】2023年2月14日《火焰纹章 Engage》+《Karagon》+《Song of Farca/罪城骇客》弹幕录像](https://www.bilibili.com/video/av949439567/) |
+| Song of Farca/罪城骇客 | 2023-03-19 | 03:37:57 | Part 2 | [【Quin？机皇！】2023年3月19日《Song of Farca/罪城骇客》+《无极道人》+《纷争终结者：被遗弃的孩子们》弹幕录像](https://www.bilibili.com/video/av781264702/) |
 
 ## 无极道人
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 无极道人 | 3/19/2023 | 03:37:57 | Part 1 | [【Quin？机皇！】2023年3月19日《Song of Farca/罪城骇客》+《无极道人》+《纷争终结者：被遗弃的孩子们》弹幕录像](https://www.bilibili.com/video/av781264702/) |
+| 无极道人 | 2023-03-19 | 03:37:57 | Part 1 | [【Quin？机皇！】2023年3月19日《Song of Farca/罪城骇客》+《无极道人》+《纷争终结者：被遗弃的孩子们》弹幕录像](https://www.bilibili.com/video/av781264702/) |
 
 ## 纷争终结者：被遗弃的孩子们
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 纷争终结者：被遗弃的孩子们 | 3/19/2023 | 03:37:57 | Part 1 | [【Quin？机皇！】2023年3月19日《Song of Farca/罪城骇客》+《无极道人》+《纷争终结者：被遗弃的孩子们》弹幕录像](https://www.bilibili.com/video/av781264702/) |
+| 纷争终结者：被遗弃的孩子们 | 2023-03-19 | 03:37:57 | Part 1 | [【Quin？机皇！】2023年3月19日《Song of Farca/罪城骇客》+《无极道人》+《纷争终结者：被遗弃的孩子们》弹幕录像](https://www.bilibili.com/video/av781264702/) |
 
 ## Dark Chess/后翼弃兵：迷雾棋局
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Dark Chess/后翼弃兵：迷雾棋局 | 3/11/2023 | 04:31:26 | Part 1 | [【Quin？机皇！】2023年3月11日《Dark Chess/后翼弃兵：迷雾棋局》+《叛逆AI模拟器》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av438316931/) |
+| Dark Chess/后翼弃兵：迷雾棋局 | 2023-03-11 | 04:31:26 | Part 1 | [【Quin？机皇！】2023年3月11日《Dark Chess/后翼弃兵：迷雾棋局》+《叛逆AI模拟器》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av438316931/) |
 
 ## 叛逆AI模拟器
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 叛逆AI模拟器 | 3/11/2023 | 04:31:26 | Part 1 | [【Quin？机皇！】2023年3月11日《Dark Chess/后翼弃兵：迷雾棋局》+《叛逆AI模拟器》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av438316931/) |
+| 叛逆AI模拟器 | 2023-03-11 | 04:31:26 | Part 1 | [【Quin？机皇！】2023年3月11日《Dark Chess/后翼弃兵：迷雾棋局》+《叛逆AI模拟器》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av438316931/) |
 
 ## 飞禽律师之事件簿
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 飞禽律师之事件簿 | 2/23/2023 | 04:26:31 | Part 1 | [【Quin？机皇！】2023年2月23日《Chef Lifer》+《火焰纹章 Engage》+《飞禽律师之事件簿》弹幕录像](https://www.bilibili.com/video/av524935205/) |
-| 飞禽律师之事件簿 | 2/28/2023 | 03:47:13 | Part 2 | [【Quin？机皇！】2023年2月28日《飞禽律师之事件簿》弹幕录像](https://www.bilibili.com/video/av780327029/) |
-| 飞禽律师之事件簿 | 3/5/2023 | 03:21:55 | Part 3 | [【Quin？机皇！】2023年3月5日《飞禽律师之事件簿》+《Phantom Brigade/幻影旅团》+《坎巴拉太空计划2》弹幕录像](https://www.bilibili.com/video/av865567389/) |
+| 飞禽律师之事件簿 | 2023-02-23 | 04:26:31 | Part 1 | [【Quin？机皇！】2023年2月23日《Chef Lifer》+《火焰纹章 Engage》+《飞禽律师之事件簿》弹幕录像](https://www.bilibili.com/video/av524935205/) |
+| 飞禽律师之事件簿 | 2023-02-28 | 03:47:13 | Part 2 | [【Quin？机皇！】2023年2月28日《飞禽律师之事件簿》弹幕录像](https://www.bilibili.com/video/av780327029/) |
+| 飞禽律师之事件簿 | 2023-03-05 | 03:21:55 | Part 3 | [【Quin？机皇！】2023年3月5日《飞禽律师之事件簿》+《Phantom Brigade/幻影旅团》+《坎巴拉太空计划2》弹幕录像](https://www.bilibili.com/video/av865567389/) |
 
 ## Phantom Brigade/幻影旅团
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Phantom Brigade/幻影旅团 | 3/5/2023 | 03:21:55 | Part 1 | [【Quin？机皇！】2023年3月5日《飞禽律师之事件簿》+《Phantom Brigade/幻影旅团》+《坎巴拉太空计划2》弹幕录像](https://www.bilibili.com/video/av865567389/) |
+| Phantom Brigade/幻影旅团 | 2023-03-05 | 03:21:55 | Part 1 | [【Quin？机皇！】2023年3月5日《飞禽律师之事件簿》+《Phantom Brigade/幻影旅团》+《坎巴拉太空计划2》弹幕录像](https://www.bilibili.com/video/av865567389/) |
 
 ## 坎巴拉太空计划2
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 坎巴拉太空计划2 | 3/5/2023 | 03:21:55 | Part 1 | [【Quin？机皇！】2023年3月5日《飞禽律师之事件簿》+《Phantom Brigade/幻影旅团》+《坎巴拉太空计划2》弹幕录像](https://www.bilibili.com/video/av865567389/) |
+| 坎巴拉太空计划2 | 2023-03-05 | 03:21:55 | Part 1 | [【Quin？机皇！】2023年3月5日《飞禽律师之事件簿》+《Phantom Brigade/幻影旅团》+《坎巴拉太空计划2》弹幕录像](https://www.bilibili.com/video/av865567389/) |
 
 ## Stolen Realm/失落王国
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Stolen Realm/失落王国 | 2/27/2023 | 05:44:22 | Part 1 | [【Quin？机皇！】2023年2月27日《Stolen Realm/失落王国》弹幕录像](https://www.bilibili.com/video/av695167794/) |
+| Stolen Realm/失落王国 | 2023-02-27 | 05:44:22 | Part 1 | [【Quin？机皇！】2023年2月27日《Stolen Realm/失落王国》弹幕录像](https://www.bilibili.com/video/av695167794/) |
 
 ## Chef Lifer
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Chef Lifer | 2/23/2023 | 04:26:31 | Part 1 | [【Quin？机皇！】2023年2月23日《Chef Lifer》+《火焰纹章 Engage》+《飞禽律师之事件簿》弹幕录像](https://www.bilibili.com/video/av524935205/) |
+| Chef Lifer | 2023-02-23 | 04:26:31 | Part 1 | [【Quin？机皇！】2023年2月23日《Chef Lifer》+《火焰纹章 Engage》+《飞禽律师之事件簿》弹幕录像](https://www.bilibili.com/video/av524935205/) |
 
 ## Karagon
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Karagon | 2/14/2023 | 05:01:29 | Part 1 | [【Quin？机皇！】2023年2月14日《火焰纹章 Engage》+《Karagon》+《Song of Farca/罪城骇客》弹幕录像](https://www.bilibili.com/video/av949439567/) |
+| Karagon | 2023-02-14 | 05:01:29 | Part 1 | [【Quin？机皇！】2023年2月14日《火焰纹章 Engage》+《Karagon》+《Song of Farca/罪城骇客》弹幕录像](https://www.bilibili.com/video/av949439567/) |
 
 ## A Space for the Unbound/无垠之心
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| A Space for the Unbound/无垠之心 | 1/23/2023 | 04:17:01 | Part 1 | [【Quin？机皇！】2023年1月23日《A Space for the Unbound/无垠之心》+《火焰纹章 Engage》弹幕录像（重传）](https://www.bilibili.com/video/av650866845/) |
-| A Space for the Unbound/无垠之心 | 1/23/2023 | 04:17:01 | Part 2 | [【Quin？机皇！】2023年1月23日《A Space for the Unbound/无垠之心》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av265865986/) |
+| A Space for the Unbound/无垠之心 | 2023-01-23 | 04:17:01 | Part 1 | [【Quin？机皇！】2023年1月23日《A Space for the Unbound/无垠之心》+《火焰纹章 Engage》弹幕录像（重传）](https://www.bilibili.com/video/av650866845/) |
+| A Space for the Unbound/无垠之心 | 2023-01-23 | 04:17:01 | Part 2 | [【Quin？机皇！】2023年1月23日《A Space for the Unbound/无垠之心》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av265865986/) |
 
 ## Into the Breach/陷阵之志
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Into the Breach/陷阵之志 | 1/20/2023 | 05:22:42 | Part 1 | [【Quin？机皇！】2023年1月20日《Into the Breach/陷阵之志》+《火焰纹章 Engage》+《Raft/木筏求生》弹幕录像](https://www.bilibili.com/video/av820746776/) |
-| Into the Breach/陷阵之志 | 1/21/2023 | 04:26:18 | Part 2 | [【Quin？机皇！】2023年1月21日《Into the Breach/陷阵之志》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av735680112/) |
-| Into the Breach/陷阵之志 | 1/22/2023 | 04:55:28 | Part 3 | [【Quin？机皇！】2023年1月22日《Into the Breach/陷阵之志》+《角色扮演游戏时间！～光之传说～》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av308226587/) |
+| Into the Breach/陷阵之志 | 2023-01-20 | 05:22:42 | Part 1 | [【Quin？机皇！】2023年1月20日《Into the Breach/陷阵之志》+《火焰纹章 Engage》+《Raft/木筏求生》弹幕录像](https://www.bilibili.com/video/av820746776/) |
+| Into the Breach/陷阵之志 | 2023-01-21 | 04:26:18 | Part 2 | [【Quin？机皇！】2023年1月21日《Into the Breach/陷阵之志》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av735680112/) |
+| Into the Breach/陷阵之志 | 2023-01-22 | 04:55:28 | Part 3 | [【Quin？机皇！】2023年1月22日《Into the Breach/陷阵之志》+《角色扮演游戏时间！～光之传说～》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av308226587/) |
 
 ## 角色扮演游戏时间！～光之传说～
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 角色扮演游戏时间！～光之传说～ | 1/17/2023 | 04:49:57 | Part 1 | [【Quin？机皇！】2023年1月17日《真探》+《角色扮演游戏时间！～光之传说～》弹幕录像](https://www.bilibili.com/video/av607894522/) |
-| 角色扮演游戏时间！～光之传说～ | 1/18/2023 | 04:47:43 | Part 2 | [【Quin？机皇！】2023年1月18日《真探》+《角色扮演游戏时间！～光之传说～》弹幕录像](https://www.bilibili.com/video/av948037821/) |
-| 角色扮演游戏时间！～光之传说～ | 1/19/2023 | 04:26:30 | Part 3 | [【Quin？机皇！】2023年1月19日《真探》+《角色扮演游戏时间！～光之传说～》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av820507967/) |
-| 角色扮演游戏时间！～光之传说～ | 1/22/2023 | 04:55:28 | Part 4 | [【Quin？机皇！】2023年1月22日《Into the Breach/陷阵之志》+《角色扮演游戏时间！～光之传说～》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av308226587/) |
+| 角色扮演游戏时间！～光之传说～ | 2023-01-17 | 04:49:57 | Part 1 | [【Quin？机皇！】2023年1月17日《真探》+《角色扮演游戏时间！～光之传说～》弹幕录像](https://www.bilibili.com/video/av607894522/) |
+| 角色扮演游戏时间！～光之传说～ | 2023-01-18 | 04:47:43 | Part 2 | [【Quin？机皇！】2023年1月18日《真探》+《角色扮演游戏时间！～光之传说～》弹幕录像](https://www.bilibili.com/video/av948037821/) |
+| 角色扮演游戏时间！～光之传说～ | 2023-01-19 | 04:26:30 | Part 3 | [【Quin？机皇！】2023年1月19日《真探》+《角色扮演游戏时间！～光之传说～》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av820507967/) |
+| 角色扮演游戏时间！～光之传说～ | 2023-01-22 | 04:55:28 | Part 4 | [【Quin？机皇！】2023年1月22日《Into the Breach/陷阵之志》+《角色扮演游戏时间！～光之传说～》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av308226587/) |
 
 ## Raft/木筏求生
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Raft/木筏求生 | 1/14/2023 | 04:38:40 | Part 1 | [【Quin？机皇！】2023年1月14日《真探》+《Raft/木筏求生》弹幕录像](https://www.bilibili.com/video/av522803606/) |
-| Raft/木筏求生 | 1/15/2023 | 04:46:54 | Part 2 | [【Quin？机皇！】2023年1月15日《真探》+《Raft/木筏求生》弹幕录像](https://www.bilibili.com/video/av435408498/) |
-| Raft/木筏求生 | 1/20/2023 | 05:22:42 | Part 3 | [【Quin？机皇！】2023年1月20日《Into the Breach/陷阵之志》+《火焰纹章 Engage》+《Raft/木筏求生》弹幕录像](https://www.bilibili.com/video/av820746776/) |
+| Raft/木筏求生 | 2023-01-14 | 04:38:40 | Part 1 | [【Quin？机皇！】2023年1月14日《真探》+《Raft/木筏求生》弹幕录像](https://www.bilibili.com/video/av522803606/) |
+| Raft/木筏求生 | 2023-01-15 | 04:46:54 | Part 2 | [【Quin？机皇！】2023年1月15日《真探》+《Raft/木筏求生》弹幕录像](https://www.bilibili.com/video/av435408498/) |
+| Raft/木筏求生 | 2023-01-20 | 05:22:42 | Part 3 | [【Quin？机皇！】2023年1月20日《Into the Breach/陷阵之志》+《火焰纹章 Engage》+《Raft/木筏求生》弹幕录像](https://www.bilibili.com/video/av820746776/) |
 
 ## 真探
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 真探 | 1/14/2023 | 04:38:40 | Part 1 | [【Quin？机皇！】2023年1月14日《真探》+《Raft/木筏求生》弹幕录像](https://www.bilibili.com/video/av522803606/) |
-| 真探 | 1/15/2023 | 04:46:54 | Part 2 | [【Quin？机皇！】2023年1月15日《真探》+《Raft/木筏求生》弹幕录像](https://www.bilibili.com/video/av435408498/) |
-| 真探 | 1/16/2023 | 04:14:54 | Part 3 | [【Quin？机皇！】2023年1月16日《真探》弹幕录像](https://www.bilibili.com/video/av777886571/) |
-| 真探 | 1/17/2023 | 04:49:57 | Part 4 | [【Quin？机皇！】2023年1月17日《真探》+《角色扮演游戏时间！～光之传说～》弹幕录像](https://www.bilibili.com/video/av607894522/) |
-| 真探 | 1/18/2023 | 04:47:43 | Part 5 | [【Quin？机皇！】2023年1月18日《真探》+《角色扮演游戏时间！～光之传说～》弹幕录像](https://www.bilibili.com/video/av948037821/) |
-| 真探 | 1/19/2023 | 04:26:30 | Part 6 | [【Quin？机皇！】2023年1月19日《真探》+《角色扮演游戏时间！～光之传说～》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av820507967/) |
+| 真探 | 2023-01-14 | 04:38:40 | Part 1 | [【Quin？机皇！】2023年1月14日《真探》+《Raft/木筏求生》弹幕录像](https://www.bilibili.com/video/av522803606/) |
+| 真探 | 2023-01-15 | 04:46:54 | Part 2 | [【Quin？机皇！】2023年1月15日《真探》+《Raft/木筏求生》弹幕录像](https://www.bilibili.com/video/av435408498/) |
+| 真探 | 2023-01-16 | 04:14:54 | Part 3 | [【Quin？机皇！】2023年1月16日《真探》弹幕录像](https://www.bilibili.com/video/av777886571/) |
+| 真探 | 2023-01-17 | 04:49:57 | Part 4 | [【Quin？机皇！】2023年1月17日《真探》+《角色扮演游戏时间！～光之传说～》弹幕录像](https://www.bilibili.com/video/av607894522/) |
+| 真探 | 2023-01-18 | 04:47:43 | Part 5 | [【Quin？机皇！】2023年1月18日《真探》+《角色扮演游戏时间！～光之传说～》弹幕录像](https://www.bilibili.com/video/av948037821/) |
+| 真探 | 2023-01-19 | 04:26:30 | Part 6 | [【Quin？机皇！】2023年1月19日《真探》+《角色扮演游戏时间！～光之传说～》+《火焰纹章 Engage》弹幕录像](https://www.bilibili.com/video/av820507967/) |
 
 ## Dogs Organized Neatly/井然有狗
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| Dogs Organized Neatly/井然有狗 | 1/13/2023 | 03:59:17 | Part 1 | [【Quin？机皇！】2023年1月13日《Dogs Organized Neatly/井然有狗》+《哆啦A梦 牧场物语：自然王国与和乐家人》弹幕录像](https://www.bilibili.com/video/av435372960/) |
+| Dogs Organized Neatly/井然有狗 | 2023-01-13 | 03:59:17 | Part 1 | [【Quin？机皇！】2023年1月13日《Dogs Organized Neatly/井然有狗》+《哆啦A梦 牧场物语：自然王国与和乐家人》弹幕录像](https://www.bilibili.com/video/av435372960/) |
 
 ## 哆啦A梦 牧场物语：自然王国与和乐家人
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题                                                         |
 | -------- | -------- | ---- | ------ | ------------------------------------------------------------ |
-| 哆啦A梦 牧场物语：自然王国与和乐家人 | 1/13/2023 | 03:59:17 | Part 1 | [【Quin？机皇！】2023年1月13日《Dogs Organized Neatly/井然有狗》+《哆啦A梦 牧场物语：自然王国与和乐家人》弹幕录像](https://www.bilibili.com/video/av435372960/) |
+| 哆啦A梦 牧场物语：自然王国与和乐家人 | 2023-01-13 | 03:59:17 | Part 1 | [【Quin？机皇！】2023年1月13日《Dogs Organized Neatly/井然有狗》+《哆啦A梦 牧场物语：自然王国与和乐家人》弹幕录像](https://www.bilibili.com/video/av435372960/) |
