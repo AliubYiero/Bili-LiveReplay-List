@@ -8,49 +8,47 @@ on:
 jobs:
   generate-report:
     runs-on: ubuntu-latest
+    # ✅ 关键：声明写入权限（使 git push 生效）
     permissions:
-      contents: write  # 允许 git push
-      
+      contents: write
+    
     steps:
-      # 1. 检出代码 (启用写权限)
+      # 1. 检出代码（启用写权限）
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}  # 必须显式声明
-          persist-credentials: true  # 保持凭证用于推送
-
-      # 2. 设置 Node.js
-      - name: Setup Node.js
+      
+      # 2. 设置 Node.js + pnpm 环境
+      - name: Setup Node.js & pnpm
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
-
-      # 3. 安装依赖 (安全方案)
+          cache: 'pnpm'  # ✅ 启用 pnpm 缓存
+          cache-dependency-path: pnpm-lock.yaml  # ✅ 指定 lockfile 位置
+      
+      # 3. 安装 pnpm（如果 setup-node 未自动安装）
+      - name: Install pnpm
+        run: npm install -g pnpm@8  # 使用最新 LTS 版本
+      
+      # 4. 安装依赖（pnpm 版）
       - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            npm install
-          fi
-
-      # 4. 生成报告 (关键修复)
+        run: pnpm install --frozen-lockfile  # ✅ 相当于 npm ci
+      
+      # 5. 生成报告（pnpm 版）
       - name: Generate report
         run: |
-          npm run build    # ✅ 正确构建命令 (如有需要)
-          npm run start # ✅ 替换为实际的报告生成命令
-
-      # 5. 提交报告 (通用路径)
+          pnpm build    # ✅ 替换为实际构建命令（如有需要）
+          pnpm start # ✅ 替换为 package.json 中定义的生成命令
+      
+      # 6. 提交报告
       - name: Commit and push report
         run: |
           git config user.email "action@github.com"
           git config user.name "GitHub Action"
           
-          # 检测实际变更的文件 (智能提交)
+          # 智能提交：仅提交变更文件
           git add -A
           if git diff --cached --quiet; then
-            echo "ℹ️ No changes detected in report"
+            echo "ℹ️ No changes to commit"
             exit 0
           fi
           
