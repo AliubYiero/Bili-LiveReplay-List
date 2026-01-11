@@ -13,7 +13,7 @@ export const generateREADME = () => {
 			readdirSync( liverDocxDirPath ).map(
 				docx => {
 					const showTitle = basename( docx, '.md' ).replace( / /g, '%20' );
-					const docxPath = encodeURI( './docx/${ liver }/${ docx }' );
+					const docxPath = encodeURI( `./docx/${ liver }/${ docx }` );
 					return `\t- [${ showTitle }](${ docxPath })`;
 				},
 			).join( '\n' );

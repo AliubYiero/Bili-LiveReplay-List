@@ -3,15 +3,15 @@
 ## 分组目录
 
 - [[**Mr.Quin**]](./docx/Mr.Quin):
-	- [Mr.Quin直播回放列表(from%20胧黑)](./docx/$%7B%20liver%20%7D/$%7B%20docx%20%7D)
-	- [Mr.Quin直播回放列表(from%20自行车二层)](./docx/$%7B%20liver%20%7D/$%7B%20docx%20%7D)
+	- [Mr.Quin直播回放列表(from%20胧黑)](./docx/Mr.Quin/Mr.Quin%E7%9B%B4%E6%92%AD%E5%9B%9E%E6%94%BE%E5%88%97%E8%A1%A8(from%20%E8%83%A7%E9%BB%91).md)
+	- [Mr.Quin直播回放列表(from%20自行车二层)](./docx/Mr.Quin/Mr.Quin%E7%9B%B4%E6%92%AD%E5%9B%9E%E6%94%BE%E5%88%97%E8%A1%A8(from%20%E8%87%AA%E8%A1%8C%E8%BD%A6%E4%BA%8C%E5%B1%82).md)
 - [[**北极熊剩饭**]](./docx/北极熊剩饭):
-	- [北极熊剩饭直播回放列表(from%20自行车二层)](./docx/$%7B%20liver%20%7D/$%7B%20docx%20%7D)
+	- [北极熊剩饭直播回放列表(from%20自行车二层)](./docx/%E5%8C%97%E6%9E%81%E7%86%8A%E5%89%A9%E9%A5%AD/%E5%8C%97%E6%9E%81%E7%86%8A%E5%89%A9%E9%A5%AD%E7%9B%B4%E6%92%AD%E5%9B%9E%E6%94%BE%E5%88%97%E8%A1%A8(from%20%E8%87%AA%E8%A1%8C%E8%BD%A6%E4%BA%8C%E5%B1%82).md)
 - [[**机智的肯尼**]](./docx/机智的肯尼):
-	- [机智的肯尼直播回放列表(from%20自行车二层)](./docx/$%7B%20liver%20%7D/$%7B%20docx%20%7D)
+	- [机智的肯尼直播回放列表(from%20自行车二层)](./docx/%E6%9C%BA%E6%99%BA%E7%9A%84%E8%82%AF%E5%B0%BC/%E6%9C%BA%E6%99%BA%E7%9A%84%E8%82%AF%E5%B0%BC%E7%9B%B4%E6%92%AD%E5%9B%9E%E6%94%BE%E5%88%97%E8%A1%A8(from%20%E8%87%AA%E8%A1%8C%E8%BD%A6%E4%BA%8C%E5%B1%82).md)
 - [[**机皇**]](./docx/机皇):
-	- [机皇直播回放列表(from%20胧黑)](./docx/$%7B%20liver%20%7D/$%7B%20docx%20%7D)
-	- [机皇直播回放列表(from%20自行车二层)](./docx/$%7B%20liver%20%7D/$%7B%20docx%20%7D)
+	- [机皇直播回放列表(from%20胧黑)](./docx/%E6%9C%BA%E7%9A%87/%E6%9C%BA%E7%9A%87%E7%9B%B4%E6%92%AD%E5%9B%9E%E6%94%BE%E5%88%97%E8%A1%A8(from%20%E8%83%A7%E9%BB%91).md)
+	- [机皇直播回放列表(from%20自行车二层)](./docx/%E6%9C%BA%E7%9A%87/%E6%9C%BA%E7%9A%87%E7%9B%B4%E6%92%AD%E5%9B%9E%E6%94%BE%E5%88%97%E8%A1%A8(from%20%E8%87%AA%E8%A1%8C%E8%BD%A6%E4%BA%8C%E5%B1%82).md)
 
 
 ## 项目描述
