@@ -17,7 +17,7 @@ export interface UnparseRecordItem {
 export interface RecordItem extends UnparseRecordItem {
 	liveTime: number;
 	playGame: string[];
-	liver: 'Mr.Quin' | '机智的肯尼' | '北极熊剩饭' | '机皇';
+	liver: 'Mr.Quin' | '机智的肯尼' | '北极熊剩饭' | '机皇' | string;
 }
 
 export type PlayGameRecordItem = Omit<RecordItem, 'playGame'> & {
