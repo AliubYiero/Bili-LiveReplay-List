@@ -1,5 +1,5 @@
 /**
- * 根据输入的时间戳生成格式为 `yyyy-mm-dd` 的日期字符串。
+ * 根据输入的时间戳生成北京时区（UTC+8）格式为 `yyyy-mm-dd` 的日期字符串。
  * 若年、月、日中任意部分因时间戳无效或超出范围而无法解析，则对应位置使用占位符 `'----'`（年）、`'--'`（月）、`'--'`（日）补全。
  *
  * @param timestamp - 输入的时间戳（单位：毫秒）。可以是任意 number，包括无效值（如 NaN、Infinity）或超出 Date 构造函数有效范围的值。
@@ -14,41 +14,51 @@
  * formatDate(-1)            // "1969-12-31"（有效时间戳，即使为负）
  * formatDate(8640000000000000) // "----/--/--"（超出 Date 有效范围）
  */
-export function formatDate( timestamp: number ): string {
+export function formatDate(timestamp: number): string {
 	// 检查是否为有效有限数值
-	if ( !isFinite( timestamp ) ) {
+	if (!isFinite(timestamp)) {
 		return '----/--/--';
 	}
 	
-	const date = new Date( timestamp );
+	// 创建一个日期对象（内部存储为UTC时间）
+	const date = new Date(timestamp);
 	
-	// 检查 Date 是否有效（Date 构造函数对非法时间戳会返回 Invalid Date）
-	if ( isNaN( date.getTime() ) ) {
+	// 检查 Date 是否有效
+	if (isNaN(date.getTime())) {
 		return '----/--/--';
 	}
 	
-	const year = date.getFullYear();
-	const month = date.getMonth() + 1; // getMonth() 返回 0-11
-	const day = date.getDate();
+	// 将UTC时间转换为北京时间（UTC+8）
+	// 方法：获取UTC时间，然后加上8小时得到北京时间
+	const beijingOffset = 8 * 60 * 60 * 1000; // 8小时的毫秒数
+	const beijingTime = date.getTime() + beijingOffset;
+	const beijingDate = new Date(beijingTime);
 	
-	// 验证提取的日期组件是否合理（防御性检查，通常不会失败，但增强健壮性）
-	if ( !Number.isInteger( year ) || year < 0 || year > 9999 ) {
+	// 使用UTC方法来获取北京时间的年、月、日
+	const year = beijingDate.getUTCFullYear();
+	const month = beijingDate.getUTCMonth() + 1; // getUTCMonth() 返回 0-11
+	const day = beijingDate.getUTCDate();
+	
+	// 验证提取的日期组件是否合理
+	if (!Number.isInteger(year) || year < 0 || year > 9999) {
 		return '----/--/--';
 	}
 	
-	const pad = ( num: number, width: number ): string => {
-		const str = String( num );
-		return str.length >= width ? str : '0'.repeat( width - str.length ) + str;
+	// 格式化填充函数
+	const pad = (num: number, width: number): string => {
+		const str = String(num);
+		return str.length >= width ? str : '0'.repeat(width - str.length) + str;
 	};
 	
-	const yearStr = pad( year, 4 );
-	const monthStr = isNaN( month ) || month < 1 || month > 12 ? '--' : pad( month, 2 );
-	const dayStr = isNaN( day ) || day < 1 || day > 31 ? '--' : pad( day, 2 );
+	// 格式化各部分
+	const yearStr = pad(year, 4);
+	const monthStr = isNaN(month) || month < 1 || month > 12 ? '--' : pad(month, 2);
+	const dayStr = isNaN(day) || day < 1 || day > 31 ? '--' : pad(day, 2);
 	
-	// 再次验证 month 和 day 是否为有效整数（理论上不会发生，但保持防御）
-	if ( monthStr === '--' || dayStr === '--' ) {
-		return `${ yearStr }/--/--`;
+	// 如果月或日无效，返回部分占位符
+	if (monthStr === '--' || dayStr === '--') {
+		return `${yearStr}/--/--`;
 	}
 	
-	return `${ yearStr }-${ monthStr }-${ dayStr }`;
+	return `${yearStr}-${monthStr}-${dayStr}`;
 }
