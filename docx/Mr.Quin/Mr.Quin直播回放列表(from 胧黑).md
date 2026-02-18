@@ -3,10 +3,10 @@
 | 主播 | Mr.Quin |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **胧黑** |
-| **数据更新时间** | **2026-02-17** |
-| **累积计入视频数量** | **852** |
+| **数据更新时间** | **2026-02-18** |
+| **累积计入视频数量** | **853** |
 | **最旧视频** | [【Mr.Quin】2022年8月17日《异度之刃3》弹幕录像](https://www.bilibili.com/video/av644671524/) |
-| **最新视频** | [【Mr.Quin】2026年2月15日《Hobo: Tough Life / 乞丐模拟器》弹幕录像](https://www.bilibili.com/video/av116076775999404/) |
+| **最新视频** | [【Mr.Quin】2026年2月17日《Hobo: Tough Life / 乞丐模拟器》弹幕录像](https://www.bilibili.com/video/av116088218058933/) |
 
 ---
 
@@ -17,6 +17,7 @@
 | Hobo: Tough Life / 乞丐模拟器 | 2026-02-13 | 05:53:35 | Part 1 | [【Mr.Quin】2026年2月13日《Hobo: Tough Life / 乞丐模拟器》弹幕录像](https://www.bilibili.com/video/av116065652707102/) | 116065652707102 |
 | Hobo: Tough Life / 乞丐模拟器 | 2026-02-14 | 04:02:47 | Part 2 | [【Mr.Quin】2026年2月14日《Hobo: Tough Life / 乞丐模拟器》弹幕录像](https://www.bilibili.com/video/av116071289850063/) | 116071289850063 |
 | Hobo: Tough Life / 乞丐模拟器 | 2026-02-15 | 04:11:48 | Part 3 | [【Mr.Quin】2026年2月15日《Hobo: Tough Life / 乞丐模拟器》弹幕录像](https://www.bilibili.com/video/av116076775999404/) | 116076775999404 |
+| Hobo: Tough Life / 乞丐模拟器 | 2026-02-17 | 04:29:18 | Part 4 | [【Mr.Quin】2026年2月17日《Hobo: Tough Life / 乞丐模拟器》弹幕录像](https://www.bilibili.com/video/av116088218058933/) | 116088218058933 |
 
 ## 镇邪Ⅱ
 
