@@ -1,6 +1,7 @@
 import { cwd } from 'node:process';
 import { existsSync, mkdirSync } from 'fs';
 import { join, resolve } from 'node:path';
+import { safeFilename } from './filename.ts';
 
 export class DataPathManager {
   /**
@@ -17,6 +18,29 @@ export class DataPathManager {
     const userDir = join(this.getDataDir(), uid.toString());
     this.ensureDir(userDir);
     return userDir;
+  }
+
+  /**
+   * 获取 record.json 文件路径
+   */
+  static getRecordFilePath(uid: number, userName: string): string {
+    const safeName = safeFilename(userName);
+    return join(this.getUserDataDir(uid), `${safeName}.record.json`);
+  }
+
+  /**
+   * 获取 aid.json 文件路径
+   */
+  static getAidFilePath(uid: number, userName: string): string {
+    const safeName = safeFilename(userName);
+    return join(this.getUserDataDir(uid), `${safeName}.aid.json`);
+  }
+
+  /**
+   * 获取拼写纠正配置文件路径
+   */
+  static getSpellingCorrectionPath(): string {
+    return join(this.getDataDir(), 'SpellingCorrections.json');
   }
 
   /**
