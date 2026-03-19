@@ -17,7 +17,7 @@ describe('RecordStore', () => {
   });
 
   describe('initialization', () => {
-    it('should create initial config when file does not exist (with userName - new path)', () => {
+    it('should create initial config when file does not exist', () => {
       const store = new RecordStore(testUid, testUserName);
 
       expect(store.cache.uid).toBe(testUid);
@@ -27,17 +27,7 @@ describe('RecordStore', () => {
       expect(store.recordList).toEqual([]);
     });
 
-    it('should create initial config when file does not exist (without userName - legacy path)', () => {
-      const store = new RecordStore(testUid);
-
-      expect(store.cache.uid).toBe(testUid);
-      expect(store.cache.userName).toBe('');
-      expect(store.cache.aid).toBe(0);
-      expect(store.cache.timestamp).toBe(0);
-      expect(store.recordList).toEqual([]);
-    });
-
-    it('should load existing config from file (new path)', () => {
+    it('should load existing config from file', () => {
       const existingRecord = {
         aid: 123,
         bvId: 'BV123',
@@ -67,39 +57,6 @@ describe('RecordStore', () => {
       });
 
       const store = new RecordStore(testUid, testUserName);
-      expect(store.cache.aid).toBe(123);
-      expect(store.recordList).toHaveLength(1);
-      expect(store.recordList[0].title).toBe('Test Title');
-    });
-
-    it('should load existing config from file (legacy path)', () => {
-      const existingRecord = {
-        aid: 123,
-        bvId: 'BV123',
-        publishTime: 1700000000,
-        liveDuration: 3600,
-        title: 'Test Title',
-        liveTime: 1700000000000,
-        playGame: ['Game1'],
-        liver: 'TestLiver',
-      };
-
-      mockFs({
-        'config': {
-          [`${testUid}.record.json`]: JSON.stringify({
-            cache: {
-              uid: testUid,
-              userName: '',
-              aid: 123,
-              timestamp: 1700000000000,
-            },
-            records: [existingRecord]
-          })
-        },
-        'data': {}
-      });
-
-      const store = new RecordStore(testUid);
       expect(store.cache.aid).toBe(123);
       expect(store.recordList).toHaveLength(1);
       expect(store.recordList[0].title).toBe('Test Title');
@@ -194,28 +151,8 @@ describe('RecordStore', () => {
   });
 
   describe('addRecord', () => {
-    it('should add new records (new path)', async () => {
+    it('should add new records', async () => {
       const store = new RecordStore(testUid, testUserName);
-
-      const newRecord = {
-        aid: 123,
-        bvId: 'BV123',
-        publishTime: 1700000000,
-        liveDuration: 3600,
-        title: 'Test',
-        liveTime: 1700000000000,
-        playGame: ['Game1'],
-        liver: 'TestLiver',
-      };
-
-      await store.addRecord(newRecord);
-
-      expect(store.recordList).toHaveLength(1);
-      expect(store.cache.aid).toBe(123);
-    });
-
-    it('should add new records (legacy path)', async () => {
-      const store = new RecordStore(testUid);
 
       const newRecord = {
         aid: 123,
