@@ -13,7 +13,7 @@ export const matchVideoList = async (
 	const unparseVideoList = await getIncrementalVideoList( uid, configStore );
 	const videoList = ( await Promise.all( unparseVideoList.map( onParse ) ) )
 		.filter( Boolean ) as RecordItem[];
-	configStore.addRecord( ...videoList );
+	await configStore.addRecord( ...videoList );
 	console.info( `用户 ${ userName }(uid:${ uid }) 更新了 ${ videoList.length } 个视频` );
 	console.info( '-'.repeat( 20 ) );
 	return Boolean( videoList.length );

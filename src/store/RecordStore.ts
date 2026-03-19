@@ -7,6 +7,7 @@ import {
 	RecordItem,
 	UnparseRecordItem,
 } from '../interface/IRecord.ts';
+import { atomicWriteJSON } from '../utils/fileLock.ts';
 
 
 export class RecordStore {
@@ -25,9 +26,9 @@ export class RecordStore {
 		if ( !existsSync( this.configDir ) ) {
 			mkdirSync( this.configDir, { recursive: true } );
 		}
-		// 如果没有配置文件, 创建配置文件
+		// 如果没有配置文件, 创建配置文件 (构造函数中使用同步写入)
 		if ( !existsSync( this.configFilePath ) ) {
-			this.setConfig( {
+			const initialConfig: IRecord = {
 				cache: {
 					uid: uid,
 					userName: userName,
@@ -35,7 +36,8 @@ export class RecordStore {
 					timestamp: 0,
 				},
 				records: [],
-			} );
+			};
+			writeFileSync( this.configFilePath, JSON.stringify( initialConfig ), 'utf8' );
 		}
 		
 		// 获取完整配置
@@ -66,9 +68,9 @@ export class RecordStore {
 	/**
 	 * 更新缓存的时间点
 	 */
-	updateCacheTimestamp( timestamp: number ) {
+	async updateCacheTimestamp( timestamp: number ) {
 		this.records.cache.timestamp = timestamp;
-		this.setConfig( this.records );
+		await this.setConfig( this.records );
 	}
 	
 	/**
@@ -97,33 +99,37 @@ export class RecordStore {
 	/**
 	 * 替换记录
 	 */
-	replaceRecord( record: RecordItem ) {
+	async replaceRecord( record: RecordItem ) {
 		delete record.updateTime;
 		this.recordMap.set( record.aid, record );
 		this.records.records = Array.from( this.recordMap.values() );
-		this.setConfig( this.records );
+		await this.setConfig( this.records );
 	}
 	
 	/**
 	 * 添加记录
 	 */
-	addRecord( ...record: RecordItem[] ) {
-		const willUpdateRecordList = record.filter( item => {
+	async addRecord( ...record: RecordItem[] ) {
+		// 先处理需要替换的记录
+		for ( const item of record ) {
 			if ( item.updateTime === false ) {
-				this.replaceRecord( item );
+				await this.replaceRecord( item );
 			}
-			
+		}
+
+		// 过滤出需要添加的记录
+		const willUpdateRecordList = record.filter( item => {
 			return item.updateTime !== false;
 		} );
+
 		if ( willUpdateRecordList.length === 0 ) {
-			this.updateCacheTimestamp( Date.now() );
+			await this.updateCacheTimestamp( Date.now() );
 			return;
 		}
 		this.records.cache.aid = willUpdateRecordList[ 0 ].aid;
-		record.reverse();
-		this.records.records.push( ...record );
-		this.updateCacheTimestamp( Date.now() );
-		this.setConfig( this.records );
+		willUpdateRecordList.reverse();
+		this.records.records.push( ...willUpdateRecordList );
+		await this.updateCacheTimestamp( Date.now() );
 	}
 	
 	/**
@@ -149,10 +155,9 @@ export class RecordStore {
 	/**
 	 * 设置完整配置
 	 */
-	private setConfig( records: IRecord ) {
+	private async setConfig( records: IRecord ) {
 		this.records = records;
 		this.recordMap = this.getRecordMap();
-		const recordContent = JSON.stringify( this.records );
-		writeFileSync( this.configFilePath, recordContent, 'utf8' );
+		await atomicWriteJSON( this.configFilePath, this.records );
 	}
 }
