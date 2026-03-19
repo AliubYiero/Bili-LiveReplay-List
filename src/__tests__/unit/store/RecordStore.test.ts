@@ -1,4 +1,4 @@
-import * as mockFs from 'mock-fs';
+import mockFs from 'mock-fs';
 import { RecordStore } from '../../../store/RecordStore';
 
 describe('RecordStore', () => {

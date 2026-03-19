@@ -1,4 +1,4 @@
-import * as nock from 'nock';
+import nock from 'nock';
 import { api_getUserUploadVideoList } from '../../../api/api_getUserUploadVideoList';
 
 describe('api_getUserUploadVideoList', () => {
