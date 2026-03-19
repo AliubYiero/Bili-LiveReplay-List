@@ -36,7 +36,7 @@ export const generateMarkdownRecord = (
 			}
 			return record.playGame.map( game => ( {
 				...record,
-				playGame: spellingCorrection.correct( game ),
+				playGame: spellingCorrection.correct( game, uid ),
 			} ) );
 		} );
 		const gameList = group( playGameRecord, item => item.playGame );
