@@ -71,6 +71,19 @@ export class DataPathManager {
   }
 
   /**
+   * 获取用户所有文件路径（统一接口）
+   */
+  static getUserFilePaths(uid: number, userName: string): UserFilePaths {
+    const userDir = this.getUserDataDir(uid);
+    const safeName = safeFilename(userName);
+    return {
+      userDir,
+      recordPath: join(userDir, `${safeName}.record.json`),
+      aidPath: join(userDir, `${safeName}.aid.json`),
+    };
+  }
+
+  /**
    * 递归创建目录
    */
   private static ensureDir(dirPath: string): void {
