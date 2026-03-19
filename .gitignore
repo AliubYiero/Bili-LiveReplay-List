@@ -1,14 +1,59 @@
-# Local
-.DS_Store
-*.local
-*.log*
+# Dependencies
+node_modules/
 
-# Dist
-node_modules
+# Build output
 dist/
-storybook-static
+src/webui/dist/
 
 # IDE
 .vscode/*
-!.vscode/extensions.json
-.idea
+!.vscode/mcp.json
+.idea/
+.examole/
+!.example/plugin
+*.swp
+*.swo
+AGENTS.md
+/docs/plans
+/.iflow
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# TypeScript
+*.tsbuildinfo
+
+# Diagnostic reports
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage
+*.lcov
+.nyc_output
+
+# Temporary files
+*.tmp
+*.temp
+
+.claude/
