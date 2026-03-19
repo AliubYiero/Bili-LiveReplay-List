@@ -1,6 +1,5 @@
 import * as mockFs from 'mock-fs';
 import { RecordStore } from '../../../store/RecordStore';
-import type { RecordItem } from '../../../interface/IRecord';
 
 describe('RecordStore', () => {
   const testUid = 12345;
@@ -8,7 +7,8 @@ describe('RecordStore', () => {
 
   beforeEach(() => {
     mockFs({
-      'config': {}
+      'config': {},
+      'data': {}
     });
   });
 
@@ -17,7 +17,7 @@ describe('RecordStore', () => {
   });
 
   describe('initialization', () => {
-    it('should create initial config when file does not exist', () => {
+    it('should create initial config when file does not exist (with userName - new path)', () => {
       const store = new RecordStore(testUid, testUserName);
 
       expect(store.cache.uid).toBe(testUid);
@@ -27,8 +27,53 @@ describe('RecordStore', () => {
       expect(store.recordList).toEqual([]);
     });
 
-    it('should load existing config from file', () => {
-      const existingRecord: RecordItem = {
+    it('should create initial config when file does not exist (without userName - legacy path)', () => {
+      const store = new RecordStore(testUid);
+
+      expect(store.cache.uid).toBe(testUid);
+      expect(store.cache.userName).toBe('');
+      expect(store.cache.aid).toBe(0);
+      expect(store.cache.timestamp).toBe(0);
+      expect(store.recordList).toEqual([]);
+    });
+
+    it('should load existing config from file (new path)', () => {
+      const existingRecord = {
+        aid: 123,
+        bvId: 'BV123',
+        publishTime: 1700000000,
+        liveDuration: 3600,
+        title: 'Test Title',
+        liveTime: 1700000000000,
+        playGame: ['Game1'],
+        liver: 'TestLiver',
+      };
+
+      mockFs({
+        'data': {
+          [testUid.toString()]: {
+            [`${testUserName}.record.json`]: JSON.stringify({
+              cache: {
+                uid: testUid,
+                userName: testUserName,
+                aid: 123,
+                timestamp: 1700000000000,
+              },
+              records: [existingRecord]
+            })
+          }
+        },
+        'config': {}
+      });
+
+      const store = new RecordStore(testUid, testUserName);
+      expect(store.cache.aid).toBe(123);
+      expect(store.recordList).toHaveLength(1);
+      expect(store.recordList[0].title).toBe('Test Title');
+    });
+
+    it('should load existing config from file (legacy path)', () => {
+      const existingRecord = {
         aid: 123,
         bvId: 'BV123',
         publishTime: 1700000000,
@@ -44,16 +89,17 @@ describe('RecordStore', () => {
           [`${testUid}.record.json`]: JSON.stringify({
             cache: {
               uid: testUid,
-              userName: testUserName,
+              userName: '',
               aid: 123,
               timestamp: 1700000000000,
             },
             records: [existingRecord]
           })
-        }
+        },
+        'data': {}
       });
 
-      const store = new RecordStore(testUid, testUserName);
+      const store = new RecordStore(testUid);
       expect(store.cache.aid).toBe(123);
       expect(store.recordList).toHaveLength(1);
       expect(store.recordList[0].title).toBe('Test Title');
@@ -63,15 +109,18 @@ describe('RecordStore', () => {
   describe('arrivedCachePoint', () => {
     it('should return true when aid matches cache', () => {
       mockFs({
-        'config': {
-          [`${testUid}.record.json`]: JSON.stringify({
-            cache: { uid: testUid, userName: testUserName, aid: 123, timestamp: 0 },
-            records: []
-          })
-        }
+        'data': {
+          [testUid.toString()]: {
+            [`${testUserName}.record.json`]: JSON.stringify({
+              cache: { uid: testUid, userName: testUserName, aid: 123, timestamp: 0 },
+              records: []
+            })
+          }
+        },
+        'config': {}
       });
 
-      const store = new RecordStore(testUid);
+      const store = new RecordStore(testUid, testUserName);
       expect(store.arrivedCachePoint(123)).toBe(true);
     });
 
@@ -84,26 +133,29 @@ describe('RecordStore', () => {
   describe('checkCacheVideoTitle', () => {
     beforeEach(() => {
       mockFs({
-        'config': {
-          [`${testUid}.record.json`]: JSON.stringify({
-            cache: { uid: testUid, userName: testUserName, aid: 0, timestamp: 0 },
-            records: [{
-              aid: 123,
-              bvId: 'BV123',
-              publishTime: 0,
-              liveDuration: 0,
-              title: 'Original Title',
-              liveTime: 0,
-              playGame: [],
-              liver: 'Test',
-            }]
-          })
-        }
+        'data': {
+          [testUid.toString()]: {
+            [`${testUserName}.record.json`]: JSON.stringify({
+              cache: { uid: testUid, userName: testUserName, aid: 0, timestamp: 0 },
+              records: [{
+                aid: 123,
+                bvId: 'BV123',
+                publishTime: 0,
+                liveDuration: 0,
+                title: 'Original Title',
+                liveTime: 0,
+                playGame: [],
+                liver: 'Test',
+              }]
+            })
+          }
+        },
+        'config': {}
       });
     });
 
     it('should return true for new record (not in cache)', () => {
-      const store = new RecordStore(testUid);
+      const store = new RecordStore(testUid, testUserName);
       expect(store.checkCacheVideoTitle({
         aid: 999,
         bvId: 'BV999',
@@ -114,7 +166,7 @@ describe('RecordStore', () => {
     });
 
     it('should return true when title matches cache', () => {
-      const store = new RecordStore(testUid);
+      const store = new RecordStore(testUid, testUserName);
       expect(store.checkCacheVideoTitle({
         aid: 123,
         bvId: 'BV123',
@@ -126,7 +178,7 @@ describe('RecordStore', () => {
 
     it('should return false and warn when title differs', () => {
       const consoleSpy = jest.spyOn(console, 'info').mockImplementation();
-      const store = new RecordStore(testUid);
+      const store = new RecordStore(testUid, testUserName);
 
       expect(store.checkCacheVideoTitle({
         aid: 123,
@@ -142,10 +194,10 @@ describe('RecordStore', () => {
   });
 
   describe('addRecord', () => {
-    it('should add new records', async () => {
+    it('should add new records (new path)', async () => {
       const store = new RecordStore(testUid, testUserName);
 
-      const newRecord: RecordItem = {
+      const newRecord = {
         aid: 123,
         bvId: 'BV123',
         publishTime: 1700000000,
@@ -162,28 +214,51 @@ describe('RecordStore', () => {
       expect(store.cache.aid).toBe(123);
     });
 
-    it('should handle updateTime=false for replacement', async () => {
-      mockFs({
-        'config': {
-          [`${testUid}.record.json`]: JSON.stringify({
-            cache: { uid: testUid, userName: testUserName, aid: 0, timestamp: 0 },
-            records: [{
-              aid: 123,
-              bvId: 'BV123',
-              publishTime: 0,
-              liveDuration: 0,
-              title: 'Old Title',
-              liveTime: 0,
-              playGame: [],
-              liver: 'Test',
-            }]
-          })
-        }
-      });
-
+    it('should add new records (legacy path)', async () => {
       const store = new RecordStore(testUid);
 
-      const replacementRecord: RecordItem = {
+      const newRecord = {
+        aid: 123,
+        bvId: 'BV123',
+        publishTime: 1700000000,
+        liveDuration: 3600,
+        title: 'Test',
+        liveTime: 1700000000000,
+        playGame: ['Game1'],
+        liver: 'TestLiver',
+      };
+
+      await store.addRecord(newRecord);
+
+      expect(store.recordList).toHaveLength(1);
+      expect(store.cache.aid).toBe(123);
+    });
+
+    it('should handle updateTime=false for replacement (new path)', async () => {
+      mockFs({
+        'data': {
+          [testUid.toString()]: {
+            [`${testUserName}.record.json`]: JSON.stringify({
+              cache: { uid: testUid, userName: testUserName, aid: 0, timestamp: 0 },
+              records: [{
+                aid: 123,
+                bvId: 'BV123',
+                publishTime: 0,
+                liveDuration: 0,
+                title: 'Old Title',
+                liveTime: 0,
+                playGame: [],
+                liver: 'Test',
+              }]
+            })
+          }
+        },
+        'config': {}
+      });
+
+      const store = new RecordStore(testUid, testUserName);
+
+      const replacementRecord = {
         aid: 123,
         bvId: 'BV123',
         publishTime: 0,
@@ -208,7 +283,7 @@ describe('RecordStore', () => {
       const store = new RecordStore(testUid, testUserName);
       const beforeTimestamp = store.cache.timestamp;
 
-      const newRecord: RecordItem = {
+      const newRecord = {
         aid: 123,
         bvId: 'BV123',
         publishTime: 1700000000,

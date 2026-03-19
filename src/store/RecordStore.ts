@@ -1,6 +1,6 @@
 import { cwd } from 'node:process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
-import { join, resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import {
 	CacheItem,
 	IRecord,
@@ -8,23 +8,30 @@ import {
 	UnparseRecordItem,
 } from '../interface/IRecord.ts';
 import { atomicWriteJSON } from '../utils/fileLock.ts';
+import { DataPathManager } from '../utils/DataPathManager.ts';
 
 
 export class RecordStore {
-	// 配置目录
-	private readonly configDir = resolve( cwd(), 'config' );
+	// 配置文件路径
 	private readonly configFilePath: string;
 	private records: IRecord;
 	private recordMap: Map<number, RecordItem> = new Map();
 	
 	constructor(
 		private uid: number,
-		userName: string = '',
+		private userName: string = '',
 	) {
-		this.configFilePath = join( this.configDir, `${ uid }.record.json` );
+		// 使用新路径（如果提供了 userName），否则回退到旧路径
+		this.configFilePath = userName
+			? DataPathManager.getRecordFilePath(uid, userName)
+			: DataPathManager.getLegacyRecordPath(uid);
+		
+		// 获取配置目录路径
+		const configDir = dirname(this.configFilePath);
+		
 		// 如果没有配置目录, 创建目录
-		if ( !existsSync( this.configDir ) ) {
-			mkdirSync( this.configDir, { recursive: true } );
+		if ( !existsSync( configDir ) ) {
+			mkdirSync( configDir, { recursive: true } );
 		}
 		// 如果没有配置文件, 创建配置文件 (构造函数中使用同步写入)
 		if ( !existsSync( this.configFilePath ) ) {
