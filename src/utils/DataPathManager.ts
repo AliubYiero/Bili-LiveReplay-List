@@ -3,6 +3,12 @@ import { existsSync, mkdirSync } from 'fs';
 import { join, resolve } from 'node:path';
 import { safeFilename } from './filename.ts';
 
+export interface UserFilePaths {
+  recordPath: string;
+  aidPath: string;
+  userDir: string;
+}
+
 export class DataPathManager {
   /**
    * 获取数据根目录
