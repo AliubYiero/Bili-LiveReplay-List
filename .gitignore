@@ -5,9 +5,6 @@ node_modules/
 dist/
 src/webui/dist/
 
-# Data files
-data/
-
 # IDE
 .vscode/*
 !.vscode/mcp.json

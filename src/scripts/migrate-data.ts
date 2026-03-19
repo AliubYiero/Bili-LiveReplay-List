@@ -63,3 +63,5 @@ export async function migrateData(): Promise<void> {
   console.log('\nMigration complete!');
   console.log('Please verify the migration before deleting config/ directory');
 }
+
+migrateData();
