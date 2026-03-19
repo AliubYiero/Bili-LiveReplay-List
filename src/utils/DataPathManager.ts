@@ -50,27 +50,6 @@ export class DataPathManager {
   }
 
   /**
-   * 获取旧版 record.json 路径（用于迁移）
-   */
-  static getLegacyRecordPath(uid: number): string {
-    return resolve(cwd(), 'config', `${uid}.record.json`);
-  }
-
-  /**
-   * 获取旧版 aid.json 路径（用于迁移）
-   */
-  static getLegacyAidPath(uid: number): string {
-    return resolve(cwd(), 'config', `${uid}.aid.json`);
-  }
-
-  /**
-   * 获取旧版拼写纠正配置路径（用于迁移）
-   */
-  static getLegacySpellingCorrectionPath(): string {
-    return resolve(cwd(), 'config', 'SpellingCorrections.json');
-  }
-
-  /**
    * 获取用户所有文件路径（统一接口）
    */
   static getUserFilePaths(uid: number, userName: string): UserFilePaths {
