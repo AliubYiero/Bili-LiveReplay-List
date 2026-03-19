@@ -18,7 +18,8 @@
 		"test": "jest --config src/jest.config.ts",
 		"test:watch": "jest --config src/jest.config.ts --watch",
 		"test:coverage": "jest --config src/jest.config.ts --coverage",
-		"migrate:data": "npx tsx src/scripts/migrate-data.ts"
+		"migrate:data": "npx tsx src/scripts/migrate-data.ts",
+		"migrate:spelling": "npx tsx src/scripts/migrate-spelling.ts"
 	},
 	"devDependencies": {
 		"@rslib/core": "^0.19.1",
