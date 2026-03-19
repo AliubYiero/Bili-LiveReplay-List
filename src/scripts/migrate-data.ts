@@ -13,7 +13,12 @@ interface IRecord {
   records: unknown[];
 }
 
-export async function migrateData(): Promise<void> {
+export async function migrateData(options?: { execute?: boolean }): Promise<void> {
+  // 如果明确设置 execute: false，则跳过执行（用于测试导入场景）
+  if (options?.execute === false) {
+    return;
+  }
+
   console.log('Starting data migration...');
 
   const configDir = join(cwd(), 'config');
@@ -64,7 +69,8 @@ export async function migrateData(): Promise<void> {
   console.log('Please verify the migration before deleting config/ directory');
 }
 
-// 只在直接运行此文件时执行迁移
-if (import.meta.url === `file://${process.argv[1]}`) {
+// 只在直接运行此文件时执行迁移（通过检查命令行参数）
+const isMainModule = process.argv[1]?.includes('migrate-data');
+if (isMainModule) {
   migrateData();
 }

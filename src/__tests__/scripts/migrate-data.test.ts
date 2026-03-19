@@ -11,10 +11,11 @@ describe('migrate-data', () => {
   const dataDir = join(cwd(), 'data');
 
   beforeEach(() => {
-    // 使用 mock-fs 隔离文件系统
+    // 使用 mock-fs 隔离文件系统，但保留 node_modules 以避免拦截 Jest 内部文件
     mockFs({
       'config': {},
-      'data': {}
+      'data': {},
+      'node_modules': mockFs.load(join(cwd(), 'node_modules'))
     });
   });
 
@@ -34,7 +35,7 @@ describe('migrate-data', () => {
     // 在 mock-fs 中创建文件需要先创建目录再写入
     writeFileSync(oldPath, JSON.stringify(recordData));
 
-    await migrateData();
+    await migrateData({ execute: true });
 
     const newPath = DataPathManager.getRecordFilePath(uid, userName);
     expect(existsSync(newPath)).toBe(true);
@@ -58,7 +59,7 @@ describe('migrate-data', () => {
     const aidData = { '123': ['game1', 'game2'] };
     writeFileSync(join(configDir, `${uid}.aid.json`), JSON.stringify(aidData));
 
-    await migrateData();
+    await migrateData({ execute: true });
 
     const newAidPath = DataPathManager.getAidFilePath(uid, userName);
     expect(existsSync(newAidPath)).toBe(true);
@@ -73,9 +74,14 @@ describe('migrate-data', () => {
     };
     writeFileSync(oldPath, JSON.stringify(recordData));
 
-    await migrateData();
+    await migrateData({ execute: true });
 
     const newPath = join(cwd(), 'data', uid.toString(), `${uid}.record.json`);
     expect(existsSync(newPath)).toBe(true);
+  });
+
+  test('should skip execution when execute is false', async () => {
+    // 这个测试主要验证 { execute: false } 不会报错
+    await expect(migrateData({ execute: false })).resolves.toBeUndefined();
   });
 });
