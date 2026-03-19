@@ -16,7 +16,7 @@ export const generateMarkdownRecord = (
 	configStore: RecordStore,
 ) => {
 	const spellingCorrection = new SpellingCorrection();
-	const aidMapper = new AidMapperStore( uid );
+	const aidMapper = new AidMapperStore( uid, userName );
 	const liverMapper = group( configStore.recordList, item => item.liver );
 	// 更新分组下的每个文档
 	for ( let liver in liverMapper ) {

@@ -18,7 +18,7 @@ const main = async () => {
 		generateMarkdownRecord( uid, userName, configStore );
 		// 更新 aid 映射文件
 		const aidList = configStore.recordList.map( record => String( record.aid ) );
-		const aidMapperStore = new AidMapperStore( uid );
+		const aidMapperStore = new AidMapperStore( uid, userName );
 		aidMapperStore.update( aidList );
 	}
 	// 更新 README
