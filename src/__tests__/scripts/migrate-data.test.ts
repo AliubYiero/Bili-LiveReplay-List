@@ -1,39 +1,37 @@
 import { migrateData } from '../../scripts/migrate-data';
 import { DataPathManager } from '../../utils/DataPathManager';
-import { existsSync, writeFileSync, mkdirSync, rmdirSync, readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { cwd } from 'process';
+import mockFs from 'mock-fs';
+import { mkdirSync, writeFileSync } from 'fs';
 
 describe('migrate-data', () => {
   const configDir = join(cwd(), 'config');
   const dataDir = join(cwd(), 'data');
 
   beforeEach(() => {
-    // 清理 data 目录
-    if (existsSync(dataDir)) {
-      rmdirSync(dataDir, { recursive: true });
-    }
-
-    // 创建测试用的旧数据
-    if (!existsSync(configDir)) {
-      mkdirSync(configDir, { recursive: true });
-    }
+    // 使用 mock-fs 隔离文件系统
+    mockFs({
+      'config': {},
+      'data': {}
+    });
   });
 
   afterEach(() => {
-    if (existsSync(dataDir)) {
-      rmdirSync(dataDir, { recursive: true });
-    }
+    mockFs.restore();
   });
 
   test('migrates record.json with userName', async () => {
-    const uid = 15810;
-    const userName = 'Mr.Quin';
+    const uid = 12345678; // 使用测试专用 UID
+    const userName = 'TestUser';
     const oldPath = join(configDir, `${uid}.record.json`);
     const recordData = {
       cache: { uid, userName, aid: 123, timestamp: Date.now() },
       records: []
     };
+
+    // 在 mock-fs 中创建文件需要先创建目录再写入
     writeFileSync(oldPath, JSON.stringify(recordData));
 
     await migrateData();
@@ -46,8 +44,8 @@ describe('migrate-data', () => {
   });
 
   test('migrates aid.json with corresponding record userName', async () => {
-    const uid = 15810;
-    const userName = 'Mr.Quin';
+    const uid = 12345679; // 使用不同的测试专用 UID
+    const userName = 'TestUser2';
 
     // 创建 record.json
     const recordData = {
@@ -67,7 +65,7 @@ describe('migrate-data', () => {
   });
 
   test('uses uid as fallback when userName is missing', async () => {
-    const uid = 99999;
+    const uid = 12345680; // 使用另一个测试专用 UID
     const oldPath = join(configDir, `${uid}.record.json`);
     const recordData = {
       cache: { uid, aid: 123, timestamp: Date.now() }, // 没有 userName
