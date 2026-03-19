@@ -1,6 +1,4 @@
-import { cwd } from 'node:process';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
-import { dirname, resolve } from 'node:path';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import {
 	CacheItem,
 	IRecord,
@@ -19,20 +17,13 @@ export class RecordStore {
 	
 	constructor(
 		private uid: number,
-		private userName: string = '',
+		private userName: string,
 	) {
-		// 使用新路径（如果提供了 userName），否则回退到旧路径
-		this.configFilePath = userName
-			? DataPathManager.getRecordFilePath(uid, userName)
-			: DataPathManager.getLegacyRecordPath(uid);
+		const paths = DataPathManager.getUserFilePaths(uid, userName);
+		this.configFilePath = paths.recordPath;
 		
-		// 获取配置目录路径
-		const configDir = dirname(this.configFilePath);
+		// 目录已由 getUserDataDir 自动创建，无需额外处理
 		
-		// 如果没有配置目录, 创建目录
-		if ( !existsSync( configDir ) ) {
-			mkdirSync( configDir, { recursive: true } );
-		}
 		// 如果没有配置文件, 创建配置文件 (构造函数中使用同步写入)
 		if ( !existsSync( this.configFilePath ) ) {
 			const initialConfig: IRecord = {
