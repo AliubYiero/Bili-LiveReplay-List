@@ -17,32 +17,12 @@ describe('AidMapperStore', () => {
   });
 
   describe('initialization', () => {
-    it('should create empty mapper when file does not exist (legacy path)', () => {
-      const store = new AidMapperStore(testUid);
-      expect(store.getGameList('123')).toBeUndefined();
-    });
-
-    it('should create empty mapper when file does not exist (new path with userName)', () => {
+    it('should create empty mapper when file does not exist', () => {
       const store = new AidMapperStore(testUid, testUserName);
       expect(store.getGameList('123')).toBeUndefined();
     });
 
-    it('should load existing mapper from file (legacy path)', () => {
-      mockFs({
-        'config': {
-          [`${testUid}.aid.json`]: JSON.stringify({
-            '123': ['Game1', 'Game2'],
-            '456': ['Game3']
-          })
-        }
-      });
-
-      const store = new AidMapperStore(testUid);
-      expect(store.getGameList('123')).toEqual(['Game1', 'Game2']);
-      expect(store.getGameList('456')).toEqual(['Game3']);
-    });
-
-    it('should load existing mapper from file (new path with userName)', () => {
+    it('should load existing mapper from file', () => {
       mockFs({
         'data': {
           [testUid.toString()]: {
@@ -61,15 +41,7 @@ describe('AidMapperStore', () => {
   });
 
   describe('update', () => {
-    it('should add new aid entries (legacy path)', () => {
-      const store = new AidMapperStore(testUid);
-      store.update(['123', '456']);
-
-      expect(store.getGameList('123')).toEqual([]);
-      expect(store.getGameList('456')).toEqual([]);
-    });
-
-    it('should add new aid entries (new path with userName)', () => {
+    it('should add new aid entries', () => {
       const store = new AidMapperStore(testUid, testUserName);
       store.update(['123', '456']);
 
@@ -77,23 +49,7 @@ describe('AidMapperStore', () => {
       expect(store.getGameList('456')).toEqual([]);
     });
 
-    it('should not overwrite existing entries (legacy path)', () => {
-      mockFs({
-        'config': {
-          [`${testUid}.aid.json`]: JSON.stringify({
-            '123': ['ExistingGame']
-          })
-        }
-      });
-
-      const store = new AidMapperStore(testUid);
-      store.update(['123', '456']);
-
-      expect(store.getGameList('123')).toEqual(['ExistingGame']);
-      expect(store.getGameList('456')).toEqual([]);
-    });
-
-    it('should not overwrite existing entries (new path with userName)', () => {
+    it('should not overwrite existing entries', () => {
       mockFs({
         'data': {
           [testUid.toString()]: {
@@ -112,21 +68,13 @@ describe('AidMapperStore', () => {
     });
 
     it('should handle empty array', () => {
-      const store = new AidMapperStore(testUid);
+      const store = new AidMapperStore(testUid, testUserName);
       store.update([]);
 
       expect(store.getGameList('any')).toBeUndefined();
     });
 
-    it('should persist changes to file (legacy path)', () => {
-      const store = new AidMapperStore(testUid);
-      store.update(['123']);
-
-      const newStore = new AidMapperStore(testUid);
-      expect(newStore.getGameList('123')).toEqual([]);
-    });
-
-    it('should persist changes to file (new path with userName)', () => {
+    it('should persist changes to file', () => {
       mockFs({
         'data': {}
       });
@@ -140,20 +88,7 @@ describe('AidMapperStore', () => {
   });
 
   describe('getGameList', () => {
-    it('should return game list for existing aid (string) - legacy path', () => {
-      mockFs({
-        'config': {
-          [`${testUid}.aid.json`]: JSON.stringify({
-            '123': ['Game1', 'Game2'],
-          })
-        }
-      });
-
-      const store = new AidMapperStore(testUid);
-      expect(store.getGameList('123')).toEqual(['Game1', 'Game2']);
-    });
-
-    it('should return game list for existing aid (string) - new path with userName', () => {
+    it('should return game list for existing aid (string)', () => {
       mockFs({
         'data': {
           [testUid.toString()]: {
@@ -170,27 +105,31 @@ describe('AidMapperStore', () => {
 
     it('should return game list for existing aid (number)', () => {
       mockFs({
-        'config': {
-          [`${testUid}.aid.json`]: JSON.stringify({
-            '123': ['Game1', 'Game2'],
-          })
+        'data': {
+          [testUid.toString()]: {
+            [`${testUserName}.aid.json`]: JSON.stringify({
+              '123': ['Game1', 'Game2'],
+            })
+          }
         }
       });
 
-      const store = new AidMapperStore(testUid);
+      const store = new AidMapperStore(testUid, testUserName);
       expect(store.getGameList(123)).toEqual(['Game1', 'Game2']);
     });
 
     it('should return undefined for non-existing aid', () => {
       mockFs({
-        'config': {
-          [`${testUid}.aid.json`]: JSON.stringify({
-            '123': ['Game1', 'Game2'],
-          })
+        'data': {
+          [testUid.toString()]: {
+            [`${testUserName}.aid.json`]: JSON.stringify({
+              '123': ['Game1', 'Game2'],
+            })
+          }
         }
       });
 
-      const store = new AidMapperStore(testUid);
+      const store = new AidMapperStore(testUid, testUserName);
       expect(store.getGameList('999')).toBeUndefined();
     });
   });
