@@ -1,14 +1,21 @@
 import { cwd } from 'node:process';
 import { resolve } from 'node:path';
 import { readFileSync } from 'fs';
+import { validateSpellingCorrection } from '../../utils/configValidator.ts';
 
 export class SpellingCorrection {
 	private readonly spellingCorrectionMapper: Record<string, string>;
 	
 	constructor() {
-		const spellingCorrectionFilePath = resolve( cwd(), 'config', 'SpellingCorrections.json' );
-		const spellingCorrectionContent = readFileSync( spellingCorrectionFilePath, 'utf-8' );
-		this.spellingCorrectionMapper = JSON.parse( spellingCorrectionContent );
+		try {
+			const spellingCorrectionFilePath = resolve( cwd(), 'config', 'SpellingCorrections.json' );
+			const spellingCorrectionContent = readFileSync( spellingCorrectionFilePath, 'utf-8' );
+			const parsed = JSON.parse( spellingCorrectionContent );
+			this.spellingCorrectionMapper = validateSpellingCorrection( parsed );
+		} catch (error) {
+			console.warn( '加载拼写纠正配置失败，使用空配置:', error );
+			this.spellingCorrectionMapper = {};
+		}
 	}
 	
 	/**
