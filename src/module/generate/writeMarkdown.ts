@@ -1,6 +1,7 @@
 import { join, resolve } from 'node:path';
 import { cwd } from 'node:process';
 import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { safeFilename } from '../../utils/filename.ts';
 
 interface MarkdownInfo {
 	liver: string;
@@ -16,11 +17,15 @@ export const writeMarkdown = ( info: MarkdownInfo ) => {
 	if ( !existsSync( docxDirPath ) ) {
 		mkdirSync( docxDirPath, { recursive: true } );
 	}
-	const liverDirPath = join( docxDirPath, info.liver );
+
+	// 净化文件名，防止路径遍历攻击
+	const safeLiver = safeFilename( info.liver );
+	const safeUploader = safeFilename( info.uploader );
+
+	const liverDirPath = join( docxDirPath, safeLiver );
 	if ( !existsSync( liverDirPath ) ) {
 		mkdirSync( liverDirPath, { recursive: true } );
 	}
-	const markdownFilePath = join( liverDirPath, `${ info.liver }直播回放列表(from ${ info.uploader }).md` );
+	const markdownFilePath = join( liverDirPath, `${ safeLiver }直播回放列表(from ${ safeUploader }).md` );
 	writeFileSync( markdownFilePath, info.content, 'utf-8' );
 };
- 
