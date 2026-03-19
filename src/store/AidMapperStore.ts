@@ -9,18 +9,12 @@ export class AidMapperStore {
 	
 	constructor(
 		private uid: number,
-		private userName: string = '',
+		private userName: string,
 	) {
-		// 使用新路径（如果提供了 userName），否则回退到旧路径
-		this.aidMapperFilePath = userName
-			? DataPathManager.getAidFilePath(uid, userName)
-			: DataPathManager.getLegacyAidPath(uid);
+		const paths = DataPathManager.getUserFilePaths(uid, userName);
+		this.aidMapperFilePath = paths.aidPath;
 		
-		// 如果使用新路径，确保目录存在
-		if (userName) {
-			DataPathManager.getUserDataDir(uid);
-		}
-		
+		// 目录已由 getUserDataDir 自动创建，无需额外处理
 		this.aidMapper = this.get();
 	}
 	
