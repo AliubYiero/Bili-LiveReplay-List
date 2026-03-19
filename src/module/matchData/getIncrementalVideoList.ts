@@ -6,6 +6,8 @@ import { archiveItem } from '../../interface/IUserUploadVideo.ts';
 import { sleep } from 'radash';
 import { RecordStore } from '../../store/RecordStore.ts';
 
+const MAX_PAGES = 100; // 最大页数限制，防止无限循环
+
 /**
  * 解析获取到的视频数据, 返回项目的记录结构
  */
@@ -30,7 +32,7 @@ export const getIncrementalVideoList = async (
 	
 	let page: number = 1;
 	let hasNextPage = true;
-	while ( hasNextPage ) {
+	while ( hasNextPage && page <= MAX_PAGES ) {
 		// 获取投稿信息
 		const response = await api_getUserUploadVideoList(
 			uid,
@@ -73,6 +75,11 @@ export const getIncrementalVideoList = async (
 			}
 		}
 	}
+
+	if ( page > MAX_PAGES ) {
+		console.warn( `用户 ${ uid } 的视频页数超过最大限制 ${ MAX_PAGES }，已停止获取` );
+	}
+
 	return videoList;
 };
  
