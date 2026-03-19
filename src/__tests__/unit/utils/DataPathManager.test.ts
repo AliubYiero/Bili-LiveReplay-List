@@ -53,20 +53,23 @@ describe('DataPathManager', () => {
     expect(result).toBe(join(cwd(), 'data', testUid.toString(), `${safeName}.record.json`));
   });
 
-  test('getLegacyRecordPath returns old config path', () => {
-    const testUid = 12345678;
-    const result = DataPathManager.getLegacyRecordPath(testUid);
-    expect(result).toBe(join(cwd(), 'config', `${testUid}.record.json`));
-  });
+  describe('getUserFilePaths', () => {
+    test('should return correct paths structure', () => {
+      const testUid = 12345678;
+      const paths = DataPathManager.getUserFilePaths(testUid, 'TestUser');
 
-  test('getLegacyAidPath returns old config path', () => {
-    const testUid = 12345678;
-    const result = DataPathManager.getLegacyAidPath(testUid);
-    expect(result).toBe(join(cwd(), 'config', `${testUid}.aid.json`));
-  });
+      expect(paths).toHaveProperty('recordPath');
+      expect(paths).toHaveProperty('aidPath');
+      expect(paths).toHaveProperty('userDir');
+      expect(paths.recordPath).toContain('TestUser.record.json');
+      expect(paths.aidPath).toContain('TestUser.aid.json');
+      expect(paths.userDir).toContain(testUid.toString());
+    });
 
-  test('getLegacySpellingCorrectionPath returns old config path', () => {
-    const result = DataPathManager.getLegacySpellingCorrectionPath();
-    expect(result).toBe(join(cwd(), 'config', 'SpellingCorrections.json'));
+    test('should create user directory automatically', () => {
+      const testUid = 12345679;
+      const paths = DataPathManager.getUserFilePaths(testUid, 'TestUser');
+      expect(existsSync(paths.userDir)).toBe(true);
+    });
   });
 });
