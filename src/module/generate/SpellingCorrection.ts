@@ -1,14 +1,13 @@
-import { cwd } from 'node:process';
-import { resolve } from 'node:path';
 import { readFileSync } from 'fs';
 import { validateSpellingCorrection } from '../../utils/configValidator.ts';
+import { DataPathManager } from '../../utils/DataPathManager.ts';
 
 export class SpellingCorrection {
 	private readonly spellingCorrectionMapper: Record<string, string>;
-	
+
 	constructor() {
 		try {
-			const spellingCorrectionFilePath = resolve( cwd(), 'config', 'SpellingCorrections.json' );
+			const spellingCorrectionFilePath = DataPathManager.getSpellingCorrectionPath();
 			const spellingCorrectionContent = readFileSync( spellingCorrectionFilePath, 'utf-8' );
 			const parsed = JSON.parse( spellingCorrectionContent );
 			this.spellingCorrectionMapper = validateSpellingCorrection( parsed );
