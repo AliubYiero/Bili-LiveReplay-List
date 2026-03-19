@@ -64,4 +64,7 @@ export async function migrateData(): Promise<void> {
   console.log('Please verify the migration before deleting config/ directory');
 }
 
-migrateData();
+// 只在直接运行此文件时执行迁移
+if (import.meta.url === `file://${process.argv[1]}`) {
+  migrateData();
+}
