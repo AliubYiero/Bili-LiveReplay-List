@@ -1,6 +1,5 @@
-import { resolve } from 'node:path';
-import { cwd } from 'node:process';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { DataPathManager } from '../utils/DataPathManager.ts';
 
 type IAidMapper = Record<string, string[]>
 
@@ -8,8 +7,20 @@ export class AidMapperStore {
 	private readonly aidMapperFilePath: string;
 	private aidMapper: IAidMapper;
 	
-	constructor( uid: number ) {
-		this.aidMapperFilePath = resolve( cwd(), 'config', `${ uid }.aid.json` );
+	constructor(
+		private uid: number,
+		private userName: string = '',
+	) {
+		// 使用新路径（如果提供了 userName），否则回退到旧路径
+		this.aidMapperFilePath = userName
+			? DataPathManager.getAidFilePath(uid, userName)
+			: DataPathManager.getLegacyAidPath(uid);
+		
+		// 如果使用新路径，确保目录存在
+		if (userName) {
+			DataPathManager.getUserDataDir(uid);
+		}
+		
 		this.aidMapper = this.get();
 	}
 	
