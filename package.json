@@ -14,7 +14,10 @@
 	"scripts": {
 		"start": "node ./dist/index.cjs",
 		"build": "rslib build",
-		"dev": "rslib build --watch"
+		"dev": "rslib build --watch",
+		"test": "jest --config src/jest.config.ts",
+		"test:watch": "jest --config src/jest.config.ts --watch",
+		"test:coverage": "jest --config src/jest.config.ts --coverage"
 	},
 	"devDependencies": {
 		"@rslib/core": "^0.19.1",
