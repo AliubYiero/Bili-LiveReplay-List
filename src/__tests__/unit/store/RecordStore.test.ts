@@ -150,6 +150,99 @@ describe('RecordStore', () => {
     });
   });
 
+  describe('deleteRecord', () => {
+    it('should delete existing record from store', () => {
+      mockFs({
+        'data': {
+          [testUid.toString()]: {
+            [`${testUserName}.record.json`]: JSON.stringify({
+              cache: { uid: testUid, userName: testUserName, aid: 0, timestamp: 0 },
+              records: [
+                {
+                  aid: 123,
+                  bvId: 'BV123',
+                  publishTime: 0,
+                  liveDuration: 0,
+                  title: 'Record 1',
+                  liveTime: 0,
+                  playGame: [],
+                  liver: 'Test',
+                },
+                {
+                  aid: 456,
+                  bvId: 'BV456',
+                  publishTime: 0,
+                  liveDuration: 0,
+                  title: 'Record 2',
+                  liveTime: 0,
+                  playGame: [],
+                  liver: 'Test',
+                }
+              ]
+            })
+          }
+        },
+        'config': {}
+      });
+
+      const store = new RecordStore(testUid, testUserName);
+      expect(store.recordList).toHaveLength(2);
+
+      // Delete first record
+      store.deleteRecord({
+        aid: 123,
+        bvId: 'BV123',
+        publishTime: 0,
+        liveDuration: 0,
+        title: 'Record 1',
+      });
+
+      expect(store.recordList).toHaveLength(1);
+      expect(store.recordList[0].aid).toBe(456);
+    });
+
+    it('should handle deleting non-existent record gracefully', () => {
+      mockFs({
+        'data': {
+          [testUid.toString()]: {
+            [`${testUserName}.record.json`]: JSON.stringify({
+              cache: { uid: testUid, userName: testUserName, aid: 0, timestamp: 0 },
+              records: [
+                {
+                  aid: 123,
+                  bvId: 'BV123',
+                  publishTime: 0,
+                  liveDuration: 0,
+                  title: 'Record 1',
+                  liveTime: 0,
+                  playGame: [],
+                  liver: 'Test',
+                }
+              ]
+            })
+          }
+        },
+        'config': {}
+      });
+
+      const store = new RecordStore(testUid, testUserName);
+      expect(store.recordList).toHaveLength(1);
+
+      // Delete non-existent record
+      store.deleteRecord({
+        aid: 999,
+        bvId: 'BV999',
+        publishTime: 0,
+        liveDuration: 0,
+        title: 'Non-existent',
+      });
+
+      // Should still have the original record
+      expect(store.recordList).toHaveLength(1);
+      expect(store.recordList[0].aid).toBe(123);
+    });
+  });
+
   describe('addRecord', () => {
     it('should add new records', async () => {
       const store = new RecordStore(testUid, testUserName);
@@ -169,6 +262,53 @@ describe('RecordStore', () => {
 
       expect(store.recordList).toHaveLength(1);
       expect(store.cache.aid).toBe(123);
+    });
+
+    it('should update cache timestamp when all records are replacements', async () => {
+      mockFs({
+        'data': {
+          [testUid.toString()]: {
+            [`${testUserName}.record.json`]: JSON.stringify({
+              cache: { uid: testUid, userName: testUserName, aid: 0, timestamp: 0 },
+              records: []
+            })
+          }
+        },
+        'config': {}
+      });
+
+      const store = new RecordStore(testUid, testUserName);
+      const beforeTimestamp = store.cache.timestamp;
+
+      // All records have updateTime=false (replacement only)
+      const replacementRecord1 = {
+        aid: 111,
+        bvId: 'BV111',
+        publishTime: 0,
+        liveDuration: 0,
+        title: 'Replacement 1',
+        liveTime: 0,
+        playGame: [],
+        liver: 'Test',
+        updateTime: false,
+      };
+
+      const replacementRecord2 = {
+        aid: 222,
+        bvId: 'BV222',
+        publishTime: 0,
+        liveDuration: 0,
+        title: 'Replacement 2',
+        liveTime: 0,
+        playGame: [],
+        liver: 'Test',
+        updateTime: false,
+      };
+
+      await store.addRecord(replacementRecord1, replacementRecord2);
+
+      // Cache timestamp should be updated even when no new records are added
+      expect(store.cache.timestamp).toBeGreaterThan(beforeTimestamp);
     });
 
     it('should handle updateTime=false for replacement (new path)', async () => {
