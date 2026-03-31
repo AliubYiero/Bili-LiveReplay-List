@@ -4,8 +4,8 @@ import { handleParseMapper } from './module/matchData/handleParseMapper.ts';
 import { RecordStore } from './store/RecordStore.ts';
 import {
 	generateMarkdownRecord,
-} from './module/generate/generateMarkdownRecord.ts';
-import { generateREADME } from './module/generate/generateREADME.ts';
+} from './module/generateReadme/generateMarkdownRecord.ts';
+import { generateREADME } from './module/generateReadme/generateREADME.ts';
 import { AidMapperStore } from './store/AidMapperStore.ts';
 
 
