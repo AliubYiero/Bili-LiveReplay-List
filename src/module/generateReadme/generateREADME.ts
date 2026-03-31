@@ -6,7 +6,7 @@ import { writeFileSync } from 'fs';
 export const generateREADME = () => {
 	console.info( '更新README成功' );
 	
-	const docsDirPath = resolve( cwd(), 'docs' );
+	const docsDirPath = resolve( cwd(), 'docs', 'markdown' );
 	const group = readdirSync( docsDirPath ).map( liver => {
 		const liverDocsDirPath = join( docsDirPath, liver );
 		return `- [[**${ liver }**]](./docs/markdown/${ liver }):\n` +

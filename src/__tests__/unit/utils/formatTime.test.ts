@@ -1,4 +1,4 @@
-import { formatTime } from '../../../module/generate/formatTime';
+import { formatTime } from '../../../module/generateReadme/formatTime';
 
 describe('formatTime', () => {
   describe('valid inputs', () => {

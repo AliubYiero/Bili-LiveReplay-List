@@ -1,4 +1,4 @@
-import { formatDate } from '../../../module/generate/formatDate';
+import { formatDate } from '../../../module/generateReadme/formatDate';
 
 describe('formatDate', () => {
   describe('valid timestamps', () => {

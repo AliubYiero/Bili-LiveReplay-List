@@ -39,7 +39,7 @@ export const getIncrementalVideoList = async (
 			page,
 			100,
 		).then( async res => {
-			await sleep( 300 );
+			await sleep( 2000 );
 			return res;
 		} );
 		// 更新判断信息
@@ -82,4 +82,3 @@ export const getIncrementalVideoList = async (
 
 	return videoList;
 };
- 

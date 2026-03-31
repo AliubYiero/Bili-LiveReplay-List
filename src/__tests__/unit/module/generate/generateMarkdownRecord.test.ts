@@ -2,7 +2,7 @@ import mockFs from 'mock-fs';
 import { existsSync, readFileSync } from 'fs';
 import { resolve } from 'path';
 import { cwd } from 'process';
-import { generateMarkdownRecord } from '../../../../module/generate/generateMarkdownRecord.ts';
+import { generateMarkdownRecord } from '../../../../module/generateReadme/generateMarkdownRecord.ts';
 import { RecordStore } from '../../../../store/RecordStore.ts';
 import { RecordItem } from '../../../../interface/IRecord.ts';
 
@@ -51,11 +51,13 @@ describe('generateMarkdownRecord', () => {
             uidRules: {},
           }),
         },
-        docx: {},
+        'docs': {
+          'markdown': {},
+        },
       });
     });
 
-    it('should generate markdown for single liver with single video', () => {
+    it('should generateReadme markdown for single liver with single video', () => {
       const records: RecordItem[] = [
         {
           aid: 1001,
@@ -75,7 +77,8 @@ describe('generateMarkdownRecord', () => {
       // 验证文件被创建
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'TestLiver',
         `TestLiver直播回放列表(from ${testUserName}).md`
       );
@@ -129,7 +132,8 @@ describe('generateMarkdownRecord', () => {
 
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'TestLiver',
         `TestLiver直播回放列表(from ${testUserName}).md`
       );
@@ -170,11 +174,13 @@ describe('generateMarkdownRecord', () => {
             uidRules: {},
           }),
         },
-        docx: {},
+        'docs': {
+          'markdown': {},
+        },
       });
     });
 
-    it('should group records by liver and generate separate markdown files', () => {
+    it('should group records by liver and generateReadme separate markdown files', () => {
       const records: RecordItem[] = [
         {
           aid: 1001,
@@ -214,7 +220,8 @@ describe('generateMarkdownRecord', () => {
       // 验证 Liver1 的文件
       const liver1Path = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'Liver1',
         `Liver1直播回放列表(from ${testUserName}).md`
       );
@@ -227,7 +234,8 @@ describe('generateMarkdownRecord', () => {
       // 验证 Liver2 的文件
       const liver2Path = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'Liver2',
         `Liver2直播回放列表(from ${testUserName}).md`
       );
@@ -287,7 +295,9 @@ describe('generateMarkdownRecord', () => {
             uidRules: {},
           }),
         },
-        docx: {},
+        'docs': {
+          'markdown': {},
+        },
       });
     });
 
@@ -310,7 +320,8 @@ describe('generateMarkdownRecord', () => {
 
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'TestLiver',
         `TestLiver直播回放列表(from ${testUserName}).md`
       );
@@ -354,7 +365,8 @@ describe('generateMarkdownRecord', () => {
 
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'TestLiver',
         `TestLiver直播回放列表(from ${testUserName}).md`
       );
@@ -389,7 +401,9 @@ describe('generateMarkdownRecord', () => {
             uidRules: {},
           }),
         },
-        docx: {},
+        'docs': {
+          'markdown': {},
+        },
       });
 
       const records: RecordItem[] = [
@@ -410,7 +424,8 @@ describe('generateMarkdownRecord', () => {
 
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'TestLiver',
         `TestLiver直播回放列表(from ${testUserName}).md`
       );
@@ -437,7 +452,9 @@ describe('generateMarkdownRecord', () => {
             uidRules: {},
           }),
         },
-        docx: {},
+        'docs': {
+          'markdown': {},
+        },
       });
 
       const records: RecordItem[] = [
@@ -458,7 +475,8 @@ describe('generateMarkdownRecord', () => {
 
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'TestLiver',
         `TestLiver直播回放列表(from ${testUserName}).md`
       );
@@ -482,7 +500,9 @@ describe('generateMarkdownRecord', () => {
             uidRules: {},
           }),
         },
-        docx: {},
+        'docs': {
+          'markdown': {},
+        },
       });
 
       const records: RecordItem[] = [
@@ -503,7 +523,8 @@ describe('generateMarkdownRecord', () => {
 
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'TestLiver',
         `TestLiver直播回放列表(from ${testUserName}).md`
       );
@@ -532,7 +553,9 @@ describe('generateMarkdownRecord', () => {
             uidRules: {},
           }),
         },
-        docx: {},
+        'docs': {
+          'markdown': {},
+        },
       });
 
       const records: RecordItem[] = [
@@ -553,7 +576,8 @@ describe('generateMarkdownRecord', () => {
 
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'TestLiver',
         `TestLiver直播回放列表(from ${testUserName}).md`
       );
@@ -584,7 +608,9 @@ describe('generateMarkdownRecord', () => {
             },
           }),
         },
-        docx: {},
+        'docs': {
+          'markdown': {},
+        },
       });
 
       const records: RecordItem[] = [
@@ -605,7 +631,8 @@ describe('generateMarkdownRecord', () => {
 
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'TestLiver',
         `TestLiver直播回放列表(from ${testUserName}).md`
       );
@@ -638,7 +665,9 @@ describe('generateMarkdownRecord', () => {
             },
           }),
         },
-        docx: {},
+        'docs': {
+          'markdown': {},
+        },
       });
 
       const records: RecordItem[] = [
@@ -659,7 +688,8 @@ describe('generateMarkdownRecord', () => {
 
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'TestLiver',
         `TestLiver直播回放列表(from ${testUserName}).md`
       );
@@ -684,7 +714,9 @@ describe('generateMarkdownRecord', () => {
             uidRules: {},
           }),
         },
-        docx: {},
+        'docs': {
+          'markdown': {},
+        },
       });
     });
 
@@ -707,7 +739,8 @@ describe('generateMarkdownRecord', () => {
 
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'TestLiver',
         `TestLiver直播回放列表(from ${testUserName}).md`
       );
@@ -736,7 +769,8 @@ describe('generateMarkdownRecord', () => {
 
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'TestLiver',
         `TestLiver直播回放列表(from ${testUserName}).md`
       );
@@ -765,7 +799,8 @@ describe('generateMarkdownRecord', () => {
 
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'TestLiver',
         `TestLiver直播回放列表(from ${testUserName}).md`
       );
@@ -804,7 +839,8 @@ describe('generateMarkdownRecord', () => {
 
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'TestLiver',
         `TestLiver直播回放列表(from ${testUserName}).md`
       );
@@ -830,7 +866,9 @@ describe('generateMarkdownRecord', () => {
             uidRules: {},
           }),
         },
-        docx: {},
+        'docs': {
+          'markdown': {},
+        },
       });
     });
 
@@ -843,12 +881,12 @@ describe('generateMarkdownRecord', () => {
       }).not.toThrow();
 
       // 不应该生成任何主播目录或文件
-      const docxPath = resolve(cwd(), 'docx');
-      // docx 目录可能不存在或者为空（没有主播子目录）
-      if (existsSync(docxPath)) {
+      const markdownPath = resolve(cwd(), 'docs', 'markdown');
+      // docs/markdown 目录可能不存在或者为空（没有主播子目录）
+      if (existsSync(markdownPath)) {
         // 如果存在，检查是否有任何子目录
         const fs = require('fs');
-        const entries = fs.readdirSync(docxPath, { withFileTypes: true });
+        const entries = fs.readdirSync(markdownPath, { withFileTypes: true });
         const subdirs = entries.filter((entry: any) => entry.isDirectory());
         expect(subdirs.length).toBe(0);
       }
@@ -877,7 +915,8 @@ describe('generateMarkdownRecord', () => {
       // 验证文件被创建（特殊字符应该被安全处理）
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'Special_Liver_Name',
         `Special_Liver_Name直播回放列表(from ${testUserName}).md`
       );
@@ -893,7 +932,9 @@ describe('generateMarkdownRecord', () => {
           },
           // 没有 SpellingCorrections.json - 这会导致 console.warn 被调用
         },
-        docx: {},
+        'docs': {
+          'markdown': {},
+        },
       });
 
       const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
@@ -921,7 +962,8 @@ describe('generateMarkdownRecord', () => {
       // 仍然应该生成文件
       const expectedFilePath = resolve(
         cwd(),
-        'docx',
+        'docs',
+        'markdown',
         'TestLiver',
         `TestLiver直播回放列表(from ${testUserName}).md`
       );

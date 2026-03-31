@@ -1,4 +1,4 @@
-import { SpellingCorrection } from '../../../../module/generate/SpellingCorrection';
+import { SpellingCorrection } from '../../../../module/generateReadme/SpellingCorrection';
 import mockFs from 'mock-fs';
 
 describe('SpellingCorrection V2', () => {

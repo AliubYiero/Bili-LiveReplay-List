@@ -269,9 +269,9 @@ describe('getIncrementalVideoList', () => {
     it('stop when page exceeds MAX_PAGES', async () => {
       // Create 101 pages of data (more than MAX_PAGES = 100)
       const mockApi = jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockImplementation((uid, page) => {
+        .mockImplementation((uid: number, page) => {
           return Promise.resolve(createMockResponse(
-            [createMockArchive(1000 + page, `BV${1000 + page}`, `Video ${page}`)],
+            [createMockArchive(1000 + (page || 1), `BV${1000 + (page || 1)}`, `Video ${page}`)],
             page,
             1,
             200
@@ -435,14 +435,14 @@ describe('getIncrementalVideoList', () => {
   });
 
   describe('should call sleep between API requests', () => {
-    it('call sleep with 300ms delay', async () => {
+    it('call sleep with 2000ms delay', async () => {
       jest.spyOn(apiModule, 'api_getUserUploadVideoList')
         .mockResolvedValue(createMockResponse([]));
 
       const recordStore = new RecordStore(testUid, testUserName);
       await getIncrementalVideoList(testUid, recordStore);
 
-      expect(radash.sleep).toHaveBeenCalledWith(300);
+      expect(radash.sleep).toHaveBeenCalledWith(2000);
     });
   });
 

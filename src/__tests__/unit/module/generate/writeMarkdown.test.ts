@@ -2,7 +2,7 @@ import mockFs from 'mock-fs';
 import { existsSync, readFileSync } from 'fs';
 import { join, resolve } from 'path';
 import { cwd } from 'process';
-import { writeMarkdown } from '../../../../module/generate/writeMarkdown.ts';
+import { writeMarkdown } from '../../../../module/generateReadme/writeMarkdown.ts';
 
 describe('writeMarkdown', () => {
   const testMarkdownInfo = {
@@ -19,29 +19,31 @@ describe('writeMarkdown', () => {
     mockFs.restore();
   });
 
-  it('should create docx directory if it does not exist', () => {
-    const docxDirPath = resolve(cwd(), 'docx');
-    expect(existsSync(docxDirPath)).toBe(false);
+  it('should create docs/markdown directory if it does not exist', () => {
+    const docsDirPath = resolve(cwd(), 'docs', 'markdown');
+    expect(existsSync(docsDirPath)).toBe(false);
 
     writeMarkdown(testMarkdownInfo);
 
-    expect(existsSync(docxDirPath)).toBe(true);
+    expect(existsSync(docsDirPath)).toBe(true);
   });
 
-  it('should use existing docx directory if it already exists', () => {
-    const docxDirPath = resolve(cwd(), 'docx');
+  it('should use existing docs/markdown directory if it already exists', () => {
+    const docsDirPath = resolve(cwd(), 'docs', 'markdown');
     mockFs({
-      docx: {},
+      'docs': {
+        'markdown': {}
+      },
     });
-    expect(existsSync(docxDirPath)).toBe(true);
+    expect(existsSync(docsDirPath)).toBe(true);
 
     writeMarkdown(testMarkdownInfo);
 
-    expect(existsSync(docxDirPath)).toBe(true);
+    expect(existsSync(docsDirPath)).toBe(true);
   });
 
   it('should create liver directory if it does not exist', () => {
-    const liverDirPath = resolve(cwd(), 'docx', testMarkdownInfo.liver);
+    const liverDirPath = resolve(cwd(), 'docs', 'markdown', testMarkdownInfo.liver);
     expect(existsSync(liverDirPath)).toBe(false);
 
     writeMarkdown(testMarkdownInfo);
@@ -50,10 +52,12 @@ describe('writeMarkdown', () => {
   });
 
   it('should use existing liver directory if it already exists', () => {
-    const liverDirPath = resolve(cwd(), 'docx', testMarkdownInfo.liver);
+    const liverDirPath = resolve(cwd(), 'docs', 'markdown', testMarkdownInfo.liver);
     mockFs({
-      docx: {
-        [testMarkdownInfo.liver]: {},
+      'docs': {
+        'markdown': {
+          [testMarkdownInfo.liver]: {},
+        },
       },
     });
     expect(existsSync(liverDirPath)).toBe(true);
@@ -66,7 +70,8 @@ describe('writeMarkdown', () => {
   it('should write markdown file with correct content', () => {
     const expectedFilePath = resolve(
       cwd(),
-      'docx',
+      'docs',
+      'markdown',
       testMarkdownInfo.liver,
       `${testMarkdownInfo.liver}直播回放列表(from ${testMarkdownInfo.uploader}).md`
     );
@@ -88,8 +93,8 @@ describe('writeMarkdown', () => {
     // The safeFilename should sanitize the path
     writeMarkdown(maliciousInfo);
 
-    // The path should not traverse outside docx directory
-    const liverDirPath = resolve(cwd(), 'docx', '.._etc_passwd');
+    // The path should not traverse outside docs/markdown directory
+    const liverDirPath = resolve(cwd(), 'docs', 'markdown', '.._etc_passwd');
     expect(existsSync(liverDirPath)).toBe(true);
   });
 
@@ -104,7 +109,8 @@ describe('writeMarkdown', () => {
 
     const expectedFilePath = resolve(
       cwd(),
-      'docx',
+      'docs',
+      'markdown',
       maliciousInfo.liver,
       `${maliciousInfo.liver}直播回放列表(from .._.._malicious).md`
     );
@@ -122,7 +128,8 @@ describe('writeMarkdown', () => {
 
     const expectedFilePath = resolve(
       cwd(),
-      'docx',
+      'docs',
+      'markdown',
       emptyContentInfo.liver,
       `${emptyContentInfo.liver}直播回放列表(from ${emptyContentInfo.uploader}).md`
     );
@@ -154,7 +161,8 @@ describe('writeMarkdown', () => {
 
     const expectedFilePath = resolve(
       cwd(),
-      'docx',
+      'docs',
+      'markdown',
       multiLineInfo.liver,
       `${multiLineInfo.liver}直播回放列表(from ${multiLineInfo.uploader}).md`
     );
@@ -163,17 +171,19 @@ describe('writeMarkdown', () => {
   });
 
   it('should overwrite existing file', () => {
-    const liverDir = resolve(cwd(), 'docx', testMarkdownInfo.liver);
+    const liverDir = resolve(cwd(), 'docs', 'markdown', testMarkdownInfo.liver);
     const filePath = join(
       liverDir,
       `${testMarkdownInfo.liver}直播回放列表(from ${testMarkdownInfo.uploader}).md`
     );
 
     mockFs({
-      docx: {
-        [testMarkdownInfo.liver]: {
-          [`${testMarkdownInfo.liver}直播回放列表(from ${testMarkdownInfo.uploader}).md`]:
-            'Old content',
+      'docs': {
+        'markdown': {
+          [testMarkdownInfo.liver]: {
+            [`${testMarkdownInfo.liver}直播回放列表(from ${testMarkdownInfo.uploader}).md`]:
+              'Old content',
+          },
         },
       },
     });
