@@ -34,14 +34,21 @@ export const getIncrementalVideoList = async (
 	let hasNextPage = true;
 	while ( hasNextPage && page <= MAX_PAGES ) {
 		// 获取投稿信息
-		const response = await api_getUserUploadVideoList(
-			uid,
-			page,
-			100,
-		).then( async res => {
-			await sleep( 2000 );
-			return res;
-		} );
+		let response;
+		try {
+			response = await api_getUserUploadVideoList(
+				uid,
+				page,
+				100,
+			)
+		}
+		catch ( e ) {
+			console.error( e );
+			return [];
+		}
+		finally {
+			await sleep( 20_000 );
+		}
 		// 更新判断信息
 		hasNextPage = response.hasNext;
 		const { total, size } = response.page;
@@ -75,10 +82,10 @@ export const getIncrementalVideoList = async (
 			}
 		}
 	}
-
+	
 	if ( page > MAX_PAGES ) {
 		console.warn( `用户 ${ uid } 的视频页数超过最大限制 ${ MAX_PAGES }，已停止获取` );
 	}
-
+	
 	return videoList;
 };

@@ -20,7 +20,7 @@ export async function api_getUserUploadVideoList(
 		`https://api.bilibili.com/x/series/recArchivesByKeywords?${ urlSearchParams.toString() }`,
 	);
 	if ( res.data.code !== 0 ) {
-		throw new Error( res.data.message );
+		return Promise.reject( new Error( res.data.message ) );
 	}
 	const response = res.data.data as IUserUploadVideo;
 	const hasNext = response.page.num * response.page.size < response.page.total;
