@@ -18,8 +18,8 @@ export function isToday(timestamp: number): boolean {
 
   // 比较年月日
   return (
-    beijingNow.getFullYear() === beijingTarget.getFullYear() &&
-    beijingNow.getMonth() === beijingTarget.getMonth() &&
-    beijingNow.getDate() === beijingTarget.getDate()
+    beijingNow.getUTCFullYear() === beijingTarget.getUTCFullYear() &&
+    beijingNow.getUTCMonth() === beijingTarget.getUTCMonth() &&
+    beijingNow.getUTCDate() === beijingTarget.getUTCDate()
   );
 }
