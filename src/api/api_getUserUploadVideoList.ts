@@ -21,7 +21,7 @@ async function withRetry<T>(
 
 			if (attempt < maxRetries) {
 				// 指数退避：20s, 40s, 80s
-				const delay = Math.pow(2, attempt + 2) * 1000;
+				const delay = Math.pow(2, attempt) * 20000;
 				console.info(`API 请求失败，第 ${attempt + 1} 次重试...`);
 				await new Promise(resolve => setTimeout(resolve, delay));
 			}

@@ -125,7 +125,7 @@ describe('api_getUserUploadVideoList', () => {
 
       await expect(api_getUserUploadVideoList(testUid))
         .rejects.toThrow('API 请求在 3 次重试后仍失败');
-    }, 35000); // 28s for retries + margin
+    }, 150000); // 140s for retries + margin
 
     it('should throw error on 5xx server error', async () => {
       nock(apiBaseUrl)
@@ -136,7 +136,7 @@ describe('api_getUserUploadVideoList', () => {
 
       await expect(api_getUserUploadVideoList(testUid))
         .rejects.toThrow('API 请求在 3 次重试后仍失败');
-    }, 35000); // 28s for retries + margin
+    }, 150000); // 140s for retries + margin
   });
 
   describe('retry mechanism', () => {
@@ -181,7 +181,7 @@ describe('api_getUserUploadVideoList', () => {
       const result = await api_getUserUploadVideoList(testUid);
       expect(attemptCount).toBe(2);
       expect(result.archives.length).toBe(1);
-    }, 10000); // 4s for first retry + margin
+    }, 30000); // 20s for first retry + margin
 
     it('should throw error after 3 retries', async () => {
       nock(apiBaseUrl)
@@ -193,7 +193,7 @@ describe('api_getUserUploadVideoList', () => {
       await expect(api_getUserUploadVideoList(testUid)).rejects.toThrow(
         'API 请求在 3 次重试后仍失败'
       );
-    }, 35000); // 28s for retries + margin
+    }, 150000); // 140s for retries + margin
 
     it('should respect exponential backoff delays', async () => {
       const startTime = Date.now();
@@ -215,9 +215,9 @@ describe('api_getUserUploadVideoList', () => {
       }
 
       const elapsed = Date.now() - startTime;
-      // 4s + 8s + 16s = 28s, allow some margin
-      expect(elapsed).toBeGreaterThanOrEqual(28000);
+      // 20s + 40s + 80s = 140s, allow some margin
+      expect(elapsed).toBeGreaterThanOrEqual(140000);
       expect(attemptCount).toBe(4);
-    }, 35000); // 28s for retries + margin
+    }, 150000); // 140s for retries + margin
   });
 });
