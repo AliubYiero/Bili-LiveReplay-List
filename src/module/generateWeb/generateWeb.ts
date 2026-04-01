@@ -244,7 +244,7 @@ export const generateWeb = async () => {
 	const htmlContent = createWebIndexContent(streamerRecords);
 
 	// 3. 确保输出目录存在
-	const webDir = path.join(process.cwd(), 'docs', 'web');
+	const webDir = path.join(process.cwd(), 'docs');
 
 	// 4. 写入文件
 	const outputPath = path.join(webDir, 'index.html');
