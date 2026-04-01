@@ -362,4 +362,86 @@ describe('matchVideoList', () => {
       expect.any(Object)  // RecordStore instance
     );
   });
+
+  describe('daily cache check', () => {
+    it('should skip API call if already updated today', async () => {
+      // Arrange
+      const today = Date.now();
+      const dataDir = `data/${testUid}`;
+      
+      mockFs.restore();
+      mockFs({
+        'node_modules': mockFs.load('node_modules'),
+        [dataDir]: {
+          [`${testUserName}.record.json`]: JSON.stringify({
+            cache: {
+              uid: testUid,
+              userName: testUserName,
+              aid: 123,
+              timestamp: today
+            },
+            records: []
+          })
+        }
+      });
+
+      const consoleSpy = jest.spyOn(console, 'info').mockImplementation();
+      const getIncrementalVideoListSpy = jest
+        .spyOn(getIncrementalVideoListModule, 'getIncrementalVideoList')
+        .mockResolvedValue([]);
+      const mockOnParse = jest.fn();
+
+      // Act
+      const result = await matchVideoList(testUid, testUserName, mockOnParse);
+
+      // Assert
+      expect(result).toBe(false);
+      expect(consoleSpy).toHaveBeenCalledWith(
+        `用户 ${testUserName} 今天已更新，跳过数据获取`
+      );
+      expect(getIncrementalVideoListSpy).not.toHaveBeenCalled();
+      expect(mockOnParse).not.toHaveBeenCalled();
+
+      consoleSpy.mockRestore();
+    });
+
+    it('should proceed with API call if not updated today', async () => {
+      // Arrange
+      const yesterday = Date.now() - 24 * 60 * 60 * 1000;
+      const dataDir = `data/${testUid}`;
+      
+      mockFs.restore();
+      mockFs({
+        'node_modules': mockFs.load('node_modules'),
+        [dataDir]: {
+          [`${testUserName}.record.json`]: JSON.stringify({
+            cache: {
+              uid: testUid,
+              userName: testUserName,
+              aid: 123,
+              timestamp: yesterday
+            },
+            records: []
+          })
+        }
+      });
+
+      const consoleSpy = jest.spyOn(console, 'info').mockImplementation();
+      const getIncrementalVideoListSpy = jest
+        .spyOn(getIncrementalVideoListModule, 'getIncrementalVideoList')
+        .mockResolvedValue([]);
+      const mockOnParse = jest.fn();
+
+      // Act
+      await matchVideoList(testUid, testUserName, mockOnParse);
+
+      // Assert
+      expect(consoleSpy).not.toHaveBeenCalledWith(
+        expect.stringContaining('今天已更新')
+      );
+      expect(getIncrementalVideoListSpy).toHaveBeenCalled();
+
+      consoleSpy.mockRestore();
+    });
+  });
 });
