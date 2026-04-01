@@ -79,11 +79,12 @@ const generateUploaderData = async (
 			// 计算 _globalPartMap：为每个游戏维护全局集数
 			const globalPartMap: Record<string, number> = {};
 			for (const game of processedRecord.playGame) {
-				if (!gamePartCounter[game]) {
-					gamePartCounter[game] = 0;
+				const counterKey = `${processedRecord.liver}-${game}`
+				if (!gamePartCounter[counterKey]) {
+					gamePartCounter[counterKey] = 0;
 				}
-				gamePartCounter[game]++;
-				globalPartMap[game] = gamePartCounter[game];
+				gamePartCounter[counterKey]++;
+				globalPartMap[game] = gamePartCounter[counterKey];
 			}
 			processedRecord._globalPartMap = globalPartMap;
 

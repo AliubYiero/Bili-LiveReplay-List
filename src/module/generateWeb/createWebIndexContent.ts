@@ -397,13 +397,13 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
     </main>
 
     <script type="module">
-        const streamerRecords = ${JSON.stringify(streamerRecords)};
+        const streamerRecords = ${ JSON.stringify( streamerRecords ) };
 
         // State
         let currentStreamerIndex = null;
         let filteredGroups = [];
         let currentBatchIndex = 0;
-        const BATCH_SIZE = 3;
+        const BATCH_SIZE = 5;
         let observer = null;
         let currentUploaderData = null;
 
@@ -475,7 +475,9 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
 
             viewSelect.style.display = 'none';
             viewRecords.style.display = 'flex';
-            recTitle.textContent = \`$\{ liver } · $\{ uploader }\`;
+            recTitle.textContent = liver === uploader
+                ? \`$\{ liver }\`
+                : \`$\{ liver } · $\{ uploader }\`;
             
             initRecordsView(uploaderData);
         }
@@ -534,10 +536,10 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
                 card.innerHTML = \`
                     <div class="card-head"><div class="card-title">$\{ uploader.userName }</div>$\{ badgeHtml }</div>
                     <div class="card-stats">
-                        <div class="stat-item"><span class="stat-label">累计视频</span><span class="stat-val mono">$\{ uploader.totalVideos }</span></div>
-                        <div class="stat-item"><span class="stat-label">数据更新</span><span class="stat-val">$\{ formatDate( uploader.latestUpdate ) }</span></div>
-                        <div class="stat-item"><span class="stat-label">最早录播</span><span class="stat-val">$\{ formatDate( uploader.oldestTime ) }</span></div>
                         <div class="stat-item"><span class="stat-label">最新录播</span><span class="stat-val">$\{ formatDate( uploader.newestTime ) }</span></div>
+                        <div class="stat-item"><span class="stat-label">最早录播</span><span class="stat-val">$\{ formatDate( uploader.oldestTime ) }</span></div>
+                        <div class="stat-item"><span class="stat-label">数据更新</span><span class="stat-val mono">$\{ formatDate( uploader.latestUpdate ) }</span></div>
+                        <div class="stat-item"><span class="stat-label">累计视频</span><span class="stat-val mono">$\{ uploader.totalVideos }</span></div>
                     </div>
                     <div class="card-foot">
                         <button class="btn-enter" onclick="event.stopPropagation(); navigateToRecords('$\{ streamer.liver }', '$\{ uploader.userName }')">进入查看 <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
@@ -619,15 +621,19 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
             const game = gameSelect.value;
             const recs = currentUploaderData.records;
 
+            monthSelect.disabled = Boolean(!year)
+
             let filteredRecs = recs.filter(r => {
-                if (year && getYear(r.liveTime) != year) return false;
-                if (month && getMonth(r.liveTime) != month) return false;
+                if (year && getYear(r.liveTime) !== Number(year)) return false;
+                if (month && getMonth(r.liveTime) !== Number(month)) return false;
+                if (game && !r.playGame.includes(game)) return false;
                 return true;
             });
 
             const groupMap = new Map();
             filteredRecs.forEach(r => {
                 r.playGame.forEach(g => {
+                    if (game && g !== game) return;
                     if (!groupMap.has(g)) groupMap.set(g, []);
                     groupMap.get(g).push(r);
                 });
@@ -645,16 +651,19 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
             groups.forEach(g => g.items.sort((a, b) => a.liveTime - b.liveTime));
             filteredGroups = groups;
 
+			const filteredGameList = filteredRecs.flatMap((r) => r.playGame)
+			
             const totalDuration = filteredRecs.reduce((acc, r) => acc + r.liveDuration, 0);
-            let summaryText = \`共 $\{ filteredRecs.length } 条 · 总时长 $\{ formatDuration( totalDuration ) }\`;
-            if (year) summaryText = \`$\{ year }年 · $\{ filteredRecs.length } 条\`;
-            if (year && month) summaryText = \`$\{ year }年$\{ month }月 · $\{ filteredRecs.length } 条\`;
-            if (game) summaryText = \`$\{ game } · $\{ filteredRecs.length } 条\`;
+            let summaryText = \`共 $\{ filteredGameList.length } 集 · 总时长 $\{ formatDuration( totalDuration ) }\`;
+            if (year) summaryText = \`$\{ year }年 · $\{ filteredGameList.length } 集\`;
+            if (year && month) summaryText = \`$\{ year }年$\{ month }月 · $\{ filteredGameList.length } 集\`;
+            if (game) summaryText = \`$\{ game } · $\{ filteredGroups[0].items.length } 集\`;
             filterSumEl.innerHTML = summaryText;
 
             if (reset) {
                 currentBatchIndex = 0;
                 Array.from(listContainerEl.children).forEach(c => { if (c !== sentinelEl) listContainerEl.removeChild(c); });
+                if (observer) observer.observe(sentinelEl);
                 loadNextBatch();
             }
         }
@@ -719,7 +728,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
 
                 if (shouldCollapse) {
                     for(let i=0; i<3; i++) cardsHtml += renderItem(group.items[i], i);
-                    cardsHtml += \`<div class="ellipsis-row" onclick="toggleExpand('$\{ group.name }', $\{ totalItems })">... 隐藏了 $\{ totalItems - 8 } 条记录 (点击展开) ...</div>\`;
+                    cardsHtml += \`<div class="ellipsis-row" onclick="toggleExpand('$\{ group.name }', $\{ totalItems })">... 隐藏了 $\{ totalItems - 6 } 条记录 (点击展开) ...</div>\`;
                     for(let i=totalItems-3; i<totalItems; i++) cardsHtml += renderItem(group.items[i], i);
                 } else {
                     for(let i=0; i<totalItems; i++) cardsHtml += renderItem(group.items[i], i);
