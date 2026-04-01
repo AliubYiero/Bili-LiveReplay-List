@@ -7,6 +7,7 @@ import {
 } from './module/generateReadme/generateMarkdownRecord.ts';
 import { generateREADME } from './module/generateReadme/generateREADME.ts';
 import { AidMapperStore } from './store/AidMapperStore.ts';
+import { generateWeb } from './module/generateWeb/generateWeb.ts';
 
 
 const main = async () => {
@@ -23,7 +24,8 @@ const main = async () => {
 	}
 	// 更新 README
 	generateREADME();
-	
+	// 更新 web ui
+	generateWeb().catch( console.error )
 };
 
 main().catch( console.error );
