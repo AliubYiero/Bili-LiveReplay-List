@@ -435,14 +435,14 @@ describe('getIncrementalVideoList', () => {
   });
 
   describe('should call sleep between API requests', () => {
-    it('call sleep with 2000ms delay', async () => {
+    it('call sleep with 20_000ms delay', async () => {
       jest.spyOn(apiModule, 'api_getUserUploadVideoList')
         .mockResolvedValue(createMockResponse([]));
 
       const recordStore = new RecordStore(testUid, testUserName);
       await getIncrementalVideoList(testUid, recordStore);
 
-      expect(radash.sleep).toHaveBeenCalledWith(2000);
+      expect(radash.sleep).toHaveBeenCalledWith(20_000);
     });
   });
 
