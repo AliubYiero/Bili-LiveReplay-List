@@ -3,12 +3,18 @@
 | 主播 | 机智的肯尼 |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **自行车二层** |
-| **数据更新时间** | **2026-04-13** |
+| **数据更新时间** | **2026-04-14** |
 | **累积计入视频数量** | **621** |
 | **最旧视频** | [【肯尼录播】 23-03-28 师傅sifu + disc room + 传奇 + 烤肠](https://www.bilibili.com/video/av994323284/) |
-| **最新视频** | [【肯尼录播】 2026-04-11 lay of the land + 施莱恩传说 + dota2](https://www.bilibili.com/video/av116386080753578/) |
+| **最新视频** | [【肯尼录播】 2026-04-13 【肯尼】我超！亖条区！](https://www.bilibili.com/video/av116397321488098/) |
 
 ---
+
+## 我超！亖条区！
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| 我超！亖条区！ | 2026-04-13 | 07:34:43 | Part 1 | [【肯尼录播】 2026-04-13 【肯尼】我超！亖条区！](https://www.bilibili.com/video/av116397321488098/) | 116397321488098 |
 
 ## lay of the land
 
@@ -16,8 +22,7 @@
 | -------- | :------ | :---: | :---: | --- | :-: |
 | lay of the land | 2026-04-09 | 07:19:39 | Part 1 | [【肯尼录播】 2026-04-09 lay of the land + 杀戮尖塔2](https://www.bilibili.com/video/av116374806465666/) | 116374806465666 |
 | lay of the land | 2026-04-10 | 08:05:02 | Part 2 | [【肯尼录播】 2026-04-10 dota2 + neverway + 杀戮尖塔2 + lay of the land](https://www.bilibili.com/video/av116380225635446/) | 116380225635446 |
-| lay of the land | 2026-04-10 | 08:05:02 | Part 3 | [【肯尼录播】 2026-04-10 dota2 + neverway + 杀戮尖塔2 + lay of the land](https://www.bilibili.com/video/av116380225635446/) | 116380225635446 |
-| lay of the land | 2026-04-11 | 08:53:22 | Part 4 | [【肯尼录播】 2026-04-11 lay of the land + 施莱恩传说 + dota2](https://www.bilibili.com/video/av116386080753578/) | 116386080753578 |
+| lay of the land | 2026-04-11 | 08:53:22 | Part 3 | [【肯尼录播】 2026-04-11 lay of the land + 施莱恩传说 + dota2](https://www.bilibili.com/video/av116386080753578/) | 116386080753578 |
 
 ## 施莱恩传说
 
@@ -154,15 +159,13 @@
 | dota2 | 2026-04-07 | 06:42:08 | Part 123 | [【肯尼录播】 2026-04-07 杀戮尖塔2 + dota2](https://www.bilibili.com/video/av116363448287265/) | 116363448287265 |
 | dota2 | 2026-04-08 | 06:05:09 | Part 124 | [【肯尼录播】 2026-04-08 土豆兄弟 + dota2 + 杀戮尖塔2](https://www.bilibili.com/video/av116369119123265/) | 116369119123265 |
 | dota2 | 2026-04-10 | 08:05:02 | Part 125 | [【肯尼录播】 2026-04-10 dota2 + neverway + 杀戮尖塔2 + lay of the land](https://www.bilibili.com/video/av116380225635446/) | 116380225635446 |
-| dota2 | 2026-04-10 | 08:05:02 | Part 126 | [【肯尼录播】 2026-04-10 dota2 + neverway + 杀戮尖塔2 + lay of the land](https://www.bilibili.com/video/av116380225635446/) | 116380225635446 |
-| dota2 | 2026-04-11 | 08:53:22 | Part 127 | [【肯尼录播】 2026-04-11 lay of the land + 施莱恩传说 + dota2](https://www.bilibili.com/video/av116386080753578/) | 116386080753578 |
+| dota2 | 2026-04-11 | 08:53:22 | Part 126 | [【肯尼录播】 2026-04-11 lay of the land + 施莱恩传说 + dota2](https://www.bilibili.com/video/av116386080753578/) | 116386080753578 |
 
 ## neverway
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
 | neverway | 2026-04-10 | 08:05:02 | Part 1 | [【肯尼录播】 2026-04-10 dota2 + neverway + 杀戮尖塔2 + lay of the land](https://www.bilibili.com/video/av116380225635446/) | 116380225635446 |
-| neverway | 2026-04-10 | 08:05:02 | Part 2 | [【肯尼录播】 2026-04-10 dota2 + neverway + 杀戮尖塔2 + lay of the land](https://www.bilibili.com/video/av116380225635446/) | 116380225635446 |
 
 ## 杀戮尖塔2
 
@@ -202,7 +205,6 @@
 | 杀戮尖塔2 | 2026-04-08 | 06:05:09 | Part 32 | [【肯尼录播】 2026-04-08 土豆兄弟 + dota2 + 杀戮尖塔2](https://www.bilibili.com/video/av116369119123265/) | 116369119123265 |
 | 杀戮尖塔2 | 2026-04-09 | 07:19:39 | Part 33 | [【肯尼录播】 2026-04-09 lay of the land + 杀戮尖塔2](https://www.bilibili.com/video/av116374806465666/) | 116374806465666 |
 | 杀戮尖塔2 | 2026-04-10 | 08:05:02 | Part 34 | [【肯尼录播】 2026-04-10 dota2 + neverway + 杀戮尖塔2 + lay of the land](https://www.bilibili.com/video/av116380225635446/) | 116380225635446 |
-| 杀戮尖塔2 | 2026-04-10 | 08:05:02 | Part 35 | [【肯尼录播】 2026-04-10 dota2 + neverway + 杀戮尖塔2 + lay of the land](https://www.bilibili.com/video/av116380225635446/) | 116380225635446 |
 
 ## Brotato/土豆兄弟
 
