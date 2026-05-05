@@ -3,12 +3,44 @@
 | 主播 | Mr.Quin |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **胧黑** |
-| **数据更新时间** | **2026-05-04** |
-| **累积计入视频数量** | **905** |
+| **数据更新时间** | **2026-05-05** |
+| **累积计入视频数量** | **906** |
 | **最旧视频** | [【Mr.Quin】2022年8月17日《异度之刃3》弹幕录像](https://www.bilibili.com/video/av644671524/) |
-| **最新视频** | [【Mr.Quin】2026年5月3日《掘地求狗》+《Scam Line》弹幕录像](https://www.bilibili.com/video/av116513050723517/) |
+| **最新视频** | [【Mr.Quin】2026年5月4日《氧气列车》+《Gamble With Your Friends》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116518704645146/) |
 
 ---
+
+## 氧气列车
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| 氧气列车 | 2026-05-04 | 04:50:37 | Part 1 | [【Mr.Quin】2026年5月4日《氧气列车》+《Gamble With Your Friends》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116518704645146/) | 116518704645146 |
+
+## Gamble With Your Friends
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| Gamble With Your Friends | 2026-05-04 | 04:50:37 | Part 1 | [【Mr.Quin】2026年5月4日《氧气列车》+《Gamble With Your Friends》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116518704645146/) | 116518704645146 |
+
+## NBA 2K26
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| NBA 2K26 | 2026-04-07 | 06:30:28 | Part 1 | [【Mr.Quin】2026年4月7日《红色沙漠》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116365981650079/) | 116365981650079 |
+| NBA 2K26 | 2026-04-08 | 06:00:20 | Part 2 | [【Mr.Quin】2026年4月8日《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116371501351004/) | 116371501351004 |
+| NBA 2K26 | 2026-04-09 | 05:15:01 | Part 3 | [【Mr.Quin】2026年4月9日《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116377155275332/) | 116377155275332 |
+| NBA 2K26 | 2026-04-10 | 05:30:27 | Part 4 | [【Mr.Quin】2026年4月10日《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116382725309449/) | 116382725309449 |
+| NBA 2K26 | 2026-04-12 | 05:55:31 | Part 5 | [【Mr.Quin】2026年4月12日《光环：士官长合集》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116394251256443/) | 116394251256443 |
+| NBA 2K26 | 2026-04-13 | 05:21:53 | Part 6 | [【Mr.Quin】2026年4月13日《洛克王国：世界》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116399770963028/) | 116399770963028 |
+| NBA 2K26 | 2026-04-16 | 04:57:27 | Part 7 | [【Mr.Quin】2026年4月16日《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116416833391149/) | 116416833391149 |
+| NBA 2K26 | 2026-04-20 | 06:27:35 | Part 8 | [【Mr.Quin】2026年4月20日《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116439767911670/) | 116439767911670 |
+| NBA 2K26 | 2026-04-21 | 05:34:49 | Part 9 | [【Mr.Quin】2026年4月21日《NBA 2K26》+《PRAGMATA / 识质存在》弹幕录像](https://www.bilibili.com/video/av116445069443828/) | 116445069443828 |
+| NBA 2K26 | 2026-04-22 | 04:34:54 | Part 10 | [【Mr.Quin】2026年4月22日《PRAGMATA / 识质存在》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116452988291700/) | 116452988291700 |
+| NBA 2K26 | 2026-04-23 | 06:22:01 | Part 11 | [【Mr.Quin】2026年4月23日《苍穹浩瀚：奥西里斯重生》Beta测试 +《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116456343732452/) | 116456343732452 |
+| NBA 2K26 | 2026-04-24 | 05:35:40 | Part 12 | [【Mr.Quin】2026年4月24日《碧蓝幻想 Relink：无尽黄昏》Beta测试 +《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116462232536688/) | 116462232536688 |
+| NBA 2K26 | 2026-04-26 | 04:50:03 | Part 13 | [【Mr.Quin】2026年4月26日《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116473355829966/) | 116473355829966 |
+| NBA 2K26 | 2026-04-27 | 05:54:22 | Part 14 | [【Mr.Quin】2026年4月27日《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116479143969844/) | 116479143969844 |
+| NBA 2K26 | 2026-05-04 | 04:50:37 | Part 15 | [【Mr.Quin】2026年5月4日《氧气列车》+《Gamble With Your Friends》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116518704645146/) | 116518704645146 |
 
 ## 掘地求狗
 
@@ -59,25 +91,6 @@
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
 | 杀戮地带：暗影坠落 | 2026-04-29 | 04:24:20 | Part 1 | [【Mr.Quin】2026年4月29日《PRAGMATA / 识质存在》+《杀戮地带：暗影坠落》弹幕录像](https://www.bilibili.com/video/av116490418390886/) | 116490418390886 |
-
-## NBA 2K26
-
-| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
-| -------- | :------ | :---: | :---: | --- | :-: |
-| NBA 2K26 | 2026-04-07 | 06:30:28 | Part 1 | [【Mr.Quin】2026年4月7日《红色沙漠》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116365981650079/) | 116365981650079 |
-| NBA 2K26 | 2026-04-08 | 06:00:20 | Part 2 | [【Mr.Quin】2026年4月8日《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116371501351004/) | 116371501351004 |
-| NBA 2K26 | 2026-04-09 | 05:15:01 | Part 3 | [【Mr.Quin】2026年4月9日《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116377155275332/) | 116377155275332 |
-| NBA 2K26 | 2026-04-10 | 05:30:27 | Part 4 | [【Mr.Quin】2026年4月10日《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116382725309449/) | 116382725309449 |
-| NBA 2K26 | 2026-04-12 | 05:55:31 | Part 5 | [【Mr.Quin】2026年4月12日《光环：士官长合集》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116394251256443/) | 116394251256443 |
-| NBA 2K26 | 2026-04-13 | 05:21:53 | Part 6 | [【Mr.Quin】2026年4月13日《洛克王国：世界》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116399770963028/) | 116399770963028 |
-| NBA 2K26 | 2026-04-16 | 04:57:27 | Part 7 | [【Mr.Quin】2026年4月16日《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116416833391149/) | 116416833391149 |
-| NBA 2K26 | 2026-04-20 | 06:27:35 | Part 8 | [【Mr.Quin】2026年4月20日《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116439767911670/) | 116439767911670 |
-| NBA 2K26 | 2026-04-21 | 05:34:49 | Part 9 | [【Mr.Quin】2026年4月21日《NBA 2K26》+《PRAGMATA / 识质存在》弹幕录像](https://www.bilibili.com/video/av116445069443828/) | 116445069443828 |
-| NBA 2K26 | 2026-04-22 | 04:34:54 | Part 10 | [【Mr.Quin】2026年4月22日《PRAGMATA / 识质存在》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116452988291700/) | 116452988291700 |
-| NBA 2K26 | 2026-04-23 | 06:22:01 | Part 11 | [【Mr.Quin】2026年4月23日《苍穹浩瀚：奥西里斯重生》Beta测试 +《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116456343732452/) | 116456343732452 |
-| NBA 2K26 | 2026-04-24 | 05:35:40 | Part 12 | [【Mr.Quin】2026年4月24日《碧蓝幻想 Relink：无尽黄昏》Beta测试 +《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116462232536688/) | 116462232536688 |
-| NBA 2K26 | 2026-04-26 | 04:50:03 | Part 13 | [【Mr.Quin】2026年4月26日《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116473355829966/) | 116473355829966 |
-| NBA 2K26 | 2026-04-27 | 05:54:22 | Part 14 | [【Mr.Quin】2026年4月27日《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116479143969844/) | 116479143969844 |
 
 ## 碧蓝幻想 Relink：无尽黄昏
 
