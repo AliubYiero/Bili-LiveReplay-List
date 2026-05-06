@@ -3,24 +3,32 @@
 | 主播 | Mr.Quin |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **胧黑** |
-| **数据更新时间** | **2026-05-05** |
-| **累积计入视频数量** | **906** |
+| **数据更新时间** | **2026-05-06** |
+| **累积计入视频数量** | **907** |
 | **最旧视频** | [【Mr.Quin】2022年8月17日《异度之刃3》弹幕录像](https://www.bilibili.com/video/av644671524/) |
-| **最新视频** | [【Mr.Quin】2026年5月4日《氧气列车》+《Gamble With Your Friends》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116518704645146/) |
+| **最新视频** | [【Mr.Quin】2026年5月5日《Gamble With Your Friends》+《Scam Line》弹幕录像](https://www.bilibili.com/video/av116524174019113/) |
 
 ---
-
-## 氧气列车
-
-| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
-| -------- | :------ | :---: | :---: | --- | :-: |
-| 氧气列车 | 2026-05-04 | 04:50:37 | Part 1 | [【Mr.Quin】2026年5月4日《氧气列车》+《Gamble With Your Friends》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116518704645146/) | 116518704645146 |
 
 ## Gamble With Your Friends
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
 | Gamble With Your Friends | 2026-05-04 | 04:50:37 | Part 1 | [【Mr.Quin】2026年5月4日《氧气列车》+《Gamble With Your Friends》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116518704645146/) | 116518704645146 |
+| Gamble With Your Friends | 2026-05-05 | 04:27:00 | Part 2 | [【Mr.Quin】2026年5月5日《Gamble With Your Friends》+《Scam Line》弹幕录像](https://www.bilibili.com/video/av116524174019113/) | 116524174019113 |
+
+## Scam Line
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| Scam Line | 2026-05-03 | 03:29:48 | Part 1 | [【Mr.Quin】2026年5月3日《掘地求狗》+《Scam Line》弹幕录像](https://www.bilibili.com/video/av116513050723517/) | 116513050723517 |
+| Scam Line | 2026-05-05 | 04:27:00 | Part 2 | [【Mr.Quin】2026年5月5日《Gamble With Your Friends》+《Scam Line》弹幕录像](https://www.bilibili.com/video/av116524174019113/) | 116524174019113 |
+
+## 氧气列车
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| 氧气列车 | 2026-05-04 | 04:50:37 | Part 1 | [【Mr.Quin】2026年5月4日《氧气列车》+《Gamble With Your Friends》+《NBA 2K26》弹幕录像](https://www.bilibili.com/video/av116518704645146/) | 116518704645146 |
 
 ## NBA 2K26
 
@@ -47,12 +55,6 @@
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
 | 掘地求狗 | 2026-05-03 | 03:29:48 | Part 1 | [【Mr.Quin】2026年5月3日《掘地求狗》+《Scam Line》弹幕录像](https://www.bilibili.com/video/av116513050723517/) | 116513050723517 |
-
-## Scam Line
-
-| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
-| -------- | :------ | :---: | :---: | --- | :-: |
-| Scam Line | 2026-05-03 | 03:29:48 | Part 1 | [【Mr.Quin】2026年5月3日《掘地求狗》+《Scam Line》弹幕录像](https://www.bilibili.com/video/av116513050723517/) | 116513050723517 |
 
 ## 刺客信条4：黑旗
 
