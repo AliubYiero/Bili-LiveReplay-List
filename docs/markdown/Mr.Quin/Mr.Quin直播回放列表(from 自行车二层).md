@@ -3,25 +3,43 @@
 | 主播 | Mr.Quin |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **自行车二层** |
-| **数据更新时间** | **2026-05-13** |
-| **累积计入视频数量** | **821** |
+| **数据更新时间** | **2026-05-14** |
+| **累积计入视频数量** | **819** |
 | **最旧视频** | [【quin录播】22-12-28 消防员模拟器](https://www.bilibili.com/video/av861948885/) |
-| **最新视频** | [【quin录播】 2026-05-12 遨游](https://www.bilibili.com/video/av116561872427171/) |
+| **最新视频** | [【quin录播】 2026-05-13 horsey game](https://www.bilibili.com/video/av116567576679606/) |
 
 ---
 
-## 遨游
+## horsey game
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
-| 遨游 | 2026-05-12 | 04:23:05 | Part 1 | [【quin录播】 2026-05-12 遨游](https://www.bilibili.com/video/av116561872427171/) | 116561872427171 |
+| horsey game | 2026-05-13 | 05:35:59 | Part 1 | [【quin录播】 2026-05-13 horsey game](https://www.bilibili.com/video/av116567576679606/) | 116567576679606 |
+
+## 拾光旅人
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| 拾光旅人 | 2026-05-12 | 04:23:05 | Part 1 | [【quin录播】 2026-05-12 拾光旅人 + 杀戮尖塔2](https://www.bilibili.com/video/av116561872427171/) | 116561872427171 |
+| 拾光旅人 | 2026-05-12 | 04:23:05 | Part 2 | [【quin录播】 2026-05-12 拾光旅人 + 杀戮尖塔2](https://www.bilibili.com/video/av116561872427171/) | 116561872427171 |
+
+## 杀戮尖塔2
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| 杀戮尖塔2 | 2026-03-07 | 05:04:10 | Part 1 | [【quin录播】 2026-03-07 失落星船：马拉松 + 杀戮尖塔2](https://www.bilibili.com/video/av116187857950823/) | 116187857950823 |
+| 杀戮尖塔2 | 2026-03-08 | 04:39:44 | Part 2 | [【quin录播】 2026-03-08 失落星船：马拉松 + 杀戮尖塔2](https://www.bilibili.com/video/av116193746750540/) | 116193746750540 |
+| 杀戮尖塔2 | 2026-03-09 | 03:28:05 | Part 3 | [【quin录播】 2026-03-09 杀戮尖塔2](https://www.bilibili.com/video/av116199635555879/) | 116199635555879 |
+| 杀戮尖塔2 | 2026-03-11 | 03:59:57 | Part 4 | [【quin录播】 2026-03-11 杀戮尖塔2](https://www.bilibili.com/video/av116210842735089/) | 116210842735089 |
+| 杀戮尖塔2 | 2026-04-01 | 05:10:47 | Part 5 | [【quin录播】 2026-04-01 萌族纪元 + 杀戮尖塔2 + 洛克王国：世界](https://www.bilibili.com/video/av116329642200096/) | 116329642200096 |
+| 杀戮尖塔2 | 2026-05-12 | 04:23:05 | Part 6 | [【quin录播】 2026-05-12 拾光旅人 + 杀戮尖塔2](https://www.bilibili.com/video/av116561872427171/) | 116561872427171 |
+| 杀戮尖塔2 | 2026-05-12 | 04:23:05 | Part 7 | [【quin录播】 2026-05-12 拾光旅人 + 杀戮尖塔2](https://www.bilibili.com/video/av116561872427171/) | 116561872427171 |
 
 ## gone fishing
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
 | gone fishing | 2026-05-09 | 05:07:25 | Part 1 | [【quin录播】 2026-05-09 gone fishing + nba2k26](https://www.bilibili.com/video/av116544994543802/) | 116544994543802 |
-| gone fishing | 2026-05-09 | 05:07:25 | Part 2 | [【quin录播】 2026-05-09 gone fishing + nba2k26](https://www.bilibili.com/video/av116544994543802/) | 116544994543802 |
 
 ## nba2k26
 
@@ -43,21 +61,18 @@
 | nba2k26 | 2026-04-27 | 05:51:58 | Part 14 | [【quin录播】 2026-04-27 nba2k26](https://www.bilibili.com/video/av116476862268003/) | 116476862268003 |
 | nba2k26 | 2026-05-04 | 04:50:30 | Part 15 | [【quin录播】 2026-05-04 氧气列车 + Gamble With Your Friends + nba2k26](https://www.bilibili.com/video/av116516557168252/) | 116516557168252 |
 | nba2k26 | 2026-05-09 | 05:07:25 | Part 16 | [【quin录播】 2026-05-09 gone fishing + nba2k26](https://www.bilibili.com/video/av116544994543802/) | 116544994543802 |
-| nba2k26 | 2026-05-09 | 05:07:25 | Part 17 | [【quin录播】 2026-05-09 gone fishing + nba2k26](https://www.bilibili.com/video/av116544994543802/) | 116544994543802 |
 
 ## mixtape
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
 | mixtape | 2026-05-08 | 03:39:12 | Part 1 | [【quin录播】 2026-05-08 mixtape](https://www.bilibili.com/video/av116539307138865/) | 116539307138865 |
-| mixtape | 2026-05-08 | 03:39:12 | Part 2 | [【quin录播】 2026-05-08 mixtape](https://www.bilibili.com/video/av116539307138865/) | 116539307138865 |
 
 ## D播 Gamble With Your Friends
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
 | D播 Gamble With Your Friends | 2026-05-05 | 04:25:38 | Part 1 | [【quin录播】 2026-05-05 D播 Gamble With Your Friends + scam line](https://www.bilibili.com/video/av116522194307019/) | 116522194307019 |
-| D播 Gamble With Your Friends | 2026-05-05 | 04:25:38 | Part 2 | [【quin录播】 2026-05-05 D播 Gamble With Your Friends + scam line](https://www.bilibili.com/video/av116522194307019/) | 116522194307019 |
 
 ## scam line
 
@@ -65,16 +80,13 @@
 | -------- | :------ | :---: | :---: | --- | :-: |
 | scam line | 2026-05-03 | 03:28:50 | Part 1 | [【quin录播】 2026-05-03 掘地求狗 + scam line](https://www.bilibili.com/video/av116510987127583/) | 116510987127583 |
 | scam line | 2026-05-05 | 04:26:22 | Part 2 | [【quin录播】 2026-05-05 B播 Gamble With Your Friends + scam line](https://www.bilibili.com/video/av116522160953873/) | 116522160953873 |
-| scam line | 2026-05-05 | 04:26:22 | Part 3 | [【quin录播】 2026-05-05 B播 Gamble With Your Friends + scam line](https://www.bilibili.com/video/av116522160953873/) | 116522160953873 |
-| scam line | 2026-05-05 | 04:25:38 | Part 4 | [【quin录播】 2026-05-05 D播 Gamble With Your Friends + scam line](https://www.bilibili.com/video/av116522194307019/) | 116522194307019 |
-| scam line | 2026-05-05 | 04:25:38 | Part 5 | [【quin录播】 2026-05-05 D播 Gamble With Your Friends + scam line](https://www.bilibili.com/video/av116522194307019/) | 116522194307019 |
+| scam line | 2026-05-05 | 04:25:38 | Part 3 | [【quin录播】 2026-05-05 D播 Gamble With Your Friends + scam line](https://www.bilibili.com/video/av116522194307019/) | 116522194307019 |
 
 ## B播 Gamble With Your Friends
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
 | B播 Gamble With Your Friends | 2026-05-05 | 04:26:22 | Part 1 | [【quin录播】 2026-05-05 B播 Gamble With Your Friends + scam line](https://www.bilibili.com/video/av116522160953873/) | 116522160953873 |
-| B播 Gamble With Your Friends | 2026-05-05 | 04:26:22 | Part 2 | [【quin录播】 2026-05-05 B播 Gamble With Your Friends + scam line](https://www.bilibili.com/video/av116522160953873/) | 116522160953873 |
 
 ## 氧气列车
 
@@ -198,16 +210,6 @@
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
 | 萌族纪元 | 2026-04-01 | 05:10:47 | Part 1 | [【quin录播】 2026-04-01 萌族纪元 + 杀戮尖塔2 + 洛克王国：世界](https://www.bilibili.com/video/av116329642200096/) | 116329642200096 |
-
-## 杀戮尖塔2
-
-| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
-| -------- | :------ | :---: | :---: | --- | :-: |
-| 杀戮尖塔2 | 2026-03-07 | 05:04:10 | Part 1 | [【quin录播】 2026-03-07 失落星船：马拉松 + 杀戮尖塔2](https://www.bilibili.com/video/av116187857950823/) | 116187857950823 |
-| 杀戮尖塔2 | 2026-03-08 | 04:39:44 | Part 2 | [【quin录播】 2026-03-08 失落星船：马拉松 + 杀戮尖塔2](https://www.bilibili.com/video/av116193746750540/) | 116193746750540 |
-| 杀戮尖塔2 | 2026-03-09 | 03:28:05 | Part 3 | [【quin录播】 2026-03-09 杀戮尖塔2](https://www.bilibili.com/video/av116199635555879/) | 116199635555879 |
-| 杀戮尖塔2 | 2026-03-11 | 03:59:57 | Part 4 | [【quin录播】 2026-03-11 杀戮尖塔2](https://www.bilibili.com/video/av116210842735089/) | 116210842735089 |
-| 杀戮尖塔2 | 2026-04-01 | 05:10:47 | Part 5 | [【quin录播】 2026-04-01 萌族纪元 + 杀戮尖塔2 + 洛克王国：世界](https://www.bilibili.com/video/av116329642200096/) | 116329642200096 |
 
 ## 洛克王国：世界
 
