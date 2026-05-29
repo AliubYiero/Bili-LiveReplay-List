@@ -3,10 +3,10 @@
 | 主播 | 机智的肯尼 |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **自行车二层** |
-| **数据更新时间** | **2026-05-28** |
-| **累积计入视频数量** | **1019** |
+| **数据更新时间** | **2026-05-29** |
+| **累积计入视频数量** | **1020** |
 | **最旧视频** | [【肯尼录播】23-02-05 水力工程师 + 黄老饼梦游惊奇](https://www.bilibili.com/video/av566451909/) |
-| **最新视频** | [【肯尼录播】 2026-05-27 【肯尼】零零柒袭击中](https://www.bilibili.com/video/av116646614145036/) |
+| **最新视频** | [【肯尼录播】 2026-05-28 【肯尼】零零柒袭击中](https://www.bilibili.com/video/av116652251286101/) |
 
 ---
 
@@ -14,16 +14,14 @@
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
-| 零零柒袭击中 | 2026-05-27 | 05:23:14 | Part 1 | [【肯尼录播】 2026-05-27 【肯尼】零零柒袭击中](https://www.bilibili.com/video/av116646614145036/) | 116646614145036 |
+| 零零柒袭击中 | 2026-05-28 | 05:31:00 | Part 1 | [【肯尼录播】 2026-05-28 【肯尼】零零柒袭击中](https://www.bilibili.com/video/av116652251286101/) | 116652251286101 |
 
-## Devil Spire Falls
+## 007初露锋芒
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
-| Devil Spire Falls | 2026-05-22 | 07:03:50 | Part 1 | [【肯尼录播】 2026-05-22 战锤吸 + 明日方舟：终末地 + Devil Spire Falls + 杀戮尖塔2 + dota2](https://www.bilibili.com/video/av116618227160334/) | 116618227160334 |
-| Devil Spire Falls | 2026-05-24 | 06:02:05 | Part 2 | [【肯尼录播】 2026-05-24 Devil Spire Falls + 拉斯维加斯模拟器 + 电视剧](https://www.bilibili.com/video/av116629602043905/) | 116629602043905 |
-| Devil Spire Falls | 2026-05-26 | 04:44:27 | Part 3 | [【肯尼录播】 2026-05-26 Devil Spire Falls + 王之凝视 + Is This Seat Taken?](https://www.bilibili.com/video/av116640893109499/) | 116640893109499 |
-| Devil Spire Falls | 2026-05-26 | 04:44:27 | Part 4 | [【肯尼录播】 2026-05-26 Devil Spire Falls + 王之凝视 + Is This Seat Taken?](https://www.bilibili.com/video/av116640893109499/) | 116640893109499 |
+| 007初露锋芒 | 2026-05-27 | 05:23:14 | Part 1 | [【肯尼录播】 2026-05-27 007初露锋芒 + 王之凝视](https://www.bilibili.com/video/av116646614145036/) | 116646614145036 |
+| 007初露锋芒 | 2026-05-27 | 05:23:14 | Part 2 | [【肯尼录播】 2026-05-27 007初露锋芒 + 王之凝视](https://www.bilibili.com/video/av116646614145036/) | 116646614145036 |
 
 ## 王之凝视
 
@@ -33,14 +31,22 @@
 | 王之凝视 | 2025-07-27 | 07:53:34 | Part 2 | [【肯尼录播】 2025-07-27 王之凝视 + 非生物因素 + 动画](https://www.bilibili.com/video/av114925187895549/) | 114925187895549 |
 | 王之凝视 | 2025-07-29 | 06:55:02 | Part 3 | [【肯尼录播】 2025-07-29 王之凝视 + 明末：渊虚之羽 + 动画](https://www.bilibili.com/video/av114936529290945/) | 114936529290945 |
 | 王之凝视 | 2026-05-26 | 04:44:27 | Part 4 | [【肯尼录播】 2026-05-26 Devil Spire Falls + 王之凝视 + Is This Seat Taken?](https://www.bilibili.com/video/av116640893109499/) | 116640893109499 |
-| 王之凝视 | 2026-05-26 | 04:44:27 | Part 5 | [【肯尼录播】 2026-05-26 Devil Spire Falls + 王之凝视 + Is This Seat Taken?](https://www.bilibili.com/video/av116640893109499/) | 116640893109499 |
+| 王之凝视 | 2026-05-27 | 05:23:14 | Part 5 | [【肯尼录播】 2026-05-27 007初露锋芒 + 王之凝视](https://www.bilibili.com/video/av116646614145036/) | 116646614145036 |
+| 王之凝视 | 2026-05-27 | 05:23:14 | Part 6 | [【肯尼录播】 2026-05-27 007初露锋芒 + 王之凝视](https://www.bilibili.com/video/av116646614145036/) | 116646614145036 |
+
+## Devil Spire Falls
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| Devil Spire Falls | 2026-05-22 | 07:03:50 | Part 1 | [【肯尼录播】 2026-05-22 战锤吸 + 明日方舟：终末地 + Devil Spire Falls + 杀戮尖塔2 + dota2](https://www.bilibili.com/video/av116618227160334/) | 116618227160334 |
+| Devil Spire Falls | 2026-05-24 | 06:02:05 | Part 2 | [【肯尼录播】 2026-05-24 Devil Spire Falls + 拉斯维加斯模拟器 + 电视剧](https://www.bilibili.com/video/av116629602043905/) | 116629602043905 |
+| Devil Spire Falls | 2026-05-26 | 04:44:27 | Part 3 | [【肯尼录播】 2026-05-26 Devil Spire Falls + 王之凝视 + Is This Seat Taken?](https://www.bilibili.com/video/av116640893109499/) | 116640893109499 |
 
 ## Is This Seat Taken?
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
 | Is This Seat Taken? | 2026-05-26 | 04:44:27 | Part 1 | [【肯尼录播】 2026-05-26 Devil Spire Falls + 王之凝视 + Is This Seat Taken?](https://www.bilibili.com/video/av116640893109499/) | 116640893109499 |
-| Is This Seat Taken? | 2026-05-26 | 04:44:27 | Part 2 | [【肯尼录播】 2026-05-26 Devil Spire Falls + 王之凝视 + Is This Seat Taken?](https://www.bilibili.com/video/av116640893109499/) | 116640893109499 |
 
 ## 已爆炸
 
