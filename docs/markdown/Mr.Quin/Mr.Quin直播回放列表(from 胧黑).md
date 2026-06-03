@@ -3,12 +3,19 @@
 | 主播 | Mr.Quin |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **胧黑** |
-| **数据更新时间** | **2026-06-02** |
-| **累积计入视频数量** | **929** |
+| **数据更新时间** | **2026-06-03** |
+| **累积计入视频数量** | **930** |
 | **最旧视频** | [【Mr.Quin】2022年8月17日《异度之刃3》弹幕录像](https://www.bilibili.com/video/av644671524/) |
-| **最新视频** | [【Mr.Quin】2026年6月1日《Pit of Goblin / 地精之渊》+《VOSPETKA Simulator》弹幕录像](https://www.bilibili.com/video/av116676980903858/) |
+| **最新视频** | [【Mr.Quin】2026年6月2日《Cheap Car Repair》弹幕录像](https://www.bilibili.com/video/av116682802594533/) |
 
 ---
+
+## Cheap Car Repair
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| Cheap Car Repair | 2026-05-30 | 05:23:14 | Part 1 | [【Mr.Quin】2026年5月30日《Cheap Car Repair》弹幕录像](https://www.bilibili.com/video/av116666176439333/) | 116666176439333 |
+| Cheap Car Repair | 2026-06-02 | 04:19:02 | Part 2 | [【Mr.Quin】2026年6月2日《Cheap Car Repair》弹幕录像](https://www.bilibili.com/video/av116682802594533/) | 116682802594533 |
 
 ## Pit of Goblin / 地精之渊
 
@@ -21,12 +28,6 @@
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
 | VOSPETKA Simulator | 2026-06-01 | 04:29:00 | Part 1 | [【Mr.Quin】2026年6月1日《Pit of Goblin / 地精之渊》+《VOSPETKA Simulator》弹幕录像](https://www.bilibili.com/video/av116676980903858/) | 116676980903858 |
-
-## Cheap Car Repair
-
-| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
-| -------- | :------ | :---: | :---: | --- | :-: |
-| Cheap Car Repair | 2026-05-30 | 05:23:14 | Part 1 | [【Mr.Quin】2026年5月30日《Cheap Car Repair》弹幕录像](https://www.bilibili.com/video/av116666176439333/) | 116666176439333 |
 
 ## 007 初露锋芒
 
