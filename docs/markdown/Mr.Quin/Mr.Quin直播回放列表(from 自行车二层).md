@@ -3,12 +3,44 @@
 | 主播 | Mr.Quin |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **自行车二层** |
-| **数据更新时间** | **2026-06-14** |
-| **累积计入视频数量** | **854** |
+| **数据更新时间** | **2026-06-15** |
+| **累积计入视频数量** | **855** |
 | **最旧视频** | [【quin录播】22-12-28 消防员模拟器](https://www.bilibili.com/video/av861948885/) |
-| **最新视频** | [【quin录播】 2026-06-11 D 一起开火车2汽笛重鸣 + Burglin' Gnomes【地精捣蛋团】](https://www.bilibili.com/video/av116732060571137/) |
+| **最新视频** | [【quin录播】 2026-06-15 nba2k26 + 看世界杯荷兰vs日本](https://www.bilibili.com/video/av116749827577729/) |
 
 ---
+
+## nba2k26
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| nba2k26 | 2026-04-07 | 06:29:10 | Part 1 | [【quin录播】 2026-04-07 红色沙漠 + nba2k26](https://www.bilibili.com/video/av116363733565981/) | 116363733565981 |
+| nba2k26 | 2026-04-08 | 06:00:03 | Part 2 | [【quin录播】 2026-04-08 nba2k26](https://www.bilibili.com/video/av116369404270788/) | 116369404270788 |
+| nba2k26 | 2026-04-09 | 05:14:08 | Part 3 | [【quin录播】 2026-04-09 nba2k26](https://www.bilibili.com/video/av116375125235482/) | 116375125235482 |
+| nba2k26 | 2026-04-10 | 05:29:43 | Part 4 | [【quin录播】 2026-04-10 nba2k26](https://www.bilibili.com/video/av116380678559121/) | 116380678559121 |
+| nba2k26 | 2026-04-12 | 05:53:21 | Part 5 | [【quin录播】 2026-04-12 光环：致远星 + 光环1 + nba2k26](https://www.bilibili.com/video/av116391600460931/) | 116391600460931 |
+| nba2k26 | 2026-04-13 | 05:21:28 | Part 6 | [【quin录播】 2026-04-13 nba2k26](https://www.bilibili.com/video/av116397690652228/) | 116397690652228 |
+| nba2k26 | 2026-04-16 | 05:06:20 | Part 7 | [【quin录播】 2026-04-16 nba2k26](https://www.bilibili.com/video/av116414769794218/) | 116414769794218 |
+| nba2k26 | 2026-04-20 | 06:24:18 | Part 8 | [【quin录播】 2026-04-20 nba2k26](https://www.bilibili.com/video/av116437150603166/) | 116437150603166 |
+| nba2k26 | 2026-04-21 | 05:34:35 | Part 9 | [【quin录播】 2026-04-21 nba2k26 + pragmata](https://www.bilibili.com/video/av116442888472220/) | 116442888472220 |
+| nba2k26 | 2026-04-22 | 04:33:16 | Part 10 | [【quin录播】 2026-04-22 pragmata + nba2k26](https://www.bilibili.com/video/av116448710105014/) | 116448710105014 |
+| nba2k26 | 2026-04-23 | 06:16:01 | Part 11 | [【quin录播】 2026-04-23 苍穹浩瀚：奥西里斯重生 + nba2k26](https://www.bilibili.com/video/av116454280137376/) | 116454280137376 |
+| nba2k26 | 2026-04-24 | 05:33:49 | Part 12 | [【quin录播】 2026-04-24 碧蓝幻想Relink无尽黄昏 + nba2k26](https://www.bilibili.com/video/av116459816749872/) | 116459816749872 |
+| nba2k26 | 2026-04-26 | 04:46:35 | Part 13 | [【quin录播】 2026-04-26 nba2k26](https://www.bilibili.com/video/av116471309011854/) | 116471309011854 |
+| nba2k26 | 2026-04-27 | 05:51:58 | Part 14 | [【quin录播】 2026-04-27 nba2k26](https://www.bilibili.com/video/av116476862268003/) | 116476862268003 |
+| nba2k26 | 2026-05-04 | 04:50:30 | Part 15 | [【quin录播】 2026-05-04 氧气列车 + Gamble With Your Friends + nba2k26](https://www.bilibili.com/video/av116516557168252/) | 116516557168252 |
+| nba2k26 | 2026-05-09 | 05:07:25 | Part 16 | [【quin录播】 2026-05-09 gone fishing + nba2k26](https://www.bilibili.com/video/av116544994543802/) | 116544994543802 |
+| nba2k26 | 2026-05-23 | 04:48:51 | Part 17 | [【quin录播】 2026-05-23 极限竞速: 地平线6 + nba2k26](https://www.bilibili.com/video/av116624032076986/) | 116624032076986 |
+| nba2k26 | 2026-06-06 | 03:01:34 | Part 18 | [【quin录播】 2026-06-06 nba2k26](https://www.bilibili.com/video/av116700989228818/) | 116700989228818 |
+| nba2k26 | 2026-06-07 | 18:29:04 | Part 19 | [【quin录播】 2026-06-07 nba2k26 + 明日方舟：终末地 + XBOX游戏展示会 + 石头模拟器](https://www.bilibili.com/video/av116709058939772/) | 116709058939772 |
+| nba2k26 | 2026-06-07 | 03:09:05 | Part 20 | [【quin录播】 2026-06-07 nba2k26 + 明日方舟：终末地 + XBOX游戏展示会](https://www.bilibili.com/video/av116709881026411/) | 116709881026411 |
+| nba2k26 | 2026-06-15 | 05:04:08 | Part 21 | [【quin录播】 2026-06-15 nba2k26 + 看世界杯荷兰vs日本](https://www.bilibili.com/video/av116749827577729/) | 116749827577729 |
+
+## 看世界杯荷兰vs日本
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| 看世界杯荷兰vs日本 | 2026-06-15 | 05:04:08 | Part 1 | [【quin录播】 2026-06-15 nba2k26 + 看世界杯荷兰vs日本](https://www.bilibili.com/video/av116749827577729/) | 116749827577729 |
 
 ## D 一起开火车2汽笛重鸣
 
@@ -105,31 +137,6 @@
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
 | 石头模拟器之石头的终结 | 2026-06-08 | 07:05:04 | Part 1 | [【quin录播】 2026-06-08 石头模拟器之石头的终结](https://www.bilibili.com/video/av116714461266600/) | 116714461266600 |
-
-## nba2k26
-
-| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
-| -------- | :------ | :---: | :---: | --- | :-: |
-| nba2k26 | 2026-04-07 | 06:29:10 | Part 1 | [【quin录播】 2026-04-07 红色沙漠 + nba2k26](https://www.bilibili.com/video/av116363733565981/) | 116363733565981 |
-| nba2k26 | 2026-04-08 | 06:00:03 | Part 2 | [【quin录播】 2026-04-08 nba2k26](https://www.bilibili.com/video/av116369404270788/) | 116369404270788 |
-| nba2k26 | 2026-04-09 | 05:14:08 | Part 3 | [【quin录播】 2026-04-09 nba2k26](https://www.bilibili.com/video/av116375125235482/) | 116375125235482 |
-| nba2k26 | 2026-04-10 | 05:29:43 | Part 4 | [【quin录播】 2026-04-10 nba2k26](https://www.bilibili.com/video/av116380678559121/) | 116380678559121 |
-| nba2k26 | 2026-04-12 | 05:53:21 | Part 5 | [【quin录播】 2026-04-12 光环：致远星 + 光环1 + nba2k26](https://www.bilibili.com/video/av116391600460931/) | 116391600460931 |
-| nba2k26 | 2026-04-13 | 05:21:28 | Part 6 | [【quin录播】 2026-04-13 nba2k26](https://www.bilibili.com/video/av116397690652228/) | 116397690652228 |
-| nba2k26 | 2026-04-16 | 05:06:20 | Part 7 | [【quin录播】 2026-04-16 nba2k26](https://www.bilibili.com/video/av116414769794218/) | 116414769794218 |
-| nba2k26 | 2026-04-20 | 06:24:18 | Part 8 | [【quin录播】 2026-04-20 nba2k26](https://www.bilibili.com/video/av116437150603166/) | 116437150603166 |
-| nba2k26 | 2026-04-21 | 05:34:35 | Part 9 | [【quin录播】 2026-04-21 nba2k26 + pragmata](https://www.bilibili.com/video/av116442888472220/) | 116442888472220 |
-| nba2k26 | 2026-04-22 | 04:33:16 | Part 10 | [【quin录播】 2026-04-22 pragmata + nba2k26](https://www.bilibili.com/video/av116448710105014/) | 116448710105014 |
-| nba2k26 | 2026-04-23 | 06:16:01 | Part 11 | [【quin录播】 2026-04-23 苍穹浩瀚：奥西里斯重生 + nba2k26](https://www.bilibili.com/video/av116454280137376/) | 116454280137376 |
-| nba2k26 | 2026-04-24 | 05:33:49 | Part 12 | [【quin录播】 2026-04-24 碧蓝幻想Relink无尽黄昏 + nba2k26](https://www.bilibili.com/video/av116459816749872/) | 116459816749872 |
-| nba2k26 | 2026-04-26 | 04:46:35 | Part 13 | [【quin录播】 2026-04-26 nba2k26](https://www.bilibili.com/video/av116471309011854/) | 116471309011854 |
-| nba2k26 | 2026-04-27 | 05:51:58 | Part 14 | [【quin录播】 2026-04-27 nba2k26](https://www.bilibili.com/video/av116476862268003/) | 116476862268003 |
-| nba2k26 | 2026-05-04 | 04:50:30 | Part 15 | [【quin录播】 2026-05-04 氧气列车 + Gamble With Your Friends + nba2k26](https://www.bilibili.com/video/av116516557168252/) | 116516557168252 |
-| nba2k26 | 2026-05-09 | 05:07:25 | Part 16 | [【quin录播】 2026-05-09 gone fishing + nba2k26](https://www.bilibili.com/video/av116544994543802/) | 116544994543802 |
-| nba2k26 | 2026-05-23 | 04:48:51 | Part 17 | [【quin录播】 2026-05-23 极限竞速: 地平线6 + nba2k26](https://www.bilibili.com/video/av116624032076986/) | 116624032076986 |
-| nba2k26 | 2026-06-06 | 03:01:34 | Part 18 | [【quin录播】 2026-06-06 nba2k26](https://www.bilibili.com/video/av116700989228818/) | 116700989228818 |
-| nba2k26 | 2026-06-07 | 18:29:04 | Part 19 | [【quin录播】 2026-06-07 nba2k26 + 明日方舟：终末地 + XBOX游戏展示会 + 石头模拟器](https://www.bilibili.com/video/av116709058939772/) | 116709058939772 |
-| nba2k26 | 2026-06-07 | 03:09:05 | Part 20 | [【quin录播】 2026-06-07 nba2k26 + 明日方舟：终末地 + XBOX游戏展示会](https://www.bilibili.com/video/av116709881026411/) | 116709881026411 |
 
 ## XBOX游戏展示会
 
