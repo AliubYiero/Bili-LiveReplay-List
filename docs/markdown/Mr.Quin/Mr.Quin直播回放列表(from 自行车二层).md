@@ -3,10 +3,10 @@
 | 主播 | Mr.Quin |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **自行车二层** |
-| **数据更新时间** | **2026-06-16** |
-| **累积计入视频数量** | **856** |
+| **数据更新时间** | **2026-06-17** |
+| **累积计入视频数量** | **859** |
 | **最旧视频** | [【quin录播】22-12-28 消防员模拟器](https://www.bilibili.com/video/av861948885/) |
-| **最新视频** | [【quin录播】 2026-06-15 MC了](https://www.bilibili.com/video/av116754458152443/) |
+| **最新视频** | [测试【quin录播】 2026-06-16 MC了](https://www.bilibili.com/video/av116760212676388/) |
 
 ---
 
@@ -14,7 +14,15 @@
 
 | 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
 | -------- | :------ | :---: | :---: | --- | :-: |
-| MC了 | 2026-06-15 | 05:35:42 | Part 1 | [【quin录播】 2026-06-15 MC了](https://www.bilibili.com/video/av116754458152443/) | 116754458152443 |
+| MC了 | 2026-06-16 | 04:07:30 | Part 1 | [测试【quin录播】 2026-06-16 MC了](https://www.bilibili.com/video/av116760212676388/) | 116760212676388 |
+
+## meccha chameleon
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| meccha chameleon | 2026-06-15 | 05:35:42 | Part 1 | [【quin录播】 2026-06-15 meccha chameleon + nba2k26 + 看世界杯西班牙vs佛得角](https://www.bilibili.com/video/av116754458152443/) | 116754458152443 |
+| meccha chameleon | 2026-06-15 | 05:35:42 | Part 2 | [【quin录播】 2026-06-15 meccha chameleon + nba2k26 + 看世界杯西班牙vs佛得角](https://www.bilibili.com/video/av116754458152443/) | 116754458152443 |
+| meccha chameleon | 2026-06-16 | 04:08:03 | Part 3 | [【quin录播】 2026-06-16 meccha chameleon](https://www.bilibili.com/video/av116760145559875/) | 116760145559875 |
 
 ## nba2k26
 
@@ -41,6 +49,15 @@
 | nba2k26 | 2026-06-07 | 18:29:04 | Part 19 | [【quin录播】 2026-06-07 nba2k26 + 明日方舟：终末地 + XBOX游戏展示会 + 石头模拟器](https://www.bilibili.com/video/av116709058939772/) | 116709058939772 |
 | nba2k26 | 2026-06-07 | 03:09:05 | Part 20 | [【quin录播】 2026-06-07 nba2k26 + 明日方舟：终末地 + XBOX游戏展示会](https://www.bilibili.com/video/av116709881026411/) | 116709881026411 |
 | nba2k26 | 2026-06-15 | 05:04:08 | Part 21 | [【quin录播】 2026-06-15 nba2k26 + 看世界杯荷兰vs日本](https://www.bilibili.com/video/av116749827577729/) | 116749827577729 |
+| nba2k26 | 2026-06-15 | 05:35:42 | Part 22 | [【quin录播】 2026-06-15 meccha chameleon + nba2k26 + 看世界杯西班牙vs佛得角](https://www.bilibili.com/video/av116754458152443/) | 116754458152443 |
+| nba2k26 | 2026-06-15 | 05:35:42 | Part 23 | [【quin录播】 2026-06-15 meccha chameleon + nba2k26 + 看世界杯西班牙vs佛得角](https://www.bilibili.com/video/av116754458152443/) | 116754458152443 |
+
+## 看世界杯西班牙vs佛得角
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| 看世界杯西班牙vs佛得角 | 2026-06-15 | 05:35:42 | Part 1 | [【quin录播】 2026-06-15 meccha chameleon + nba2k26 + 看世界杯西班牙vs佛得角](https://www.bilibili.com/video/av116754458152443/) | 116754458152443 |
+| 看世界杯西班牙vs佛得角 | 2026-06-15 | 05:35:42 | Part 2 | [【quin录播】 2026-06-15 meccha chameleon + nba2k26 + 看世界杯西班牙vs佛得角](https://www.bilibili.com/video/av116754458152443/) | 116754458152443 |
 
 ## 看世界杯荷兰vs日本
 
