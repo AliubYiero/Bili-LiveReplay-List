@@ -3,12 +3,33 @@
 | 主播 | Mr.Quin |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **胧黑** |
-| **数据更新时间** | **2026-06-28** |
-| **累积计入视频数量** | **950** |
+| **数据更新时间** | **2026-06-29** |
+| **累积计入视频数量** | **951** |
 | **最旧视频** | [【Mr.Quin】2022年8月17日《异度之刃3》弹幕录像](https://www.bilibili.com/video/av644671524/) |
-| **最新视频** | [【Mr.Quin】2026年6月26日《明日方舟：终末地》+《EA Sports FC 26》+《世界杯小组赛：挪威 VS 法国》弹幕录像](https://www.bilibili.com/video/av116819335581079/) |
+| **最新视频** | [【Mr.Quin】2026年6月28日《深渊之潮》+《EA Sports FC 26》弹幕录像](https://www.bilibili.com/video/av116830492428510/) |
 
 ---
+
+## 深渊之潮
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| 深渊之潮 | 2026-06-28 | 05:27:37 | Part 1 | [【Mr.Quin】2026年6月28日《深渊之潮》+《EA Sports FC 26》弹幕录像](https://www.bilibili.com/video/av116830492428510/) | 116830492428510 |
+
+## EA Sports FC 26
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| EA Sports FC 26 | 2026-06-08 | 04:54:58 | Part 1 | [【Mr.Quin】2026年6月8日《EA Sports FC 26》弹幕录像](https://www.bilibili.com/video/av116716457692443/) | 116716457692443 |
+| EA Sports FC 26 | 2026-06-09 | 06:02:58 | Part 2 | [【Mr.Quin】2026年6月9日《EA Sports FC 26》+《任天堂直面会》+《明日方舟：终末地》+《鸣潮》弹幕录像](https://www.bilibili.com/video/av116722598150837/) | 116722598150837 |
+| EA Sports FC 26 | 2026-06-17 | 06:43:35 | Part 3 | [【Mr.Quin】2026年6月17日《EA Sports FC 26》+《世界杯小组赛：葡萄牙 VS 刚果金》弹幕录像](https://www.bilibili.com/video/av116767946968604/) | 116767946968604 |
+| EA Sports FC 26 | 2026-06-18 | 05:24:18 | Part 4 | [【Mr.Quin】2026年6月18日《碧蓝幻想 Relink：无尽黄昏》Beta测试 +《EA Sports FC 26》弹幕录像](https://www.bilibili.com/video/av116773265344575/) | 116773265344575 |
+| EA Sports FC 26 | 2026-06-21 | 05:33:46 | Part 5 | [【Mr.Quin】2026年6月21日《EA Sports FC 26》+《世界杯小组赛：西班牙 VS 沙特 + 比利时 VS 伊朗》弹幕录像](https://www.bilibili.com/video/av116791015639034/) | 116791015639034 |
+| EA Sports FC 26 | 2026-06-22 | 06:58:01 | Part 6 | [【Mr.Quin】2026年6月22日《EA Sports FC 26》+《世界杯小组赛：阿根廷 VS 奥地利》弹幕录像](https://www.bilibili.com/video/av116796334081936/) | 116796334081936 |
+| EA Sports FC 26 | 2026-06-24 | 05:57:37 | Part 7 | [【Mr.Quin】2026年6月24日《EA Sports FC 26》弹幕录像](https://www.bilibili.com/video/av116807625213915/) | 116807625213915 |
+| EA Sports FC 26 | 2026-06-25 | 06:01:33 | Part 8 | [【Mr.Quin】2026年6月25日《GTA6》新图品评 +《EA Sports FC 26》弹幕录像](https://www.bilibili.com/video/av116813379667362/) | 116813379667362 |
+| EA Sports FC 26 | 2026-06-26 | 09:14:45 | Part 9 | [【Mr.Quin】2026年6月26日《明日方舟：终末地》+《EA Sports FC 26》+《世界杯小组赛：挪威 VS 法国》弹幕录像](https://www.bilibili.com/video/av116819335581079/) | 116819335581079 |
+| EA Sports FC 26 | 2026-06-28 | 05:27:37 | Part 10 | [【Mr.Quin】2026年6月28日《深渊之潮》+《EA Sports FC 26》弹幕录像](https://www.bilibili.com/video/av116830492428510/) | 116830492428510 |
 
 ## 明日方舟：终末地
 
@@ -37,20 +58,6 @@
 | 明日方舟：终末地 | 2026-06-09 | 06:02:58 | Part 21 | [【Mr.Quin】2026年6月9日《EA Sports FC 26》+《任天堂直面会》+《明日方舟：终末地》+《鸣潮》弹幕录像](https://www.bilibili.com/video/av116722598150837/) | 116722598150837 |
 | 明日方舟：终末地 | 2026-06-19 | 05:46:29 | Part 22 | [【Mr.Quin】2026年6月19日《明日方舟：终末地》危机合约 弹幕录像](https://www.bilibili.com/video/av116779305142506/) | 116779305142506 |
 | 明日方舟：终末地 | 2026-06-26 | 09:14:45 | Part 23 | [【Mr.Quin】2026年6月26日《明日方舟：终末地》+《EA Sports FC 26》+《世界杯小组赛：挪威 VS 法国》弹幕录像](https://www.bilibili.com/video/av116819335581079/) | 116819335581079 |
-
-## EA Sports FC 26
-
-| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
-| -------- | :------ | :---: | :---: | --- | :-: |
-| EA Sports FC 26 | 2026-06-08 | 04:54:58 | Part 1 | [【Mr.Quin】2026年6月8日《EA Sports FC 26》弹幕录像](https://www.bilibili.com/video/av116716457692443/) | 116716457692443 |
-| EA Sports FC 26 | 2026-06-09 | 06:02:58 | Part 2 | [【Mr.Quin】2026年6月9日《EA Sports FC 26》+《任天堂直面会》+《明日方舟：终末地》+《鸣潮》弹幕录像](https://www.bilibili.com/video/av116722598150837/) | 116722598150837 |
-| EA Sports FC 26 | 2026-06-17 | 06:43:35 | Part 3 | [【Mr.Quin】2026年6月17日《EA Sports FC 26》+《世界杯小组赛：葡萄牙 VS 刚果金》弹幕录像](https://www.bilibili.com/video/av116767946968604/) | 116767946968604 |
-| EA Sports FC 26 | 2026-06-18 | 05:24:18 | Part 4 | [【Mr.Quin】2026年6月18日《碧蓝幻想 Relink：无尽黄昏》Beta测试 +《EA Sports FC 26》弹幕录像](https://www.bilibili.com/video/av116773265344575/) | 116773265344575 |
-| EA Sports FC 26 | 2026-06-21 | 05:33:46 | Part 5 | [【Mr.Quin】2026年6月21日《EA Sports FC 26》+《世界杯小组赛：西班牙 VS 沙特 + 比利时 VS 伊朗》弹幕录像](https://www.bilibili.com/video/av116791015639034/) | 116791015639034 |
-| EA Sports FC 26 | 2026-06-22 | 06:58:01 | Part 6 | [【Mr.Quin】2026年6月22日《EA Sports FC 26》+《世界杯小组赛：阿根廷 VS 奥地利》弹幕录像](https://www.bilibili.com/video/av116796334081936/) | 116796334081936 |
-| EA Sports FC 26 | 2026-06-24 | 05:57:37 | Part 7 | [【Mr.Quin】2026年6月24日《EA Sports FC 26》弹幕录像](https://www.bilibili.com/video/av116807625213915/) | 116807625213915 |
-| EA Sports FC 26 | 2026-06-25 | 06:01:33 | Part 8 | [【Mr.Quin】2026年6月25日《GTA6》新图品评 +《EA Sports FC 26》弹幕录像](https://www.bilibili.com/video/av116813379667362/) | 116813379667362 |
-| EA Sports FC 26 | 2026-06-26 | 09:14:45 | Part 9 | [【Mr.Quin】2026年6月26日《明日方舟：终末地》+《EA Sports FC 26》+《世界杯小组赛：挪威 VS 法国》弹幕录像](https://www.bilibili.com/video/av116819335581079/) | 116819335581079 |
 
 ## 世界杯小组赛：挪威 VS 法国
 
