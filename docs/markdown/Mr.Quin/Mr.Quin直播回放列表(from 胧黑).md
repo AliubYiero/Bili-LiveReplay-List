@@ -3,12 +3,30 @@
 | 主播 | Mr.Quin |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **胧黑** |
-| **数据更新时间** | **2026-07-22** |
-| **累积计入视频数量** | **965** |
+| **数据更新时间** | **2026-07-23** |
+| **累积计入视频数量** | **966** |
 | **最旧视频** | [【Mr.Quin】2022年8月17日《异度之刃3》弹幕录像](https://www.bilibili.com/video/av644671524/) |
-| **最新视频** | [【Mr.Quin】2026年7月19日《明日方舟：终末地》+《世界杯决赛：西班牙 VS 阿根廷》+《EA Sports FC 26》弹幕录像](https://www.bilibili.com/video/av116949862319649/) |
+| **最新视频** | [【Mr.Quin】2026年7月22日《Penguin Lifter》+《稗子 The Dream Of A Cockspur》+《午夜轮班》弹幕录像](https://www.bilibili.com/video/av116965918180860/) |
 
 ---
+
+## Penguin Lifter
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| Penguin Lifter | 2026-07-22 | 04:57:54 | Part 1 | [【Mr.Quin】2026年7月22日《Penguin Lifter》+《稗子 The Dream Of A Cockspur》+《午夜轮班》弹幕录像](https://www.bilibili.com/video/av116965918180860/) | 116965918180860 |
+
+## 稗子 The Dream Of A Cockspur
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| 稗子 The Dream Of A Cockspur | 2026-07-22 | 04:57:54 | Part 1 | [【Mr.Quin】2026年7月22日《Penguin Lifter》+《稗子 The Dream Of A Cockspur》+《午夜轮班》弹幕录像](https://www.bilibili.com/video/av116965918180860/) | 116965918180860 |
+
+## 午夜轮班
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| 午夜轮班 | 2026-07-22 | 04:57:54 | Part 1 | [【Mr.Quin】2026年7月22日《Penguin Lifter》+《稗子 The Dream Of A Cockspur》+《午夜轮班》弹幕录像](https://www.bilibili.com/video/av116965918180860/) | 116965918180860 |
 
 ## 明日方舟：终末地
 
