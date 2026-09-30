@@ -142,7 +142,7 @@ async function postRules( key, rules ) {
 			body: JSON.stringify( { rules } )
 		} );
 	} catch ( error ) {
-		throw new Error( '无法连接到本地服务，请确认 npm run edit:spelling 仍在运行' );
+		throw new Error( '无法连接到本地服务，请确认 npm run edit 仍在运行' );
 	}
 
 	let data = null;

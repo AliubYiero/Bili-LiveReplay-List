@@ -1,29 +1,11 @@
-import { copyFileSync, existsSync, readFileSync, renameSync, writeFileSync } from 'fs';
-import { lock } from 'proper-lockfile';
+import { existsSync, readFileSync } from 'fs';
 import { DataPathManager } from '../../utils/DataPathManager.ts';
 import type { SpellingCorrectionConfig, SpellingRule } from '../../interface/ISpellingCorrection.ts';
-import { parseConfig, validateConfig, type SpellingEditorErrorType } from './validator.ts';
+import { parseConfig, validateConfig } from './validator.ts';
+import { acquireLock, persistJson, SpellingEditorError } from './editorCommon.ts';
 
-/** 锁冲突重试次数 */
-const LOCK_RETRIES = 3;
-/** 锁冲突重试间隔（毫秒） */
-const LOCK_RETRY_DELAY = 100;
-/** 写文件时使用的缩进，与现有配置文件和迁移脚本保持一致 */
-const JSON_INDENT = '\t';
-
-/**
- * 编辑器运行时错误
- * type 决定 HTTP 状态码，message 会直接展示给用户
- */
-export class SpellingEditorError extends Error {
-	readonly type: SpellingEditorErrorType;
-
-	constructor( type: SpellingEditorErrorType, message: string ) {
-		super( message );
-		this.name = 'SpellingEditorError';
-		this.type = type;
-	}
-}
+// 错误类已提取到 editorCommon.ts，此处 re-export 保持原有 import 路径可用
+export { SpellingEditorError } from './editorCommon.ts';
 
 /**
  * 读取并解析当前配置文件
@@ -111,45 +93,8 @@ async function withLockedConfig(
 			throw new SpellingEditorError( validationResult.error, validationResult.message );
 		}
 
-		persistConfig( filePath, validationResult.data );
+		persistJson( filePath, validationResult.data );
 	} finally {
 		await release();
 	}
-}
-
-/**
- * 获取文件锁，失败时自动重试
- * proper-lockfile 在文件被占用时抛 code 为 ELOCKED 的错误
- */
-async function acquireLock( filePath: string ): Promise<() => Promise<void>> {
-	try {
-		return await lock( filePath, {
-			retries: {
-				retries: LOCK_RETRIES,
-				factor: 1,
-				minTimeout: LOCK_RETRY_DELAY,
-				maxTimeout: LOCK_RETRY_DELAY
-			}
-		} );
-	} catch ( error ) {
-		if ( ( error as NodeJS.ErrnoException ).code === 'ELOCKED' ) {
-			throw new SpellingEditorError( 'LOCKED', '文件正在被其他进程修改，请稍后重试' );
-		}
-
-		throw new SpellingEditorError( 'INTERNAL_ERROR', `获取文件锁失败: ${( error as Error ).message }` );
-	}
-}
-
-/**
- * 备份旧文件后原子写入新配置
- * 先写临时文件再重命名，避免写入中断导致配置文件残缺
- */
-function persistConfig( filePath: string, config: SpellingCorrectionConfig ): void {
-	if ( existsSync( filePath ) ) {
-		copyFileSync( filePath, `${filePath}.bak` );
-	}
-
-	const tempPath = `${filePath}.tmp`;
-	writeFileSync( tempPath, JSON.stringify( config, null, JSON_INDENT ), 'utf-8' );
-	renameSync( tempPath, filePath );
 }

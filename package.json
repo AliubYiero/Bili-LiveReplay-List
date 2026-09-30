@@ -20,7 +20,7 @@
 		"test:coverage": "jest --config src/jest.config.ts --coverage",
 		"migrate:data": "npx tsx src/scripts/migrate-data.ts",
 		"migrate:spelling": "npx tsx src/scripts/migrate-spelling.ts",
-		"edit:spelling": "npx tsx src/scripts/spellingEditor.ts"
+		"edit": "npx tsx src/scripts/spellingEditor.ts"
 	},
 	"devDependencies": {
 		"@rslib/core": "^0.19.1",

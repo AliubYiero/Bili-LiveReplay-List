@@ -5,11 +5,14 @@ import type { SpellingCorrectionConfig, SpellingRule } from '../../interface/ISp
 /**
  * 编辑器可返回的错误类型
  * 与设计稿第 6 节的错误表一一对应
+ * USER_NOT_FOUND / AID_FILE_NOT_FOUND 由「录播数据」页面使用，拼写域不会产生
  */
 export type SpellingEditorErrorType =
 	| 'VALIDATION_ERROR'
 	| 'DUPLICATE_FROM'
 	| 'UID_NOT_FOUND'
+	| 'USER_NOT_FOUND'
+	| 'AID_FILE_NOT_FOUND'
 	| 'LOCKED'
 	| 'INTERNAL_ERROR';
 

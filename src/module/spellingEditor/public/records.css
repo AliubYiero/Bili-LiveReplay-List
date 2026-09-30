@@ -1,0 +1,162 @@
+/* 录播数据页面专有样式，复用 styles.css 的变量与基础组件 */
+
+/* ==================== 用户选择器 ==================== */
+
+.toolbar {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.toolbar__label {
+	font-size: 13px;
+	color: var(--muted-foreground);
+}
+
+/* ==================== 标签 chip ==================== */
+
+.chips {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px;
+}
+
+.chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	max-width: 100%;
+	padding: 1px 8px;
+	border: 1px solid var(--border);
+	border-radius: 999px;
+	background: var(--muted);
+	font-size: 12px;
+	line-height: 20px;
+}
+
+.chip__label {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.chip__remove {
+	flex: none;
+	width: 14px;
+	height: 14px;
+	padding: 0;
+	border: none;
+	border-radius: 50%;
+	background: transparent;
+	color: var(--muted-foreground);
+	font: inherit;
+	font-size: 11px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.chip__remove:hover {
+	background: var(--destructive);
+	color: #ffffff;
+}
+
+.chip__remove:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 2px rgba(161, 161, 170, 0.55);
+}
+
+/* 只读标签：游玩游戏是从标题自动解析出来的，不接受编辑 */
+.chip--readonly,
+.chip--auto {
+	border-style: dashed;
+	background: transparent;
+	color: var(--muted-foreground);
+}
+
+.chip--auto {
+	font-style: italic;
+}
+
+.chip-input {
+	flex: 1 1 84px;
+	min-width: 84px;
+	height: 24px;
+	padding: 0 8px;
+	border: 1px dashed var(--input);
+	border-radius: 999px;
+	background: transparent;
+	color: var(--foreground);
+	font: inherit;
+	font-size: 12px;
+}
+
+.chip-input::placeholder {
+	color: var(--muted-foreground);
+}
+
+.chip-input:focus-visible {
+	outline: none;
+	border-style: solid;
+	border-color: var(--ring);
+	background: var(--background);
+	box-shadow: 0 0 0 3px rgba(161, 161, 170, 0.25);
+}
+
+/* ==================== 记录表格 ==================== */
+
+.table--records {
+	/* 表格列较宽，允许横向滚动而不是把内容挤变形 */
+	min-width: 900px;
+}
+
+.col-title {
+	width: auto;
+}
+
+.col-play,
+.col-map {
+	width: 280px;
+}
+
+.col-apply {
+	width: 168px;
+	text-align: right;
+}
+
+.cell-title {
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+/* 批量应用结果的临时提示，与 .card__error 同结构 */
+.card__notice {
+	margin: 0;
+	padding: 10px 16px;
+	background: #f0fdf4;
+	border-bottom: 1px solid #bbf7d0;
+	color: var(--success);
+	font-size: 13px;
+}
+
+.card__scroll {
+	overflow-x: auto;
+}
+
+.button--small {
+	height: 28px;
+	padding: 0 10px;
+	font-size: 12px;
+}
+
+.button:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+
+.button:disabled:hover {
+	opacity: 0.45;
+}

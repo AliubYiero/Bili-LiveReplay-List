@@ -56,8 +56,10 @@ coverage
 *.tmp
 *.temp
 
-# 拼写纠正编辑器产生的备份与锁文件
+# 本地数据编辑器产生的备份与锁文件
 data/SpellingCorrections.json.bak
 data/SpellingCorrections.json.lock
+data/*/*.aid.json.bak
+data/*/*.aid.json.lock
 
 .claude/

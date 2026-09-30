@@ -3,8 +3,9 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>拼写规则 · Bili-LiveReplay-List</title>
+	<title>录播数据 · Bili-LiveReplay-List</title>
 	<link rel="stylesheet" href="./styles.css" />
+	<link rel="stylesheet" href="./records.css" />
 </head>
 <body>
 	<header class="topbar">
@@ -13,30 +14,30 @@
 				<div class="topbar__heading">
 					<h1 class="topbar__title">本地数据编辑器</h1>
 					<nav class="tabs">
-						<a class="tab tab--active" href="/" aria-current="page">拼写规则</a>
-						<a class="tab" href="/records">录播数据</a>
+						<a class="tab" href="/">拼写规则</a>
+						<a class="tab tab--active" href="/records" aria-current="page">录播数据</a>
 					</nav>
 				</div>
-				<p class="topbar__hint">修改后自动保存到 data/SpellingCorrections.json</p>
+				<p class="topbar__hint">修改后自动保存到 data/&lt;uid&gt;/&lt;uname&gt;.aid.json</p>
 			</div>
 			<div class="topbar__actions">
 				<input
 					id="search"
 					class="input input--search"
 					type="search"
-					placeholder="搜索 from 或 to…"
+					placeholder="搜索标题、游戏或 aid…"
 					autocomplete="off"
 					spellcheck="false"
 				/>
-				<div id="save-status" class="status status--saved" role="status" aria-live="polite">正在加载配置…</div>
+				<div id="save-status" class="status" role="status" aria-live="polite">正在加载…</div>
 			</div>
 		</div>
 	</header>
 
 	<main id="app" class="main">
-		<p class="placeholder">正在加载配置…</p>
+		<p class="placeholder">正在加载用户列表…</p>
 	</main>
 
-	<script src="./app.js"></script>
+	<script src="./records.js"></script>
 </body>
 </html>

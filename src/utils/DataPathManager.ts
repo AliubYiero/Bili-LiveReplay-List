@@ -9,6 +9,9 @@ export interface UserFilePaths {
   userDir: string;
 }
 
+/** UID 在数据中以数字或字符串形式出现，两种都接受 */
+export type UserId = number | string;
+
 export class DataPathManager {
   /**
    * 获取数据根目录
@@ -20,8 +23,8 @@ export class DataPathManager {
   /**
    * 获取用户数据目录（自动创建）
    */
-  static getUserDataDir(uid: number): string {
-    const userDir = join(this.getDataDir(), uid.toString());
+  static getUserDataDir(uid: UserId): string {
+    const userDir = this.resolveUserDir(uid);
     this.ensureDir(userDir);
     return userDir;
   }
@@ -29,17 +32,15 @@ export class DataPathManager {
   /**
    * 获取 record.json 文件路径
    */
-  static getRecordFilePath(uid: number, userName: string): string {
-    const safeName = safeFilename(userName);
-    return join(this.getUserDataDir(uid), `${safeName}.record.json`);
+  static getRecordFilePath(uid: UserId, userName: string): string {
+    return this.getUserFilePaths(uid, userName).recordPath;
   }
 
   /**
    * 获取 aid.json 文件路径
    */
-  static getAidFilePath(uid: number, userName: string): string {
-    const safeName = safeFilename(userName);
-    return join(this.getUserDataDir(uid), `${safeName}.aid.json`);
+  static getAidFilePath(uid: UserId, userName: string): string {
+    return this.getUserFilePaths(uid, userName).aidPath;
   }
 
   /**
@@ -50,10 +51,31 @@ export class DataPathManager {
   }
 
   /**
-   * 获取用户所有文件路径（统一接口）
+   * 获取用户所有文件路径（统一接口，会创建目录）
    */
-  static getUserFilePaths(uid: number, userName: string): UserFilePaths {
-    const userDir = this.getUserDataDir(uid);
+  static getUserFilePaths(uid: UserId, userName: string): UserFilePaths {
+    return this.buildUserFilePaths(this.getUserDataDir(uid), userName);
+  }
+
+  /**
+   * 解析用户所有文件路径（只读，不创建目录）
+   * 扫描类操作必须用它——扫描不该因为读一个不存在的用户而凭空建出空目录
+   */
+  static resolveUserFilePaths(uid: UserId, userName: string): UserFilePaths {
+    return this.buildUserFilePaths(this.resolveUserDir(uid), userName);
+  }
+
+  /**
+   * 解析用户目录路径（只读，不创建）
+   */
+  private static resolveUserDir(uid: UserId): string {
+    return join(this.getDataDir(), uid.toString());
+  }
+
+  /**
+   * 由用户目录拼出各文件路径
+   */
+  private static buildUserFilePaths(userDir: string, userName: string): UserFilePaths {
     const safeName = safeFilename(userName);
     return {
       userDir,
