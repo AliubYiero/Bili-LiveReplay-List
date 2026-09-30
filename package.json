@@ -19,10 +19,12 @@
 		"test:watch": "jest --config src/jest.config.ts --watch",
 		"test:coverage": "jest --config src/jest.config.ts --coverage",
 		"migrate:data": "npx tsx src/scripts/migrate-data.ts",
-		"migrate:spelling": "npx tsx src/scripts/migrate-spelling.ts"
+		"migrate:spelling": "npx tsx src/scripts/migrate-spelling.ts",
+		"edit:spelling": "npx tsx src/scripts/spellingEditor.ts"
 	},
 	"devDependencies": {
 		"@rslib/core": "^0.19.1",
+		"@types/express": "^5.0.6",
 		"@types/jest": "^30.0.0",
 		"@types/mock-fs": "^4.13.4",
 		"@types/node": "^24.10.4",
@@ -33,6 +35,7 @@
 	},
 	"dependencies": {
 		"axios": "^1.13.2",
+		"express": "^5.2.1",
 		"jest": "^30.3.0",
 		"proper-lockfile": "^4.1.2",
 		"radash": "^12.1.1",

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>拼写纠正编辑器 · Bili-LiveReplay-List</title>
+	<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+	<header class="topbar">
+		<div class="topbar__inner">
+			<div class="topbar__brand">
+				<h1 class="topbar__title">拼写纠正编辑器</h1>
+				<p class="topbar__hint">修改后自动保存到 data/SpellingCorrections.json</p>
+			</div>
+			<div class="topbar__actions">
+				<input
+					id="search"
+					class="input input--search"
+					type="search"
+					placeholder="搜索 from 或 to…"
+					autocomplete="off"
+					spellcheck="false"
+				/>
+				<div id="save-status" class="status status--saved" role="status" aria-live="polite">正在加载配置…</div>
+			</div>
+		</div>
+	</header>
+
+	<main id="app" class="main">
+		<p class="placeholder">正在加载配置…</p>
+	</main>
+
+	<script src="./app.js"></script>
+</body>
+</html>
