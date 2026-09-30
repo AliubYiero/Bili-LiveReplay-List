@@ -6,6 +6,7 @@ import type { SpellingCorrectionConfig, SpellingRule } from '../../interface/ISp
  * 编辑器可返回的错误类型
  * 与设计稿第 6 节的错误表一一对应
  * USER_NOT_FOUND / AID_FILE_NOT_FOUND 由「录播数据」页面使用，拼写域不会产生
+ * GLOBAL_RULE_CONFLICT 只由 promote-to-global 产生
  */
 export type SpellingEditorErrorType =
 	| 'VALIDATION_ERROR'
@@ -13,6 +14,7 @@ export type SpellingEditorErrorType =
 	| 'UID_NOT_FOUND'
 	| 'USER_NOT_FOUND'
 	| 'AID_FILE_NOT_FOUND'
+	| 'GLOBAL_RULE_CONFLICT'
 	| 'LOCKED'
 	| 'INTERNAL_ERROR';
 

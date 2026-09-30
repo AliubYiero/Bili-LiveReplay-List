@@ -1,0 +1,106 @@
+/* 游戏纠错页面专有样式，复用 styles.css 的变量与基础组件 */
+
+.table--games {
+	/* 四列在窄屏下并排会变形，交给 .card__scroll 横向滚动 */
+	min-width: 880px;
+}
+
+.col-raw {
+	width: 300px;
+}
+
+.col-rule {
+	width: 260px;
+}
+
+.col-final {
+	width: auto;
+}
+
+.col-promote {
+	width: 148px;
+	text-align: right;
+}
+
+/* ==================== 原始名 ==================== */
+
+.cell-raw {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.cell-raw__name {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+/* ==================== 纠正后名称输入框 ==================== */
+
+.input--rule {
+	height: 30px;
+	font-size: 13px;
+}
+
+/* ==================== 当前最终结果 ==================== */
+
+.cell-final {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.cell-final__name {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+/* 未被任何规则命中：主程序会原样使用这个游戏名 */
+.cell-final__name--none {
+	color: var(--muted-foreground);
+	font-style: italic;
+}
+
+.badge--source-none {
+	background: var(--muted);
+	color: var(--muted-foreground);
+}
+
+.badge--source-uid {
+	background: #eff6ff;
+	color: #2563eb;
+}
+
+.badge--source-global {
+	background: #f0fdf4;
+	color: var(--success);
+}
+
+/* uid 规则命中后又被全局改写，这里用虚线提示悬停可看详情 */
+.badge--source-uid-plus-global {
+	background: #fffbeb;
+	color: #b45309;
+}
+
+.badge--has-shadow {
+	border-bottom: 1px dashed currentColor;
+	cursor: help;
+}
+
+/* ==================== 行内错误 ==================== */
+
+.cell-promote {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 4px;
+}
+
+.row-error {
+	color: var(--destructive);
+	font-size: 12px;
+	text-align: right;
+}

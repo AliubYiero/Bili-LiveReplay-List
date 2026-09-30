@@ -4,14 +4,18 @@ import { dirname, join } from 'node:path';
 import type { SpellingRule } from '../../interface/ISpellingCorrection.ts';
 import {
 	getConfig,
+	promoteRuleToGlobal,
 	saveFullConfig,
 	saveGlobalRules,
 	saveUidRules,
-	SpellingEditorError
+	SpellingEditorError,
+	upsertUidRules
 } from './storage.ts';
 import type { SpellingEditorErrorType } from './validator.ts';
 import { listUsers, readUserRecords, saveAidRules } from './recordsStorage.ts';
 import type { AidRules } from './recordsValidator.ts';
+import { aggregateUserGames, listRecordUids } from './gamesAggregator.ts';
+import { GlobalRuleConflictError } from './editorCommon.ts';
 
 /** 错误类型到 HTTP 状态码的映射 */
 const HTTP_STATUS: Record<SpellingEditorErrorType, number> = {
@@ -20,6 +24,7 @@ const HTTP_STATUS: Record<SpellingEditorErrorType, number> = {
 	UID_NOT_FOUND: 400,
 	USER_NOT_FOUND: 400,
 	AID_FILE_NOT_FOUND: 400,
+	GLOBAL_RULE_CONFLICT: 409,
 	LOCKED: 423,
 	INTERNAL_ERROR: 500
 };
@@ -69,6 +74,25 @@ export function createApp(): Express {
 		}
 	} );
 
+	app.put( '/api/spelling/uid/:uid', async ( req: Request<{ uid: string }>, res: Response ) => {
+		try {
+			await upsertUidRules( readUidParam( req.params.uid ), readRules( req.body ) );
+			res.json( { success: true } );
+		} catch ( error ) {
+			sendError( res, error );
+		}
+	} );
+
+	app.post( '/api/spelling/promote-to-global', async ( req: Request, res: Response ) => {
+		try {
+			const { uid, from, to, overwrite } = readPromoteBody( req.body );
+			await promoteRuleToGlobal( uid, from, to, overwrite );
+			res.json( { success: true } );
+		} catch ( error ) {
+			sendError( res, error );
+		}
+	} );
+
 	app.post( '/api/spelling', async ( req: Request, res: Response ) => {
 		try {
 			await saveFullConfig( req.body );
@@ -83,6 +107,27 @@ export function createApp(): Express {
 		// 仓库路径里只要有以点开头的目录（如 D:\Code\.project\...）就会被判成 dotfile 而 404。
 		// 传 root 时只检查相对文件名，与 express.static 的行为一致。
 		res.sendFile( 'records.html', { root: PUBLIC_DIR } );
+	} );
+
+	app.get( '/games', ( _req: Request, res: Response ) => {
+		res.sendFile( 'games.html', { root: PUBLIC_DIR } );
+	} );
+
+	// 必须注册在 /api/games/:uid 之前，否则 "users" 会被当成 uid 匹配掉
+	app.get( '/api/games/users', ( _req: Request, res: Response ) => {
+		try {
+			res.json( { users: listRecordUids().map( uid => ( { uid } ) ) } );
+		} catch ( error ) {
+			sendError( res, error );
+		}
+	} );
+
+	app.get( '/api/games/:uid', ( req: Request<{ uid: string }>, res: Response ) => {
+		try {
+			res.json( aggregateUserGames( readUidParam( req.params.uid ) ) );
+		} catch ( error ) {
+			sendError( res, error );
+		}
 	} );
 
 	app.get( '/api/records/users', ( _req: Request, res: Response ) => {
@@ -169,6 +214,35 @@ function readAidRules( body: unknown ): AidRules {
 	return rules as AidRules;
 }
 
+/** 校验 UID 路径参数：只接受纯数字，避免把脏 key 写进 uidRules */
+function readUidParam( uid: string ): string {
+	if ( !/^\d+$/.test( uid ) ) {
+		throw new SpellingEditorError( 'VALIDATION_ERROR', `UID 非法: ${uid}` );
+	}
+
+	return uid;
+}
+
+/** 取出并校验「提升到全局」的请求体 */
+function readPromoteBody( body: unknown ): { uid: string; from: string; to: string; overwrite: boolean } {
+	const source = ( body ?? {} ) as Record<string, unknown>;
+	const { uid, from, to, overwrite } = source;
+
+	if ( typeof uid !== 'string' || !/^\d+$/.test( uid ) ) {
+		throw new SpellingEditorError( 'VALIDATION_ERROR', '请求体缺少合法的 uid' );
+	}
+
+	if ( typeof from !== 'string' || from === '' ) {
+		throw new SpellingEditorError( 'VALIDATION_ERROR', '请求体缺少 from' );
+	}
+
+	if ( typeof to !== 'string' || to === '' ) {
+		throw new SpellingEditorError( 'VALIDATION_ERROR', '请求体缺少 to' );
+	}
+
+	return { uid, from, to, overwrite: overwrite === true };
+}
+
 /** 取出并校验路径参数：UID 必须是纯数字，用户名交给 DataPathManager 做文件名净化 */
 function readUserParams( params: UserParams ): { uid: string; userName: string } {
 	const { uid, userName } = params;
@@ -186,6 +260,17 @@ function readUserParams( params: UserParams ): { uid: string; userName: string }
 
 /** 统一错误响应格式：{ success: false, error, message } */
 function sendError( res: Response, error: unknown ): void {
+	if ( error instanceof GlobalRuleConflictError ) {
+		// 带上已有的 to，前端才能拼出「全局已存在 from → 旧to，是否覆盖」的确认文案
+		res.status( 409 ).json( {
+			success: false,
+			error: error.type,
+			message: error.message,
+			existingTo: error.existingTo
+		} );
+		return;
+	}
+
 	if ( error instanceof SpellingEditorError ) {
 		res.status( HTTP_STATUS[ error.type ] ?? 500 ).json( {
 			success: false,

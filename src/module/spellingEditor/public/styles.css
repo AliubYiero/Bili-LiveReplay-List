@@ -355,6 +355,36 @@ body {
 	font-size: 13px;
 }
 
+/* 操作成功后的临时提示，与 .card__error 同结构 */
+.card__notice {
+	margin: 0;
+	padding: 10px 16px;
+	background: #f0fdf4;
+	border-bottom: 1px solid #bbf7d0;
+	color: var(--success);
+	font-size: 13px;
+}
+
+/* 表格列较宽时横向滚动，而不是把内容挤变形 */
+.card__scroll {
+	overflow-x: auto;
+}
+
+.button--small {
+	height: 28px;
+	padding: 0 10px;
+	font-size: 12px;
+}
+
+.button:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+
+.button:disabled:hover {
+	opacity: 0.45;
+}
+
 .card__footer {
 	display: flex;
 	justify-content: flex-start;

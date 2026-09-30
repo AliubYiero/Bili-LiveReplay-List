@@ -5,7 +5,8 @@ import type { IRecord } from '../../interface/IRecord.ts';
 import { acquireLock, persistJson, SpellingEditorError } from './editorCommon.ts';
 import { parseAidRules, validateAidRules, type AidRules } from './recordsValidator.ts';
 
-const RECORD_SUFFIX = '.record.json';
+/** 录播数据文件后缀，扫描类模块共用 */
+export const RECORD_SUFFIX = '.record.json';
 const AID_SUFFIX = '.aid.json';
 
 /** 用户选择器的一项 */

@@ -4,11 +4,14 @@ import { join } from 'path';
 import { cwd } from 'process';
 import {
 	getConfig,
+	promoteRuleToGlobal,
 	saveFullConfig,
 	saveGlobalRules,
 	saveUidRules,
-	SpellingEditorError
+	SpellingEditorError,
+	upsertUidRules
 } from '../../../module/spellingEditor/storage';
+import { GlobalRuleConflictError } from '../../../module/spellingEditor/editorCommon';
 import type { SpellingCorrectionConfig } from '../../../interface/ISpellingCorrection';
 
 const configPath = join(cwd(), 'data', 'SpellingCorrections.json');
@@ -178,6 +181,167 @@ describe('spellingEditor storage', () => {
 			await saveUidRules('15810', [{ from: 'data2', to: 'DOTA2' }]);
 
 			expect(readWritten().uidRules['15810'].rules).toEqual([{ from: 'data2', to: 'DOTA2' }]);
+		});
+	});
+
+	describe('upsertUidRules', () => {
+		it('creates the uid group when it does not exist yet', async () => {
+			mountFs();
+
+			await upsertUidRules('690608693', [{ from: '杂谈', to: '杂谈闲聊' }]);
+
+			expect(readWritten().uidRules['690608693'].rules).toEqual([{ from: '杂谈', to: '杂谈闲聊' }]);
+			expect(readWritten().uidRules['15810']).toEqual(baseConfig().uidRules['15810']);
+		});
+
+		it('replaces the rules of an existing uid group', async () => {
+			mountFs();
+
+			await upsertUidRules('15810', [{ from: '黑神话', to: '黑神话：悟空' }]);
+
+			expect(readWritten().uidRules['15810'].rules).toEqual([{ from: '黑神话', to: '黑神话：悟空' }]);
+		});
+
+		it('keeps orphan rules that the caller sends back verbatim', async () => {
+			mountFs();
+
+			// 整页提交的语义：调用方负责把完整 rules 数组交回来
+			await upsertUidRules('15810', [
+				{ from: '数据里没出现过的孤儿', to: 'x' },
+				{ from: '黑神话', to: '黑神话：悟空' }
+			]);
+
+			expect(readWritten().uidRules['15810'].rules).toHaveLength(2);
+		});
+
+		it('rejects duplicate from within the array and keeps the file unchanged', async () => {
+			mountFs();
+			const before = readFileSync(configPath, 'utf-8');
+
+			try {
+				await upsertUidRules('15810', [
+					{ from: 'a', to: 'A' },
+					{ from: 'a', to: 'B' }
+				]);
+				throw new Error('should have thrown');
+			} catch (error) {
+				expect((error as SpellingEditorError).type).toBe('DUPLICATE_FROM');
+			}
+
+			expect(readFileSync(configPath, 'utf-8')).toBe(before);
+			expect(existsSync(backupPath)).toBe(false);
+		});
+
+		it('backs up the previous content before writing', async () => {
+			mountFs();
+			const before = readFileSync(configPath, 'utf-8');
+
+			await upsertUidRules('690608693', [{ from: 'a', to: 'A' }]);
+
+			expect(readFileSync(backupPath, 'utf-8')).toBe(before);
+		});
+	});
+
+	describe('promoteRuleToGlobal', () => {
+		it('moves the rule from uid to global', async () => {
+			mountFs();
+
+			await promoteRuleToGlobal('15810', '塞尔达', '塞尔达传说：王国之泪');
+
+			const written = readWritten();
+			expect(written.global.rules).toEqual([
+				{ from: 'data2', to: 'dota2' },
+				{ from: '塞尔达', to: '塞尔达传说：王国之泪' }
+			]);
+			expect(written.uidRules['15810'].rules).toEqual([]);
+		});
+
+		it('silently drops the uid rule when global already maps to the same to', async () => {
+			mountFs({
+				version: '2.0',
+				global: { rules: [{ from: '塞尔达', to: '王国之泪' }] },
+				uidRules: { '15810': { rules: [{ from: '塞尔达', to: '王国之泪' }] } }
+			});
+
+			await promoteRuleToGlobal('15810', '塞尔达', '王国之泪');
+
+			const written = readWritten();
+			expect(written.global.rules).toEqual([{ from: '塞尔达', to: '王国之泪' }]);
+			expect(written.uidRules['15810'].rules).toEqual([]);
+		});
+
+		it('throws GlobalRuleConflictError with existingTo when to differs', async () => {
+			mountFs({
+				version: '2.0',
+				global: { rules: [{ from: '塞尔达', to: '旷野之息' }] },
+				uidRules: { '15810': { rules: [{ from: '塞尔达', to: '王国之泪' }] } }
+			});
+			const before = readFileSync(configPath, 'utf-8');
+
+			try {
+				await promoteRuleToGlobal('15810', '塞尔达', '王国之泪');
+				throw new Error('should have thrown');
+			} catch (error) {
+				expect(error).toBeInstanceOf(GlobalRuleConflictError);
+				expect((error as GlobalRuleConflictError).type).toBe('GLOBAL_RULE_CONFLICT');
+				// 前端要靠它拼出「全局已存在 塞尔达 → 旷野之息，是否覆盖」的确认文案
+				expect((error as GlobalRuleConflictError).existingTo).toBe('旷野之息');
+			}
+
+			// 冲突时 uid 规则不能被删掉
+			expect(readFileSync(configPath, 'utf-8')).toBe(before);
+			expect(existsSync(backupPath)).toBe(false);
+		});
+
+		it('overwrites the conflicting global rule when overwrite is true', async () => {
+			mountFs({
+				version: '2.0',
+				global: { rules: [{ from: '塞尔达', to: '旷野之息' }] },
+				uidRules: { '15810': { rules: [{ from: '塞尔达', to: '王国之泪' }] } }
+			});
+
+			await promoteRuleToGlobal('15810', '塞尔达', '王国之泪', true);
+
+			const written = readWritten();
+			expect(written.global.rules).toEqual([{ from: '塞尔达', to: '王国之泪' }]);
+			expect(written.uidRules['15810'].rules).toEqual([]);
+		});
+
+		it('rejects an unknown uid with VALIDATION_ERROR', async () => {
+			mountFs();
+
+			try {
+				await promoteRuleToGlobal('99999', '塞尔达', '王国之泪');
+				throw new Error('should have thrown');
+			} catch (error) {
+				expect((error as SpellingEditorError).type).toBe('VALIDATION_ERROR');
+			}
+		});
+
+		it('rejects a rule that is not in the uid rules', async () => {
+			mountFs();
+			const before = readFileSync(configPath, 'utf-8');
+
+			try {
+				await promoteRuleToGlobal('15810', '不存在的规则', 'x');
+				throw new Error('should have thrown');
+			} catch (error) {
+				expect((error as SpellingEditorError).type).toBe('VALIDATION_ERROR');
+			}
+
+			expect(readFileSync(configPath, 'utf-8')).toBe(before);
+		});
+
+		it('rejects a to that differs from the stored rule', async () => {
+			mountFs();
+
+			// 请求里的 to 必须与 uid 规则完全一致，避免拿着过期数据改写全局
+			try {
+				await promoteRuleToGlobal('15810', '塞尔达', '另一个名字');
+				throw new Error('should have thrown');
+			} catch (error) {
+				expect((error as SpellingEditorError).type).toBe('VALIDATION_ERROR');
+			}
 		});
 	});
 

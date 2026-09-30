@@ -24,6 +24,21 @@ export class SpellingEditorError extends Error {
 }
 
 /**
+ * 提升到全局时目标 from 已被全局规则占用且 to 不同
+ * 单独建类是为了把 existingTo 一并带回前端，供 confirm 文案使用
+ */
+export class GlobalRuleConflictError extends SpellingEditorError {
+	/** 全局规则中该 from 当前对应的 to */
+	readonly existingTo: string;
+
+	constructor( existingTo: string ) {
+		super( 'GLOBAL_RULE_CONFLICT', `全局规则中已存在该游戏名，当前纠正为「${existingTo}」` );
+		this.name = 'GlobalRuleConflictError';
+		this.existingTo = existingTo;
+	}
+}
+
+/**
  * 获取文件锁，失败时自动重试
  * proper-lockfile 在文件被占用时抛 code 为 ELOCKED 的错误
  * 注意：目标文件必须已存在，否则 proper-lockfile 无法创建锁目录
