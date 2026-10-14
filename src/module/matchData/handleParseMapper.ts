@@ -1,4 +1,4 @@
-import { RecordItem, UnparseRecordItem } from '../../interface/IRecord.ts';
+import { RecordItem, UnparseRecordItem, VideoSourceOption } from '../../interface/IRecord.ts';
 import {
 	cleanGameName,
 	extractLiveDate,
@@ -8,6 +8,10 @@ import {
 export interface IParseItem {
 	uid: number;
 	userName: string;
+	/** 该 UID 的数据源类型: 主页视频 / 直播回放 / 两者都采集 */
+	videoSourceType: VideoSourceOption;
+	/** 直播回放合集 ID, `replay` / `both` 时必需 */
+	seriesId?: number;
 	onParse: ( item: UnparseRecordItem ) => Promise<RecordItem | null>;
 }
 
@@ -30,6 +34,7 @@ export const handleParseMapper: IParseItem[] = [
 	{
 		uid: 245335,
 		userName: '胧黑',
+		videoSourceType: 'upload',
 		onParse: async ( item: UnparseRecordItem ) => {
 			// 1. 匹配主播前缀
 			const liver = extractLiver( item.title );
@@ -55,6 +60,7 @@ export const handleParseMapper: IParseItem[] = [
 	{
 		uid: 1400350754,
 		userName: '自行车二层',
+		videoSourceType: 'upload',
 		onParse: async ( item: UnparseRecordItem ) => {
 			// 1. 匹配播主前缀
 			const liver = extractLiver( item.title );
@@ -87,6 +93,7 @@ export const handleParseMapper: IParseItem[] = [
 	{
 		uid: 15810,
 		userName: 'Mr.Quin',
+		videoSourceType: 'upload',
 		onParse: async ( item: UnparseRecordItem ) => {
 			// play Game
 			const { title } = item;
@@ -110,6 +117,8 @@ export const handleParseMapper: IParseItem[] = [
 	{
 		uid: 690608693,
 		userName: '勾檀Mayumi',
+		videoSourceType: 'replay',
+		seriesId: 91376,
 		onParse: async ( item: UnparseRecordItem ) => {
 			// 只监听直播回放
 			if ( !item.title.includes( '【直播回放】' ) ) return null;
@@ -138,3 +147,20 @@ export const handleParseMapper: IParseItem[] = [
 		},
 	},
 ];
+
+/**
+ * 启动时校验解析器配置
+ *
+ * 直播回放必须有 seriesId, 否则等采集到一半才报错太晚了。
+ */
+export const assertValidParseMapper = (
+	mapper: IParseItem[] = handleParseMapper,
+) => {
+	for ( const { uid, userName, videoSourceType, seriesId } of mapper ) {
+		if ( ( videoSourceType === 'replay' || videoSourceType === 'both' ) && !seriesId ) {
+			throw new Error(
+				`配置错误: 用户 ${ userName }(uid:${ uid }) 的 videoSourceType 为 "${ videoSourceType }", 必须同时配置 seriesId`,
+			);
+		}
+	}
+};

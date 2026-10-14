@@ -11,51 +11,74 @@ jobs:
     # ✅ 关键：声明写入权限（使 git push 生效）
     permissions:
       contents: write
-    
+
     steps:
       # 1. 检出代码（启用写权限）
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       # ✅ 关键修复：使用官方 pnpm 安装器
       - name: Setup pnpm
         uses: pnpm/action-setup@v2  # 官方维护的 Action
         with:
           version: 8  # 指定稳定版本
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          # Playwright 要求 Node 18+，这里跟随当前 LTS
+          node-version: '22'
           cache: 'pnpm'  # 启用 pnpm 专属缓存
           # ✅ 安全处理 lockfile 不存在的情况
           cache-dependency-path: |
             pnpm-lock.yaml
             package.json
-            
-      
+
       # 4. 安装依赖（pnpm 版）
       - name: Install dependencies
         run: pnpm install  # ✅ 相当于 npm ci
-      
+
+      # 缓存 Chromium，lockfile 变化时重新下载
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
+
+      # 未命中缓存：下载 Chromium 并安装系统依赖
+      - name: Install Playwright Chromium
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: pnpm exec playwright install --with-deps chromium
+
+      # 命中缓存：只补系统依赖，跳过重新下载
+      - name: Install Playwright system dependencies
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: pnpm exec playwright install-deps chromium
+
       # 5. 生成报告（pnpm 版）
       - name: Generate report
+        env:
+          # 登录态：未登录时 B 站不返回空间主页投稿列表（-352 风控校验失败）
+          # 在仓库 Settings → Secrets and variables → Actions 里配置，
+          # 值为浏览器 document.cookie 的原样拷贝
+          BILI_COOKIE: ${{ secrets.BILI_COOKIE }}
         run: |
           pnpm build    # ✅ 替换为实际构建命令（如有需要）
           pnpm start # ✅ 替换为 package.json 中定义的生成命令
-      
+
       # 6. 提交报告
       - name: Commit and push report
         run: |
           git config user.email "action@github.com"
           git config user.name "GitHub Action"
-          
+
           # 智能提交：仅提交变更文件
           git add -A
           if git diff --cached --quiet; then
             echo "ℹ️ No changes to commit"
             exit 0
           fi
-          
+
           git commit -m "chore: update daily report $(date +'%Y-%m-%d')"
           git push

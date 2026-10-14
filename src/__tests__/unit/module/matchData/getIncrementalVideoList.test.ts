@@ -1,74 +1,106 @@
 import mockFs from 'mock-fs';
-import { getIncrementalVideoList } from '../../../../module/matchData/getIncrementalVideoList.ts';
+import type { Browser } from 'playwright';
+import {
+  getIncrementalVideoList,
+  mergeSourceVideoList,
+} from '../../../../module/matchData/getIncrementalVideoList.ts';
 import { RecordStore } from '../../../../store/RecordStore.ts';
-import * as apiModule from '../../../../api/api_getUserUploadVideoList.ts';
-import * as radash from 'radash';
-import { archiveItem } from '../../../../interface/IUserUploadVideo.ts';
+import { NormalizedPage } from '../../../../scraper/normalize.ts';
+import { playwrightStreamPages } from '../../../../scraper/playwrightStreamPages.ts';
+import {
+  RecordItem,
+  UnparseRecordItem,
+  VideoSourceType,
+} from '../../../../interface/IRecord.ts';
 
-// Mock api module
-jest.mock('../../../../api/api_getUserUploadVideoList.ts');
-
-// Mock radash sleep
-jest.mock('radash', () => ({
-  ...jest.requireActual('radash'),
-  sleep: jest.fn().mockResolvedValue(undefined),
+jest.mock('../../../../scraper/playwrightStreamPages.ts', () => ({
+  playwrightStreamPages: jest.fn(),
 }));
+
+const mockStream = playwrightStreamPages as unknown as jest.Mock;
+const fakeBrowser = {} as Browser;
 
 describe('getIncrementalVideoList', () => {
   const testUid = 12345;
   const testUserName = 'TestUser';
   const dataDir = `data/${testUid}`;
+  const testSeriesId = 91376;
 
-  // Helper function to create mock archive items
-  const createMockArchive = (
+  const createArchive = (
     aid: number,
-    bvid: string,
     title: string,
-    pubdate: number = 1700000000,
-    duration: number = 3600
-  ): archiveItem => ({
+    sourceType: VideoSourceType = 'upload',
+    publishTime: number = 1700000000000,
+  ): UnparseRecordItem => ({
     aid,
-    bvid,
+    bvId: `BV${aid}`,
     title,
-    desc: 'Test description',
-    pic: 'http://example.com/pic.jpg',
-    pubdate,
-    ctime: pubdate,
-    duration,
-    state: 0,
-    upMid: testUid,
-    stat: { view: 1000 },
-    enable_vt: 0,
-    ugc_pay: 0,
-    playback_position: 0,
-    vt_display: '',
-    interactive_video: false,
+    publishTime,
+    liveDuration: 3600,
+    sourceType,
   });
 
-  // Helper function to create mock API response
-  const createMockResponse = (
-    archives: archiveItem[],
-    pageNum: number = 1,
-    pageSize: number = 100,
-    total: number = archives.length
-  ) => ({
-    archives,
-    page: {
-      num: pageNum,
-      size: pageSize,
-      total,
-    },
-    hasNext: pageNum * pageSize < total,
+  const createPage = (
+    archives: UnparseRecordItem[],
+    options: {
+      currentPage?: number;
+      pageSize?: number;
+      total?: number;
+      sourceType?: VideoSourceType;
+    } = {},
+  ): NormalizedPage => {
+    const sourceType = options.sourceType ?? 'upload';
+    return {
+      sourceType,
+      currentPage: options.currentPage ?? 1,
+      pageSize: options.pageSize ?? 100,
+      total: options.total ?? archives.length,
+      archives: archives.map(archive => ({ ...archive, sourceType })),
+    };
+  };
+
+  /** 让生成器按顺序产出这些页 */
+  const mockPages = (pages: NormalizedPage[]) => {
+    mockStream.mockImplementation(async function* () {
+      yield* pages;
+    });
+  };
+
+  /** 按数据源分别产出页面，用于 both 模式 */
+  const mockPagesBySource = (pagesBySource: Partial<Record<VideoSourceType, NormalizedPage[]>>) => {
+    mockStream.mockImplementation(async function* (
+      _browser: unknown,
+      _uid: unknown,
+      sourceType: VideoSourceType,
+    ) {
+      yield* pagesBySource[sourceType] ?? [];
+    });
+  };
+
+  /** 模拟 onParse 之后的结果，新增记录需要 RecordItem 而不是采集出的 UnparseRecordItem */
+  const toRecord = (item: UnparseRecordItem): RecordItem => ({
+    ...item,
+    liveTime: item.publishTime,
+    playGame: [],
+    liver: 'Test',
+  });
+
+  const createRecord = (aid: number, title: string): RecordItem => ({
+    aid,
+    bvId: `BV${aid}`,
+    title,
+    publishTime: 1700000000000,
+    liveDuration: 3600,
+    liveTime: 1700000000000,
+    playGame: ['Game'],
+    liver: 'Liver',
   });
 
   beforeEach(() => {
-    // Setup mock file system - include node_modules to allow Jest to work
     mockFs({
       [dataDir]: {},
-      'node_modules': mockFs.load('node_modules'),
+      node_modules: mockFs.load('node_modules'),
     });
-
-    // Reset mocks
     jest.clearAllMocks();
   });
 
@@ -76,133 +108,136 @@ describe('getIncrementalVideoList', () => {
     mockFs.restore();
   });
 
-  describe('should return empty array when no new videos', () => {
-    it('when API returns empty archives', async () => {
-      const mockApi = jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockResolvedValue(createMockResponse([]));
-
+  describe('生成器调用参数', () => {
+    it('把 uid / 数据源类型 / seriesId / browser 透传给生成器', async () => {
+      mockPages([]);
       const recordStore = new RecordStore(testUid, testUserName);
-      const result = await getIncrementalVideoList(testUid, recordStore);
 
-      expect(result).toEqual([]);
-      expect(mockApi).toHaveBeenCalledTimes(1);
-      expect(mockApi).toHaveBeenCalledWith(testUid, 1, 100);
+      await getIncrementalVideoList(
+        testUid,
+        'replay',
+        testSeriesId,
+        recordStore,
+        fakeBrowser,
+      );
+
+      expect(mockStream).toHaveBeenCalledTimes(1);
+      expect(mockStream).toHaveBeenCalledWith(fakeBrowser, testUid, 'replay', testSeriesId);
     });
 
-    it('when first video matches cache point', async () => {
-      const archive1 = createMockArchive(1001, 'BV1001', 'Video 1');
-      const mockApi = jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockResolvedValue(createMockResponse([archive1]));
-
+    it('upload 模式只有一次采集', async () => {
+      mockPages([]);
       const recordStore = new RecordStore(testUid, testUserName);
-      // Pre-set cache to match the first video
-      await recordStore.addRecord({
-        aid: 1001,
-        bvId: 'BV1001',
-        title: 'Video 1',
-        publishTime: 1700000000000,
-        liveDuration: 3600,
-        liveTime: 1700000000000,
-        playGame: ['Game'],
-        liver: 'Liver',
-      });
 
-      const result = await getIncrementalVideoList(testUid, recordStore);
+      await getIncrementalVideoList(testUid, 'upload', undefined, recordStore, fakeBrowser);
 
-      expect(result).toEqual([]);
-      expect(mockApi).toHaveBeenCalledTimes(1);
+      expect(mockStream).toHaveBeenCalledTimes(1);
+      expect(mockStream).toHaveBeenCalledWith(fakeBrowser, testUid, 'upload', undefined);
     });
   });
 
-  describe('should fetch videos until cache point', () => {
-    it('stop when arrivedCachePoint returns true', async () => {
-      const archive1 = createMockArchive(1001, 'BV1001', 'Video 1');
-      const archive2 = createMockArchive(1002, 'BV1002', 'Video 2');
-      const archive3 = createMockArchive(1003, 'BV1003', 'Video 3');
-
-      const mockApi = jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockResolvedValueOnce(createMockResponse([archive1, archive2, archive3], 1, 100, 3));
-
+  describe('没有新增视频', () => {
+    it('生成器不产出任何页时返回空数组', async () => {
+      mockPages([]);
       const recordStore = new RecordStore(testUid, testUserName);
-      // Pre-set cache to match archive2
-      await recordStore.addRecord({
-        aid: 1002,
-        bvId: 'BV1002',
-        title: 'Video 2',
-        publishTime: 1700000000000,
-        liveDuration: 3600,
-        liveTime: 1700000000000,
-        playGame: ['Game'],
-        liver: 'Liver',
-      });
 
-      const result = await getIncrementalVideoList(testUid, recordStore);
+      const result = await getIncrementalVideoList(
+        testUid, 'upload', undefined, recordStore, fakeBrowser,
+      );
 
-      // Should only include archive1, stop at archive2 (cache point)
-      expect(result).toHaveLength(1);
-      expect(result[0].aid).toBe(1001);
-      expect(mockApi).toHaveBeenCalledTimes(1);
+      expect(result).toEqual([]);
     });
 
-    it('fetch multiple pages before hitting cache point', async () => {
-      const page1Archives = [
-        createMockArchive(1001, 'BV1001', 'Video 1'),
-        createMockArchive(1002, 'BV1002', 'Video 2'),
-      ];
-      const page2Archives = [
-        createMockArchive(1003, 'BV1003', 'Video 3'),
-        createMockArchive(1004, 'BV1004', 'Video 4'),
-      ];
-
-      const mockApi = jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockResolvedValueOnce(createMockResponse(page1Archives, 1, 2, 5))
-        .mockResolvedValueOnce(createMockResponse(page2Archives, 2, 2, 5));
-
+    it('第一条视频就是缓存点时不收录任何视频', async () => {
       const recordStore = new RecordStore(testUid, testUserName);
-      // Cache point at aid 1003 (in page 2)
-      // When 1003 is found, hasNextPage is set to false, and checkCache becomes true
-      // 1003 has same title -> excluded, 1004 is processed with checkCache=true but not in store -> excluded
-      await recordStore.addRecord({
-        aid: 1003,
-        bvId: 'BV1003',
-        title: 'Video 3',
-        publishTime: 1700000000000,
-        liveDuration: 3600,
-        liveTime: 1700000000000,
-        playGame: ['Game'],
-        liver: 'Liver',
-      });
+      await recordStore.addRecord(createRecord(1001, 'Video 1'));
 
-      const result = await getIncrementalVideoList(testUid, recordStore);
+      mockPages([createPage([createArchive(1001, 'Video 1')])]);
 
-      // Only videos before cache point are included
-      expect(result).toHaveLength(2);
-      expect(result.map(r => r.aid)).toEqual([1001, 1002]);
-      expect(mockApi).toHaveBeenCalledTimes(2);
+      const result = await getIncrementalVideoList(
+        testUid, 'upload', undefined, recordStore, fakeBrowser,
+      );
+
+      expect(result).toEqual([]);
     });
   });
 
-  describe('should handle video title changes', () => {
-    it('include video with changed title and set updateTime to false', async () => {
-      const archive1 = createMockArchive(1001, 'BV1001', 'Updated Title');
-
-      const mockApi = jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockResolvedValue(createMockResponse([archive1]));
-
+  describe('在缓存点停止', () => {
+    it('只收录缓存点之前的视频', async () => {
       const recordStore = new RecordStore(testUid, testUserName);
-      // Pre-existing record with different title (cache point)
-      await recordStore.addRecord({
-        aid: 1001,
-        bvId: 'BV1001',
-        title: 'Old Title',
-        publishTime: 1700000000000,
-        liveDuration: 3600,
-        liveTime: 1700000000000,
-        playGame: ['Game'],
-        liver: 'Liver',
-      });
+      await recordStore.addRecord(createRecord(1002, 'Video 2'));
 
-      const result = await getIncrementalVideoList(testUid, recordStore);
+      mockPages([createPage([
+        createArchive(1001, 'Video 1'),
+        createArchive(1002, 'Video 2'),
+        createArchive(1003, 'Video 3'),
+      ])]);
+
+      const result = await getIncrementalVideoList(
+        testUid, 'upload', undefined, recordStore, fakeBrowser,
+      );
+
+      expect(result.map(item => item.aid)).toEqual([1001]);
+    });
+
+    it('翻到第二页才命中缓存点', async () => {
+      const recordStore = new RecordStore(testUid, testUserName);
+      await recordStore.addRecord(createRecord(1003, 'Video 3'));
+
+      mockPages([
+        createPage(
+          [createArchive(1001, 'Video 1'), createArchive(1002, 'Video 2')],
+          { currentPage: 1, pageSize: 2, total: 5 },
+        ),
+        createPage(
+          [createArchive(1003, 'Video 3'), createArchive(1004, 'Video 4')],
+          { currentPage: 2, pageSize: 2, total: 5 },
+        ),
+        createPage(
+          [createArchive(1005, 'Video 5')],
+          { currentPage: 3, pageSize: 2, total: 5 },
+        ),
+      ]);
+
+      const result = await getIncrementalVideoList(
+        testUid, 'upload', undefined, recordStore, fakeBrowser,
+      );
+
+      expect(result.map(item => item.aid)).toEqual([1001, 1002]);
+    });
+
+    it('没有缓存点时把所有页都收下', async () => {
+      const recordStore = new RecordStore(testUid, testUserName);
+
+      mockPages([
+        createPage(
+          [createArchive(1001, 'Video 1'), createArchive(1002, 'Video 2')],
+          { currentPage: 1, pageSize: 2, total: 3 },
+        ),
+        createPage(
+          [createArchive(1003, 'Video 3')],
+          { currentPage: 2, pageSize: 2, total: 3 },
+        ),
+      ]);
+
+      const result = await getIncrementalVideoList(
+        testUid, 'upload', undefined, recordStore, fakeBrowser,
+      );
+
+      expect(result.map(item => item.aid)).toEqual([1001, 1002, 1003]);
+    });
+  });
+
+  describe('缓存点之后的标题变更', () => {
+    it('标题变化时重新收录并标记 updateTime=false', async () => {
+      const recordStore = new RecordStore(testUid, testUserName);
+      await recordStore.addRecord(createRecord(1001, 'Old Title'));
+
+      mockPages([createPage([createArchive(1001, 'Updated Title')])]);
+
+      const result = await getIncrementalVideoList(
+        testUid, 'upload', undefined, recordStore, fakeBrowser,
+      );
 
       expect(result).toHaveLength(1);
       expect(result[0].aid).toBe(1001);
@@ -210,271 +245,177 @@ describe('getIncrementalVideoList', () => {
       expect(result[0].updateTime).toBe(false);
     });
 
-    it('exclude video when title is unchanged', async () => {
-      const archive1 = createMockArchive(1001, 'BV1001', 'Same Title');
-
-      const mockApi = jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockResolvedValue(createMockResponse([archive1]));
-
+    it('标题没变时不收录', async () => {
       const recordStore = new RecordStore(testUid, testUserName);
-      // Pre-existing record with same title at aid 1001 (cache point)
-      await recordStore.addRecord({
-        aid: 1001,
-        bvId: 'BV1001',
-        title: 'Same Title',
-        publishTime: 1700000000000,
-        liveDuration: 3600,
-        liveTime: 1700000000000,
-        playGame: ['Game'],
-        liver: 'Liver',
-      });
+      await recordStore.addRecord(createRecord(1001, 'Same Title'));
 
-      const result = await getIncrementalVideoList(testUid, recordStore);
+      mockPages([createPage([createArchive(1001, 'Same Title')])]);
 
-      // archive1 is cache point with same title -> excluded, no new videos
+      const result = await getIncrementalVideoList(
+        testUid, 'upload', undefined, recordStore, fakeBrowser,
+      );
+
       expect(result).toHaveLength(0);
     });
 
-    it('handle mix of changed and unchanged titles at cache point', async () => {
-      const archive1 = createMockArchive(1001, 'BV1001', 'Video 1');
-      const archive2 = createMockArchive(1002, 'BV1002', 'Changed Title');
-      const archive3 = createMockArchive(1003, 'BV1003', 'Video 3');
-
-      const mockApi = jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockResolvedValue(createMockResponse([archive1, archive2, archive3]));
-
+    it('同一页里缓存点之后的视频同样做标题比对', async () => {
       const recordStore = new RecordStore(testUid, testUserName);
-      // Cache point at aid 1002
-      await recordStore.addRecord({
-        aid: 1002,
-        bvId: 'BV1002',
-        title: 'Old Title',
-        publishTime: 1700000000000,
-        liveDuration: 3600,
-        liveTime: 1700000000000,
-        playGame: ['Game'],
-        liver: 'Liver',
-      });
-
-      const result = await getIncrementalVideoList(testUid, recordStore);
-
-      expect(result).toHaveLength(2);
-      expect(result[0].aid).toBe(1001);
-      expect(result[1].aid).toBe(1002);
-      expect(result[1].updateTime).toBe(false);
-    });
-  });
-
-  describe('should respect MAX_PAGES limit', () => {
-    it('stop when page exceeds MAX_PAGES', async () => {
-      // Create 101 pages of data (more than MAX_PAGES = 100)
-      const mockApi = jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockImplementation((uid: number, page) => {
-          return Promise.resolve(createMockResponse(
-            [createMockArchive(1000 + (page || 1), `BV${1000 + (page || 1)}`, `Video ${page}`)],
-            page,
-            1,
-            200
-          ));
-        });
-
-      const recordStore = new RecordStore(testUid, testUserName);
-      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
-
-      const result = await getIncrementalVideoList(testUid, recordStore);
-
-      // Should have fetched 100 pages (MAX_PAGES)
-      expect(mockApi).toHaveBeenCalledTimes(100);
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining('超过最大限制 100')
-      );
-      expect(result).toHaveLength(100);
-
-      consoleSpy.mockRestore();
-    });
-
-    it('stop early when hasNext is false', async () => {
-      const mockApi = jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockResolvedValueOnce(createMockResponse(
-          [createMockArchive(1001, 'BV1001', 'Video 1')],
-          1,
-          100,
-          1 // total = 1, so no next page
-        ));
-
-      const recordStore = new RecordStore(testUid, testUserName);
-      const result = await getIncrementalVideoList(testUid, recordStore);
-
-      expect(mockApi).toHaveBeenCalledTimes(1);
-      expect(result).toHaveLength(1);
-    });
-  });
-
-  describe('should handle multi-page data fetching', () => {
-    it('fetch all pages when no cache point hit', async () => {
-      const page1Archives = [
-        createMockArchive(1001, 'BV1001', 'Video 1'),
-        createMockArchive(1002, 'BV1002', 'Video 2'),
-      ];
-      const page2Archives = [
-        createMockArchive(1003, 'BV1003', 'Video 3'),
-        createMockArchive(1004, 'BV1004', 'Video 4'),
-      ];
-      const page3Archives = [
-        createMockArchive(1005, 'BV1005', 'Video 5'),
-      ];
-
-      const mockApi = jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockResolvedValueOnce(createMockResponse(page1Archives, 1, 2, 5))
-        .mockResolvedValueOnce(createMockResponse(page2Archives, 2, 2, 5))
-        .mockResolvedValueOnce(createMockResponse(page3Archives, 3, 2, 5));
-
-      const recordStore = new RecordStore(testUid, testUserName);
-      const result = await getIncrementalVideoList(testUid, recordStore);
-
-      expect(result).toHaveLength(5);
-      expect(result.map(r => r.aid)).toEqual([1001, 1002, 1003, 1004, 1005]);
-      expect(mockApi).toHaveBeenCalledTimes(3);
-      expect(mockApi).toHaveBeenNthCalledWith(1, testUid, 1, 100);
-      expect(mockApi).toHaveBeenNthCalledWith(2, testUid, 2, 100);
-      expect(mockApi).toHaveBeenNthCalledWith(3, testUid, 3, 100);
-    });
-
-    it('parse archive data correctly', async () => {
-      const archive = createMockArchive(
-        12345,
-        'BV1Test',
-        'Test Video Title',
-        1700000000,
-        7200
-      );
-
-      const mockApi = jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockResolvedValue(createMockResponse([archive]));
-
-      const recordStore = new RecordStore(testUid, testUserName);
-      const result = await getIncrementalVideoList(testUid, recordStore);
-
-      expect(result).toHaveLength(1);
-      expect(result[0]).toMatchObject({
-        aid: 12345,
-        bvId: 'BV1Test',
-        title: 'Test Video Title',
-        liveDuration: 7200,
-        publishTime: 1700000000000, // converted from seconds to milliseconds
-      });
-    });
-  });
-
-  describe('should handle checkCacheVideoTitle returning true', () => {
-    it('exclude video when checkCacheVideoTitle returns true', async () => {
-      const archive1 = createMockArchive(1001, 'BV1001', 'Same Title');
-
-      const mockApi = jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockResolvedValue(createMockResponse([archive1]));
-
-      const recordStore = new RecordStore(testUid, testUserName);
-      await recordStore.addRecord({
-        aid: 1001,
-        bvId: 'BV1001',
-        title: 'Same Title',
-        publishTime: 1700000000000,
-        liveDuration: 3600,
-        liveTime: 1700000000000,
-        playGame: ['Game'],
-        liver: 'Liver',
-      });
-
-      const result = await getIncrementalVideoList(testUid, recordStore);
-
-      // When checkCacheVideoTitle returns true, video should be excluded
-      expect(result).toHaveLength(0);
-    });
-
-    it('continue processing after finding unchanged video', async () => {
-      const archive1 = createMockArchive(1001, 'BV1001', 'Unchanged');
-      const archive2 = createMockArchive(1002, 'BV1002', 'Changed');
-
-      const mockApi = jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockResolvedValue(createMockResponse([archive1, archive2]));
-
-      const recordStore = new RecordStore(testUid, testUserName);
-      // Add both records in single call - first record's aid becomes cache.aid
-      // We want cache.aid to be 1001, so archive1 should be first in the array
       await recordStore.addRecord(
-        {
-          aid: 1001,
-          bvId: 'BV1001',
-          title: 'Unchanged',
-          publishTime: 1700000000000,
-          liveDuration: 3600,
-          liveTime: 1700000000000,
-          playGame: ['Game'],
-          liver: 'Liver',
-        },
-        {
-          aid: 1002,
-          bvId: 'BV1002',
-          title: 'Old Title',
-          publishTime: 1700000000000,
-          liveDuration: 3600,
-          liveTime: 1700000000000,
-          playGame: ['Game'],
-          liver: 'Liver',
-        }
+        createRecord(1001, 'Unchanged'),
+        createRecord(1002, 'Old Title'),
       );
 
-      const result = await getIncrementalVideoList(testUid, recordStore);
+      mockPages([createPage([
+        createArchive(1001, 'Unchanged'),
+        createArchive(1002, 'Changed'),
+        createArchive(1003, 'Video 3'),
+      ])]);
 
-      // archive1 is at cache point (aid=1001) with unchanged title -> excluded
-      // archive2 has changed title -> included with updateTime=false
+      const result = await getIncrementalVideoList(
+        testUid, 'upload', undefined, recordStore, fakeBrowser,
+      );
+
       expect(result).toHaveLength(1);
       expect(result[0].aid).toBe(1002);
       expect(result[0].updateTime).toBe(false);
     });
   });
 
-  describe('should call sleep between API requests', () => {
-    it('call sleep with 20_000ms delay', async () => {
-      jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockResolvedValue(createMockResponse([]));
-
+  describe('both 模式', () => {
+    it('两个数据源各采集一次，按发布时间倒序归并', async () => {
       const recordStore = new RecordStore(testUid, testUserName);
-      await getIncrementalVideoList(testUid, recordStore);
 
-      expect(radash.sleep).toHaveBeenCalledWith(20_000);
+      mockPagesBySource({
+        upload: [
+          createPage([createArchive(1001, 'Upload 1', 'upload', 1700000001000)], { sourceType: 'upload' }),
+        ],
+        replay: [
+          createPage([createArchive(2001, 'Replay 1', 'replay', 1700000003000)], { sourceType: 'replay' }),
+        ],
+      });
+
+      const result = await getIncrementalVideoList(
+        testUid, 'both', testSeriesId, recordStore, fakeBrowser,
+      );
+
+      expect(mockStream).toHaveBeenCalledTimes(2);
+      expect(mockStream).toHaveBeenNthCalledWith(1, fakeBrowser, testUid, 'upload', testSeriesId);
+      expect(mockStream).toHaveBeenNthCalledWith(2, fakeBrowser, testUid, 'replay', testSeriesId);
+      // 最新的排在最前，addRecord 依赖这个顺序推进缓存点
+      expect(result.map(item => item.aid)).toEqual([2001, 1001]);
+    });
+
+    it('两个数据源各自独立命中自己的缓存点', async () => {
+      const recordStore = new RecordStore(testUid, testUserName);
+      // 带 sourceType 写入，模拟上一次运行留下的分源缓存点
+      await recordStore.addRecord({ ...createRecord(1002, 'Upload 2'), sourceType: 'upload' });
+      await recordStore.addRecord({ ...createRecord(2002, 'Replay 2'), sourceType: 'replay' });
+
+      mockPagesBySource({
+        upload: [
+          createPage([
+            createArchive(1001, 'Upload 1', 'upload', 1700000005000),
+            createArchive(1002, 'Upload 2', 'upload', 1700000004000),
+          ], { sourceType: 'upload' }),
+        ],
+        replay: [
+          createPage([
+            createArchive(2001, 'Replay 1', 'replay', 1700000003000),
+            createArchive(2002, 'Replay 2', 'replay', 1700000002000),
+          ], { sourceType: 'replay' }),
+        ],
+      });
+
+      const result = await getIncrementalVideoList(
+        testUid, 'both', testSeriesId, recordStore, fakeBrowser,
+      );
+
+      // 两个源各自在缓存点停下，互不影响
+      expect(result.map(item => item.aid).sort()).toEqual([1001, 2001]);
+    });
+
+    it('按 aid 去重', async () => {
+      const recordStore = new RecordStore(testUid, testUserName);
+
+      mockPagesBySource({
+        upload: [ createPage([createArchive(1001, 'Upload', 'upload')], { sourceType: 'upload' }) ],
+        replay: [ createPage([createArchive(1001, 'Replay', 'replay')], { sourceType: 'replay' }) ],
+      });
+
+      const result = await getIncrementalVideoList(
+        testUid, 'both', testSeriesId, recordStore, fakeBrowser,
+      );
+
+      expect(result).toHaveLength(1);
+      expect(result[0].aid).toBe(1001);
     });
   });
 
-  describe('should log progress information', () => {
-    it('log page progress for each request', async () => {
-      const mockApi = jest.spyOn(apiModule, 'api_getUserUploadVideoList')
-        .mockResolvedValueOnce(createMockResponse(
-          [createMockArchive(1001, 'BV1001', 'Video 1')],
-          1,
-          100,
-          150
-        ))
-        .mockResolvedValueOnce(createMockResponse(
-          [createMockArchive(1002, 'BV1002', 'Video 2')],
-          2,
-          100,
-          150
-        ));
-
+  describe('分源缓存点的维护', () => {
+    it('采集成功写入后记录该数据源的缓存点', async () => {
       const recordStore = new RecordStore(testUid, testUserName);
-      const consoleSpy = jest.spyOn(console, 'info').mockImplementation();
+      mockPages([createPage([createArchive(1001, 'Video 1')])]);
 
-      await getIncrementalVideoList(testUid, recordStore);
-
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Page 1 / 2')
+      const list = await getIncrementalVideoList(
+        testUid, 'upload', undefined, recordStore, fakeBrowser,
       );
-      expect(consoleSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Page 2 / 2')
-      );
+      await recordStore.addRecord(...list.map(toRecord));
 
-      consoleSpy.mockRestore();
+      expect(recordStore.cache.aidBySource).toEqual({ upload: 1001 });
+      // sourceType 是临时字段，不进 record.json
+      expect(recordStore.recordList[0]).not.toHaveProperty('sourceType');
     });
+
+    it('both 模式记录各自数据源的缓存点', async () => {
+      const recordStore = new RecordStore(testUid, testUserName);
+      mockPagesBySource({
+        upload: [ createPage([createArchive(1001, 'Upload', 'upload', 1700000001000)], { sourceType: 'upload' }) ],
+        replay: [ createPage([createArchive(2001, 'Replay', 'replay', 1700000003000)], { sourceType: 'replay' }) ],
+      });
+
+      const list = await getIncrementalVideoList(
+        testUid, 'both', testSeriesId, recordStore, fakeBrowser,
+      );
+      await recordStore.addRecord(...list.map(toRecord));
+
+      expect(recordStore.cache.aidBySource).toEqual({ upload: 1001, replay: 2001 });
+      // 标量 aid 保持旧语义：本轮最新的一条
+      expect(recordStore.cache.aid).toBe(2001);
+    });
+  });
+});
+
+describe('mergeSourceVideoList', () => {
+  const createItem = (aid: number, publishTime: number, title = `Video ${aid}`): UnparseRecordItem => ({
+    aid,
+    bvId: `BV${aid}`,
+    title,
+    publishTime,
+    liveDuration: 3600,
+    sourceType: 'upload',
+  });
+
+  it('按发布时间倒序排列', () => {
+    const merged = mergeSourceVideoList([
+      createItem(1, 1000),
+      createItem(2, 3000),
+      createItem(3, 2000),
+    ]);
+
+    expect(merged.map(item => item.aid)).toEqual([2, 3, 1]);
+  });
+
+  it('aid 重复时保留先出现的那条', () => {
+    const merged = mergeSourceVideoList([
+      createItem(1, 1000, 'first'),
+      createItem(1, 1000, 'second'),
+    ]);
+
+    expect(merged).toHaveLength(1);
+    expect(merged[0].title).toBe('first');
+  });
+
+  it('空数组返回空数组', () => {
+    expect(mergeSourceVideoList([])).toEqual([]);
   });
 });

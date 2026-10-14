@@ -1,4 +1,5 @@
 import mockFs from 'mock-fs';
+import type { Browser } from 'playwright';
 import { matchVideoList } from '../../../../module/matchData/matchVideoList.ts';
 import * as getIncrementalVideoListModule from '../../../../module/matchData/getIncrementalVideoList.ts';
 import { UnparseRecordItem, RecordItem } from '../../../../interface/IRecord.ts';
@@ -9,6 +10,7 @@ jest.mock('../../../../module/matchData/getIncrementalVideoList.ts');
 describe('matchVideoList', () => {
   const testUid = 12345;
   const testUserName = 'TestUser';
+  const fakeBrowser = {} as Browser;
 
   beforeEach(() => {
     mockFs({
@@ -65,7 +67,7 @@ describe('matchVideoList', () => {
       .mockResolvedValueOnce(mockParsedVideos[1]);
 
     // Act
-    const result = await matchVideoList(testUid, testUserName, mockOnParse);
+    const result = await matchVideoList(testUid, testUserName, 'upload', undefined, mockOnParse, fakeBrowser);
 
     // Assert
     expect(result).toBe(true);
@@ -83,7 +85,7 @@ describe('matchVideoList', () => {
     const mockOnParse = jest.fn();
 
     // Act
-    const result = await matchVideoList(testUid, testUserName, mockOnParse);
+    const result = await matchVideoList(testUid, testUserName, 'upload', undefined, mockOnParse, fakeBrowser);
 
     // Assert
     expect(result).toBe(false);
@@ -132,7 +134,7 @@ describe('matchVideoList', () => {
       .mockResolvedValueOnce(null);     // Third video returns null
 
     // Act
-    const result = await matchVideoList(testUid, testUserName, mockOnParse);
+    const result = await matchVideoList(testUid, testUserName, 'upload', undefined, mockOnParse, fakeBrowser);
 
     // Assert
     expect(result).toBe(true);
@@ -157,7 +159,7 @@ describe('matchVideoList', () => {
     const mockOnParse = jest.fn().mockResolvedValue(null);
 
     // Act
-    const result = await matchVideoList(testUid, testUserName, mockOnParse);
+    const result = await matchVideoList(testUid, testUserName, 'upload', undefined, mockOnParse, fakeBrowser);
 
     // Assert
     expect(result).toBe(false);
@@ -189,7 +191,7 @@ describe('matchVideoList', () => {
     const mockOnParse = jest.fn().mockResolvedValue(mockParsedVideo);
 
     // Act
-    await matchVideoList(testUid, testUserName, mockOnParse);
+    await matchVideoList(testUid, testUserName, 'upload', undefined, mockOnParse, fakeBrowser);
 
     // Assert - RecordStore should persist the data
     // We verify this by checking that addRecord was called (indirectly through store)
@@ -242,7 +244,7 @@ describe('matchVideoList', () => {
       .mockResolvedValueOnce(mockParsedVideos[1]);
 
     // Act
-    await matchVideoList(testUid, testUserName, mockOnParse);
+    await matchVideoList(testUid, testUserName, 'upload', undefined, mockOnParse, fakeBrowser);
 
     // Assert
     expect(consoleInfoSpy).toHaveBeenCalledWith(
@@ -266,7 +268,7 @@ describe('matchVideoList', () => {
     const mockOnParse = jest.fn();
 
     // Act
-    await matchVideoList(testUid, testUserName, mockOnParse);
+    await matchVideoList(testUid, testUserName, 'upload', undefined, mockOnParse, fakeBrowser);
 
     // Assert
     expect(consoleInfoSpy).toHaveBeenCalledWith(
@@ -333,7 +335,7 @@ describe('matchVideoList', () => {
       .mockResolvedValueOnce(mockParsedVideos[2]);
 
     // Act
-    const result = await matchVideoList(testUid, testUserName, mockOnParse);
+    const result = await matchVideoList(testUid, testUserName, 'upload', undefined, mockOnParse, fakeBrowser);
 
     // Assert
     expect(result).toBe(true);
@@ -354,12 +356,15 @@ describe('matchVideoList', () => {
     const mockOnParse = jest.fn();
 
     // Act
-    await matchVideoList(testUid, testUserName, mockOnParse);
+    await matchVideoList(testUid, testUserName, 'upload', undefined, mockOnParse, fakeBrowser);
 
     // Assert
     expect(getIncrementalVideoListSpy).toHaveBeenCalledWith(
       testUid,
-      expect.any(Object)  // RecordStore instance
+      'upload',
+      undefined,
+      expect.any(Object),  // RecordStore instance
+      fakeBrowser,
     );
   });
 
@@ -392,7 +397,7 @@ describe('matchVideoList', () => {
       const mockOnParse = jest.fn();
 
       // Act
-      const result = await matchVideoList(testUid, testUserName, mockOnParse);
+      const result = await matchVideoList(testUid, testUserName, 'upload', undefined, mockOnParse, fakeBrowser);
 
       // Assert
       expect(result).toBe(false);
@@ -433,7 +438,7 @@ describe('matchVideoList', () => {
       const mockOnParse = jest.fn();
 
       // Act
-      await matchVideoList(testUid, testUserName, mockOnParse);
+      await matchVideoList(testUid, testUserName, 'upload', undefined, mockOnParse, fakeBrowser);
 
       // Assert
       expect(consoleSpy).not.toHaveBeenCalledWith(

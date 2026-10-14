@@ -1,91 +1,113 @@
+import { Browser } from 'playwright';
+import { playwrightStreamPages } from '../../scraper/playwrightStreamPages.ts';
 import {
-	api_getUserUploadVideoList,
-} from '../../api/api_getUserUploadVideoList.ts';
-import { UnparseRecordItem } from '../../interface/IRecord.ts';
-import { archiveItem } from '../../interface/IUserUploadVideo.ts';
-import { sleep } from 'radash';
+	UnparseRecordItem,
+	VideoSourceOption,
+	VideoSourceType,
+} from '../../interface/IRecord.ts';
 import { RecordStore } from '../../store/RecordStore.ts';
 
-const MAX_PAGES = 100; // 最大页数限制，防止无限循环
+/**
+ * 把 `both` 模式下两个数据源的采集结果归并成一份列表
+ *
+ * 按 `publishTime` 倒序（与单数据源时的顺序保持一致, `addRecord` 依赖
+ * 「第一条就是最新视频」来推进缓存点）, 并按 `aid` 去重。
+ */
+export const mergeSourceVideoList = (
+	videoList: UnparseRecordItem[],
+): UnparseRecordItem[] => {
+	const mergedMap = new Map<number, UnparseRecordItem>();
+	for ( const video of videoList ) {
+		if ( !mergedMap.has( video.aid ) ) {
+			mergedMap.set( video.aid, video );
+		}
+	}
+	return Array.from( mergedMap.values() )
+		.sort( ( a, b ) => b.publishTime - a.publishTime );
+};
 
 /**
- * 解析获取到的视频数据, 返回项目的记录结构
+ * 采集单个数据源的增量视频列表
+ *
+ * 遇到缓存点后, 仍然把当前页剩下的视频跑一遍标题比对（视频改标题时要重新收录）,
+ * 然后停止翻页。这与替换采集层之前的行为一致。
  */
-const parseArchive = ( item: archiveItem ): UnparseRecordItem => {
-	return {
-		aid: item.aid,
-		bvId: item.bvid,
-		liveDuration: item.duration,
-		publishTime: item.pubdate * 1000,
-		title: item.title,
-	};
+const collectSourceVideoList = async (
+	uid: number,
+	sourceType: VideoSourceType,
+	seriesId: number | undefined,
+	configStore: RecordStore,
+	browser: Browser,
+): Promise<UnparseRecordItem[]> => {
+	const videoList: UnparseRecordItem[] = [];
+	let checkCache = false;
+
+	for await ( const pageData of playwrightStreamPages( browser, uid, sourceType, seriesId ) ) {
+		for ( const archive of pageData.archives ) {
+			// 到达缓存点之后, 只做标题比对
+			if ( checkCache ) {
+				if ( !configStore.checkCacheVideoTitle( archive ) ) {
+					archive.updateTime = false;
+					videoList.push( archive );
+				}
+				continue;
+			}
+
+			// 命中缓存点: 本条及其后的视频都不再作为新增
+			if ( configStore.arrivedCachePoint( sourceType, archive.aid ) ) {
+				checkCache = true;
+				if ( !configStore.checkCacheVideoTitle( archive ) ) {
+					archive.updateTime = false;
+					videoList.push( archive );
+				}
+				continue;
+			}
+
+			videoList.push( archive );
+		}
+
+		// 当前页处理完就停, 生成器会在 break 时关闭 context
+		if ( checkCache ) break;
+	}
+
+	return videoList;
 };
 
 /**
  * 获取增量的视频列表
+ *
+ * @param uid 上传者 UID
+ * @param videoSourceType 数据源类型, `both` 时分别采集后归并
+ * @param seriesId 直播回放合集 ID, `replay` / `both` 时必需
+ * @param configStore 录播记录存储, 提供各数据源的缓存点
+ * @param browser 全局复用的浏览器实例
  */
 export const getIncrementalVideoList = async (
 	uid: number,
+	videoSourceType: VideoSourceOption,
+	seriesId: number | undefined,
 	configStore: RecordStore,
-) => {
-	const videoList: UnparseRecordItem[] = [];
-	
-	let page: number = 1;
-	let hasNextPage = true;
-	while ( hasNextPage && page <= MAX_PAGES ) {
-		// 获取投稿信息
-		let response;
-		try {
-			response = await api_getUserUploadVideoList(
-				uid,
-				page,
-				100,
-			)
-		}
-		catch ( e ) {
-			console.error( e );
-			return [];
-		}
-		finally {
-			await sleep( 20_000 );
-		}
-		// 更新判断信息
-		hasNextPage = response.hasNext;
-		const { total, size } = response.page;
-		const maxPage = Math.ceil( total / size );
-		console.info( `正在读取用户 ${ uid } 的投稿视频...(Page ${ page } / ${ maxPage })` );
-		page++;
-		
-		// 检查当前记录的视频标题是否改变
-		let checkCache = false;
-		// 解析获取到的视频信息列表
-		for ( let archive of response.archives ) {
-			// 如果到达了缓存点, 退出解析
-			if ( configStore.arrivedCachePoint( archive.aid ) ) {
-				hasNextPage = false;
-				checkCache = true;
-			}
-			
-			const record = parseArchive( archive );
-			// 判断是否进入了缓存检查阶段, 如果不是, 则正常添加视频记录
-			if ( !checkCache ) {
-				videoList.push( record );
-				continue;
-			}
-			
-			// 进入缓存检查阶段, 检查标题是否一致
-			const isSameTitle = configStore.checkCacheVideoTitle( record );
-			// 若不一致, 删除缓存视频, 重新添加进解析
-			if ( !isSameTitle ) {
-				record.updateTime = false;
-				videoList.push( record );
-			}
-		}
+	browser: Browser,
+): Promise<UnparseRecordItem[]> => {
+	const sourceTypes: VideoSourceType[] = videoSourceType === 'both'
+		? [ 'upload', 'replay' ]
+		: [ videoSourceType ];
+
+	const collected: UnparseRecordItem[] = [];
+	for ( const sourceType of sourceTypes ) {
+		const sourceVideoList = await collectSourceVideoList(
+			uid,
+			sourceType,
+			seriesId,
+			configStore,
+			browser,
+		);
+		collected.push( ...sourceVideoList );
 	}
-	
-	if ( page > MAX_PAGES ) {
-		console.warn( `用户 ${ uid } 的视频页数超过最大限制 ${ MAX_PAGES }，已停止获取` );
+
+	if ( sourceTypes.length === 1 ) {
+		return collected;
 	}
-	
-	return videoList;
+
+	return mergeSourceVideoList( collected );
 };

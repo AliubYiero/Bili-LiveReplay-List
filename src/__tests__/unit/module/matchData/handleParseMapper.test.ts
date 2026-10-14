@@ -1,4 +1,9 @@
-import { LIVER_ENTRIES, handleParseMapper, IParseItem } from '../../../../module/matchData/handleParseMapper.ts';
+import {
+	assertValidParseMapper,
+	handleParseMapper,
+	IParseItem,
+	LIVER_ENTRIES,
+} from '../../../../module/matchData/handleParseMapper.ts';
 import { UnparseRecordItem } from '../../../../interface/IRecord.ts';
 
 describe( 'handleParseMapper', () => {
@@ -31,6 +36,55 @@ describe( 'handleParseMapper', () => {
 			expect( userNames ).toContain( '自行车二层' );
 			expect( userNames ).toContain( 'Mr.Quin' );
 			expect( userNames ).toContain( '勾檀Mayumi' );
+		} );
+
+		it( 'should declare a video source type for every uploader', () => {
+			for ( const item of handleParseMapper ) {
+				expect( [ 'upload', 'replay', 'both' ] ).toContain( item.videoSourceType );
+			}
+		} );
+
+		it( 'should use the upload source for the regular uploaders', () => {
+			const uploadUids = handleParseMapper
+				.filter( item => item.videoSourceType === 'upload' )
+				.map( item => item.uid );
+			expect( uploadUids ).toEqual( [ 245335, 1400350754, 15810 ] );
+		} );
+
+		it( 'should pair the replay source with a series id', () => {
+			const replayItem = handleParseMapper.find( item => item.videoSourceType === 'replay' )!;
+			expect( replayItem.uid ).toBe( 690608693 );
+			expect( replayItem.seriesId ).toBe( 91376 );
+		} );
+	} );
+
+	describe( 'assertValidParseMapper', () => {
+		it( 'accepts the built-in mapper', () => {
+			expect( () => assertValidParseMapper() ).not.toThrow();
+		} );
+
+		it( 'rejects a replay source without seriesId', () => {
+			expect( () => assertValidParseMapper( [
+				{ uid: 1, userName: 'a', videoSourceType: 'replay', onParse: async () => null },
+			] ) ).toThrow( /必须同时配置 seriesId/ );
+		} );
+
+		it( 'rejects a both source without seriesId', () => {
+			expect( () => assertValidParseMapper( [
+				{ uid: 2, userName: 'b', videoSourceType: 'both', onParse: async () => null },
+			] ) ).toThrow( /必须同时配置 seriesId/ );
+		} );
+
+		it( 'accepts a replay source with seriesId', () => {
+			expect( () => assertValidParseMapper( [
+				{ uid: 3, userName: 'c', videoSourceType: 'replay', seriesId: 1, onParse: async () => null },
+			] ) ).not.toThrow();
+		} );
+
+		it( 'accepts an upload source without seriesId', () => {
+			expect( () => assertValidParseMapper( [
+				{ uid: 4, userName: 'd', videoSourceType: 'upload', onParse: async () => null },
+			] ) ).not.toThrow();
 		} );
 	} );
 

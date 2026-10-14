@@ -1,3 +1,5 @@
+// 让 .env 里的 PORT / CORS_ORIGIN 生效
+import 'dotenv/config';
 import type { Server } from 'node:http';
 import { createApp } from '../module/spellingEditor/server.ts';
 
