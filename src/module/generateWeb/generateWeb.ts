@@ -1,6 +1,7 @@
-import { existsSync, readFileSync, writeFileSync, readdirSync, statSync } from 'fs';
-import { RecordItem } from '../../interface/IRecord.ts';
+import { existsSync, readFileSync, writeFileSync, readdirSync, statSync, mkdirSync, rmSync } from 'fs';
+import { IRecord } from '../../interface/IRecord.ts';
 import { DataPathManager } from '../../utils/DataPathManager.ts';
+import { safeFilename } from '../../utils/filename.ts';
 import { group } from 'radash';
 import { SpellingCorrection } from '../generateReadme/SpellingCorrection.ts';
 import { AidMapperStore } from '../../store/AidMapperStore.ts';
@@ -8,114 +9,148 @@ import { createWebIndexContent } from './createWebIndexContent.ts';
 import path from 'path';
 
 /**
- * 上传者数据结构
+ * 写进 `data/<主播>/<上传者>.json` 的单条记录
+ *
+ * 只保留前端真正用得到的字段: `bvId` / `publishTime` / `liver` 在页面上从未被读取,
+ * `_globalPartMap` 改由前端加载后自行计算。`record.json` 才是权威数据源, 字段不动。
  */
-export interface UploaderData {
+export interface WebRecord {
+	aid: number;
+	title: string;
+	liveTime: number;
+	liveDuration: number;
+	playGame: string[];
+}
+
+/**
+ * 单个 (主播, 上传者) 的数据文件
+ */
+export interface UploaderDataFile {
+	liver: string;
+	userName: string;
+	latestUpdate: number;
+	records: WebRecord[];
+}
+
+/**
+ * manifest 中的上传者摘要（不含 records）
+ */
+export interface UploaderManifest {
 	userName: string;
 	totalVideos: number;
 	latestUpdate: number;
 	oldestTime: number;
 	newestTime: number;
 	isSelf: boolean;
-	records: RecordItem[];
+	/** 相对 index.html 的数据文件 URL（已 encodeURIComponent） */
+	dataFile: string;
 }
 
 /**
- * 主播数据结构
+ * manifest 中的主播条目
  */
-export interface StreamerRecord {
+export interface StreamerManifest {
 	liver: string;
-	uploaders: UploaderData[];
+	uploaders: UploaderManifest[];
 }
 
 /**
- * 从单个 record.json 文件生成上传者数据
+ * 内联进 `index.html` 的清单: 首屏只需要它就能渲染主播列表和上传者卡片
  */
-const generateUploaderData = async (
-	uid: number,
-	userName: string,
-): Promise<UploaderData | null> => {
+export interface WebManifest {
+	streamers: StreamerManifest[];
+}
+
+/**
+ * 一次生成所需的全部内容（不落盘, 便于测试）
+ */
+export interface WebOutput {
+	manifest: WebManifest;
+	dataFiles: Array<{ relativePath: string; content: UploaderDataFile }>;
+}
+
+/**
+ * 计算直播时间范围（忽略无效的 0 值）
+ */
+export const summarizeLiveTimes = (records: Array<{ liveTime: number }>) => {
+	const liveTimes = records.map(r => r.liveTime).filter(t => t > 0);
+	return {
+		oldestTime: liveTimes.length > 0 ? Math.min(...liveTimes) : 0,
+		newestTime: liveTimes.length > 0 ? Math.max(...liveTimes) : 0,
+	};
+};
+
+/**
+ * 由 (主播, 上传者) 推导数据文件在 `docs/` 下的相对路径与对外 URL
+ *
+ * 落盘用的是 safeFilename, URL 用的是它的 encodeURIComponent —— 两者一一对应,
+ * 所以前端拿到 manifest 里的 `dataFile` 就能直接 fetch, 不需要自己拼路径。
+ */
+export const buildDataFileLocation = (liver: string, userName: string) => {
+	const dir = safeFilename(liver);
+	const file = `${safeFilename(userName)}.json`;
+	return {
+		relativePath: path.join('data', dir, file),
+		url: `data/${encodeURIComponent(dir)}/${encodeURIComponent(file)}`,
+	};
+};
+
+/**
+ * 读取单个 record.json, 按主播拆分成「每主播一份」的数据文件
+ */
+const buildUploaderDataFiles = (uid: number, userName: string): UploaderDataFile[] => {
 	const recordFilePath = DataPathManager.getRecordFilePath(uid, userName);
 
 	if (!existsSync(recordFilePath)) {
 		console.warn(`Record file not found: ${recordFilePath}`);
-		return null;
+		return [];
 	}
 
 	try {
 		const content = readFileSync(recordFilePath, 'utf8');
-		const data = JSON.parse(content);
+		const data: IRecord = JSON.parse(content);
 
-		if (!data.records || !Array.isArray(data.records) || data.records.length === 0) {
+		if (!Array.isArray(data.records) || data.records.length === 0) {
 			console.warn(`No records found for ${userName} (${uid})`);
-			return null;
+			return [];
 		}
 
-		const records: RecordItem[] = data.records;
 		const aidMapper = new AidMapperStore(uid, userName);
 		const spellingCorrection = new SpellingCorrection();
-
-		// 按直播时间升序排序（从早到晚），用于计算全局集数
-		const sortedRecords = [...records].sort((a, b) => a.liveTime - b.liveTime);
-
-		// 游戏全局集数计数器
-		const gamePartCounter: Record<string, number> = {};
-
-		// 处理每个记录，应用游戏名纠正、aidMapper 修正和 _globalPartMap
-		const processedRecords = sortedRecords.map(record => {
-			const processedRecord = { ...record } as RecordItem & { _globalPartMap?: Record<string, number> };
-
-			// 应用 aidMapper 的游戏列表修正
-			const correctionPlayGame = aidMapper.getGameList(record.aid);
-			if (correctionPlayGame?.length) {
-				processedRecord.playGame = correctionPlayGame;
-			}
-
-			// 应用拼写纠正
-			processedRecord.playGame = processedRecord.playGame.map(game =>
-				spellingCorrection.correct(game, uid),
-			);
-
-			// 计算 _globalPartMap：为每个游戏维护全局集数
-			const globalPartMap: Record<string, number> = {};
-			for (const game of processedRecord.playGame) {
-				const counterKey = `${processedRecord.liver}-${game}`
-				if (!gamePartCounter[counterKey]) {
-					gamePartCounter[counterKey] = 0;
-				}
-				gamePartCounter[counterKey]++;
-				globalPartMap[game] = gamePartCounter[counterKey];
-			}
-			processedRecord._globalPartMap = globalPartMap;
-
-			return processedRecord;
-		});
-
-		// 计算统计数据
-		const liveTimes = processedRecords.map(r => r.liveTime).filter(t => t > 0);
-		const oldestTime = liveTimes.length > 0 ? Math.min(...liveTimes) : 0;
-		const newestTime = liveTimes.length > 0 ? Math.max(...liveTimes) : 0;
-
-		// 获取数据更新时间（cache.timestamp）
+		// 数据更新时间（cache.timestamp）
 		const latestUpdate = data.cache?.timestamp || Date.now();
 
-		// 检查是否是主播本人（userName === liver）
-		// 注意：这里需要获取第一条记录的 liver 来判断
-		const firstRecord = processedRecords[0];
-		const isSelf = userName === firstRecord?.liver;
+		// 一个文件可能包含多个主播的数据
+		const recordsByLiver = group(data.records, r => r.liver);
 
-		return {
-			userName,
-			totalVideos: processedRecords.length,
-			latestUpdate,
-			oldestTime,
-			newestTime,
-			isSelf,
-			records: processedRecords,
-		};
+		return Object.entries(recordsByLiver)
+			.filter(([, records]) => !!records?.length)
+			.map(([liver, records]) => {
+				// 按直播时间升序排列: 与前端计算 Part 序号时的顺序保持一致
+				const processedRecords: WebRecord[] = [...records!]
+					.sort((a, b) => a.liveTime - b.liveTime)
+					.map(record => {
+						// aidMapper 的人工映射优先, 为空数组时回退到标题解析结果
+						const correctionPlayGame = aidMapper.getGameList(record.aid);
+						const playGame = correctionPlayGame?.length
+							? correctionPlayGame
+							: record.playGame;
+
+						return {
+							aid: record.aid,
+							title: record.title,
+							liveTime: record.liveTime,
+							liveDuration: record.liveDuration,
+							// 应用拼写纠正
+							playGame: playGame.map(game => spellingCorrection.correct(game, uid)),
+						};
+					});
+
+				return { liver, userName, latestUpdate, records: processedRecords };
+			});
 	} catch (error) {
 		console.error(`Error processing ${recordFilePath}:`, error);
-		return null;
+		return [];
 	}
 };
 
@@ -158,98 +193,86 @@ const collectAllRecordFiles = (): Array<{ uid: number; userName: string }> => {
 };
 
 /**
- * 生成 streamerRecords 数据
+ * 生成 manifest 与全部数据文件内容
  */
-export const generateStreamerRecords = async (): Promise<StreamerRecord[]> => {
-	const files = collectAllRecordFiles();
-	console.log(`Found ${files.length} record files`);
+export const buildWebOutput = (): WebOutput => {
+	const recordFiles = collectAllRecordFiles();
+	console.log(`Found ${recordFiles.length} record files`);
 
-	const allUploaders: Array<UploaderData & { liver: string }> = [];
+	const dataFiles: WebOutput['dataFiles'] = [];
 
-	// 处理每个文件
-	for (const { uid, userName } of files) {
-		console.log(`Processing ${userName} (${uid})...`);
-		const uploaderData = await generateUploaderData(uid, userName);
-		if (!uploaderData) continue;
-
-		// 按 liver 分组记录 - 一个文件可能包含多个主播的数据
-		const recordsByLiver = group(uploaderData.records, r => r.liver);
-
-		for (const [liver, records] of Object.entries(recordsByLiver)) {
-			if (!records || records.length === 0) continue;
-
-			// 计算该主播的时间范围
-			const liveTimes = records.map(r => r.liveTime).filter(t => t > 0);
-			const oldestTime = liveTimes.length > 0 ? Math.min(...liveTimes) : 0;
-			const newestTime = liveTimes.length > 0 ? Math.max(...liveTimes) : 0;
-
-			// 判断是否是主播本人上传
-			const isSelf = userName === liver;
-
-			allUploaders.push({
-				userName,
-				totalVideos: records.length,
-				latestUpdate: uploaderData.latestUpdate,
-				oldestTime,
-				newestTime,
-				isSelf,
-				records,
-				liver,
-			});
+	for (const { uid, userName } of recordFiles) {
+		for (const uploaderDataFile of buildUploaderDataFiles(uid, userName)) {
+			const location = buildDataFileLocation(
+				uploaderDataFile.liver,
+				uploaderDataFile.userName,
+			);
+			dataFiles.push({ relativePath: location.relativePath, content: uploaderDataFile });
 		}
 	}
 
-	// 按 liver 分组
-	const groupedByLiver = group(allUploaders, item => item.liver);
+	// 按主播分组, 每个上传者只保留摘要
+	const groupedByLiver = group(dataFiles, item => item.content.liver);
 
-	// 构建最终的 streamerRecords 结构
-	const streamerRecords: StreamerRecord[] = Object.entries(groupedByLiver)
-		.map(([liver, uploaders]) => ({
+	const streamers: StreamerManifest[] = Object.entries(groupedByLiver).map(
+		([liver, items]) => ({
 			liver,
-			uploaders: uploaders!.map(u => ({
-				userName: u.userName,
-				totalVideos: u.totalVideos,
-				latestUpdate: u.latestUpdate,
-				oldestTime: u.oldestTime,
-				newestTime: u.newestTime,
-				isSelf: u.isSelf,
-				records: u.records,
-			})),
-		}))
-	streamerRecords.sort((a, b) => a.liver.localeCompare(b.liver, 'zh-CN'));
-	streamerRecords.forEach(({uploaders}) => {
-		uploaders.sort((a, b) => b.newestTime - a.newestTime)
-	})
+			uploaders: items!.map(({ content }) => {
+				const { oldestTime, newestTime } = summarizeLiveTimes(content.records);
+				return {
+					userName: content.userName,
+					totalVideos: content.records.length,
+					latestUpdate: content.latestUpdate,
+					oldestTime,
+					newestTime,
+					isSelf: content.userName === liver,
+					dataFile: buildDataFileLocation(content.liver, content.userName).url,
+				};
+			}),
+		}),
+	);
 
-	return streamerRecords;
+	streamers.sort((a, b) => a.liver.localeCompare(b.liver, 'zh-CN'));
+	streamers.forEach(({ uploaders }) => {
+		uploaders.sort((a, b) => b.newestTime - a.newestTime);
+	});
+
+	return { manifest: { streamers }, dataFiles };
 };
 
 /**
  * 生成 Web 页面
+ *
+ * - `docs/index.html`: 外壳 + 内联 manifest（不随数据量增长）
+ * - `docs/data/<主播>/<上传者>.json`: 每个 (主播, 上传者) 一份, 进详情页时才加载
  */
 export const generateWeb = async () => {
 	console.log('='.repeat(40));
 	console.log('Starting web page generation...');
 	console.log('='.repeat(40));
 
-	// 1. 生成 streamerRecords 数据
-	const streamerRecords = await generateStreamerRecords();
-	console.log(`\nGenerated data for ${streamerRecords.length} streamers`);
-
-	for (const sr of streamerRecords) {
-		console.log(`  - ${sr.liver}: ${sr.uploaders.length} uploaders, ${sr.uploaders.reduce((sum, u) => sum + u.totalVideos, 0)} total videos`);
+	const { manifest, dataFiles } = buildWebOutput();
+	console.log(`\nGenerated data for ${manifest.streamers.length} streamers`);
+	for (const streamer of manifest.streamers) {
+		const totalVideos = streamer.uploaders.reduce((sum, u) => sum + u.totalVideos, 0);
+		console.log(`  - ${streamer.liver}: ${streamer.uploaders.length} uploaders, ${totalVideos} total videos`);
 	}
 
-	// 2. 使用 createWebIndexContent 生成完整 HTML
-	const htmlContent = createWebIndexContent(streamerRecords);
-
-	// 3. 确保输出目录存在
 	const webDir = path.join(process.cwd(), 'docs');
+	const dataDir = path.join(webDir, 'data');
 
-	// 4. 写入文件
-	const outputPath = path.join(webDir, 'index.html');
-	writeFileSync(outputPath, htmlContent, 'utf8');
+	// 先清空: 被移除的上传者不该留下孤儿文件
+	rmSync(dataDir, { recursive: true, force: true });
 
-	console.log(`\n✓ Successfully generated web page: ${outputPath}`);
+	const indexPath = path.join(webDir, 'index.html');
+	writeFileSync(indexPath, createWebIndexContent(manifest), 'utf8');
+	console.log(`\n✓ Successfully generated web page: ${indexPath}`);
+
+	for (const { relativePath, content } of dataFiles) {
+		const targetPath = path.join(webDir, relativePath);
+		mkdirSync(path.dirname(targetPath), { recursive: true });
+		writeFileSync(targetPath, JSON.stringify(content), 'utf8');
+	}
+	console.log(`✓ Successfully generated ${dataFiles.length} data files in ${dataDir}`);
 	console.log('='.repeat(40));
 };

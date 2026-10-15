@@ -22,6 +22,9 @@ export const generateREADME = () => {
 	const content = `
 # Bilibili UP直播录播分组列表
 
+> 在线索引页(按主播 / 上传者拆分, 支持年份 / 月份 / 游戏筛选与搜索):
+> https://aliubyiero.github.io/Bili-LiveReplay-List/
+
 ## 分组目录
 
 ${ group }
@@ -176,6 +179,30 @@ npm run edit
 > 列出某个录播 Man 下出现过的所有游戏名, 直接为它们填写正确的游戏名, 不用手动输入原文.
 > 每一行还会显示"当前最终结果"——即主程序真正会输出的游戏名, 以及它来自 UID 规则还是全局规则;
 > 确认无误后可以用"添加到全局"把这条规则提升为全局规则.
+
+### 静态回放索引页
+
+> 生成
+
+\`npm run start\` 除了更新 Markdown 文档与 README, 还会生成静态回放索引页:
+
+- \`docs/index.html\` —— 页面外壳, 内联 CSS / JS 与主播 / 上传者清单
+- \`docs/data/<主播>/<上传者>.json\` —— 每个 (主播, 上传者) 单独的录播数据, 进入该上传者的详情页时才加载
+
+> 本地预览
+
+\`\`\`
+npm run preview
+\`\`\`
+
+默认监听 \`http://127.0.0.1:3000\` , 端口被占用时用 \`PORT=4000 npm run preview\` 换一个.
+索引页会 \`fetch\` \`docs/data/**\` , 因此**必须通过 http server 打开**;
+直接双击 \`docs/index.html\` 会被浏览器的 CORS 拦下, 数据文件加载不出来.
+
+> 线上部署
+
+\`docs/index.html\` 与 \`docs/data/**\` 都是生成产物, 不进 git,
+由 GitHub Actions 采集后上传 Pages artifact 部署: https://aliubyiero.github.io/Bili-LiveReplay-List/
 
 ### 自定义主播解析
 

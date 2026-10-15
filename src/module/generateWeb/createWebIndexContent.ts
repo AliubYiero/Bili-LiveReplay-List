@@ -1,9 +1,12 @@
-import { StreamerRecord } from './generateWeb.ts';
+import { WebManifest } from './generateWeb.ts';
 
 /**
  * 创建 index.html 内容
+ *
+ * 页面只内联 `manifest`（主播列表 + 上传者摘要），单个上传者的录播记录在进入
+ * 详情页时才 fetch `data/<主播>/<上传者>.json`，因此首屏体积不随数据量增长。
  */
-export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
+export const createWebIndexContent = (manifest: WebManifest) => {
 	return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -34,7 +37,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
-        
+
         body {
             font-family: var(--font-sans);
             background-color: #f8fafc; /* Slightly darker bg for contrast with cards */
@@ -70,7 +73,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
             cursor: pointer;
         }
         .brand svg { color: var(--primary); width: 24px; height: 24px; }
-        
+
         .search-bar {
             position: relative;
             width: 300px;
@@ -177,10 +180,10 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
             transition: all 0.2s; cursor: pointer; position: relative;
         }
         .card:hover { border-color: var(--ring); box-shadow: 0 4px 12px rgba(0,0,0,0.05); transform: translateY(-1px); }
-        
+
         .card-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
         .card-title { font-size: 1rem; font-weight: 600; }
-        
+
         /* REQ 3: Badge Text Change */
         .badge-self {
             font-size: 0.7rem; padding: 2px 8px; border-radius: 99px;
@@ -217,6 +220,18 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
         }
         .empty-state svg { width: 64px; height: 64px; margin-bottom: 1rem; opacity: 0.3; }
 
+        /* Loading / Error State */
+        .state-box {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 1rem; padding: 5rem 1rem; color: var(--muted-foreground); text-align: center;
+        }
+        .spinner {
+            width: 28px; height: 28px; border-radius: 50%;
+            border: 3px solid var(--border); border-top-color: var(--primary);
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
         /* View: Records List (Detail) */
         .view-records {
             flex: 1; display: flex; flex-direction: column; background: #fff;
@@ -229,7 +244,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
         }
         .page-title { font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: 0.5rem; }
         .page-title svg { color: var(--primary); width: 18px; height: 18px; }
-        
+
         .btn-tool {
             height: 34px; padding: 0 0.875rem; border-radius: var(--radius);
             font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: 0.2s;
@@ -260,6 +275,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
             border: 1px solid var(--border); border-radius: var(--radius);
             background: #fff; font-size: 0.875rem; color: var(--foreground); cursor: pointer;
         }
+        .sel-wrap select:disabled { background: #fafafa; color: var(--muted-foreground); cursor: not-allowed; }
         .sel-icon { position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--muted-foreground); width: 14px; height: 14px; }
         .filter-sum { margin-left: auto; font-size: 0.875rem; color: var(--muted-foreground); font-weight: 500; white-space: nowrap; }
         .filter-sum strong { color: var(--foreground); }
@@ -271,7 +287,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
         .game-group { margin-bottom: 2rem; animation: fadeIn 0.3s ease-out; }
         .game-group:first-child { margin-top: 2rem; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
+
         .group-head {
             display: flex; align-items: baseline; justify-content: space-between;
             margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
@@ -316,7 +332,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
             .sidebar-title { justify-content: center; padding: 1rem 0; }
             .search-bar:focus-within { width: 200px; position: absolute; right: 2rem; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-radius: var(--radius); }
             .search-bar:focus-within .search-input { width: 100%; }
-            
+
             .meta-bar { grid-template-columns: 1fr; gap: 0.75rem; padding: 1rem 1.25rem; }
             .filter-bar { flex-wrap: wrap; padding: 0.75rem 1.25rem; gap: 0.5rem; }
             .sel-wrap { min-width: calc(50% - 0.25rem); }
@@ -355,7 +371,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     <p>请在左侧选择一位主播<br>查看其录播上传者</p>
                 </div>
-                
+
                 <div id="selectContent" style="display:none;">
                     <div class="select-header">
                         <h1 id="selectTitle">选择一个主播</h1>
@@ -387,7 +403,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
                     <div class="sel-wrap"><select id="yearSelect"></select><svg class="sel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
                     <div class="sel-wrap"><select id="monthSelect"></select><svg class="sel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
                     <div class="sel-wrap"><select id="gameSelect"></select><svg class="sel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
-                    <div class="filter-sum" id="filterSum">加载中...</div>
+                    <div class="filter-sum" id="filterSum"></div>
                 </div>
                 <div class="list-cont" id="listContainer">
                     <div class="sentinel" id="sentinel"><span id="sentinelText">向下滚动加载更多</span></div>
@@ -397,7 +413,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
     </main>
 
     <script type="module">
-        const streamerRecords = ${ JSON.stringify( streamerRecords ) };
+        const manifest = ${ JSON.stringify( manifest ) };
 
         // State
         let currentStreamerIndex = null;
@@ -406,6 +422,10 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
         const BATCH_SIZE = 5;
         let observer = null;
         let currentUploaderData = null;
+        // 每次进入详情页自增: 用来丢弃「慢请求回来时用户已经切走了」的过期响应
+        let requestToken = 0;
+        // dataFile -> Promise<UploaderDataFile>, 命中过就不再请求
+        const dataCache = new Map();
 
         // DOM
         const streamerListEl = document.getElementById('streamerList');
@@ -422,6 +442,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
         const metaBarEl = document.getElementById('metaBar');
         const listContainerEl = document.getElementById('listContainer');
         const sentinelEl = document.getElementById('sentinel');
+        const sentinelTextEl = document.getElementById('sentinelText');
         const yearSelect = document.getElementById('yearSelect');
         const monthSelect = document.getElementById('monthSelect');
         const gameSelect = document.getElementById('gameSelect');
@@ -434,7 +455,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
             const h = Math.floor(seconds / 3600);
             const m = Math.floor((seconds % 3600) / 60);
             const s = seconds % 60;
-            return \`$\{ h.toString().padStart( 2, '0' ) }:$\{ m.toString().padStart( 2, '0' ) }:$\{ s.toString().padStart( 2, '0' ) }\`;
+            return \`\${ h.toString().padStart( 2, '0' ) }:\${ m.toString().padStart( 2, '0' ) }:\${ s.toString().padStart( 2, '0' ) }\`;
         };
         const getYear = (ts) => new Date(ts).getFullYear();
         const getMonth = (ts) => new Date(ts).getMonth() + 1;
@@ -443,7 +464,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
         function handleRoute() {
             const hash = window.location.hash;
             const match = hash.match(/liver\\/([^\\/]+)\\/uploader\\/([^\\/]+)/);
-            
+
             if (match) {
                 const liver = decodeURIComponent(match[1]);
                 const uploader = decodeURIComponent(match[2]);
@@ -460,35 +481,97 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
             renderUploaderGrid();
         }
 
-        function showRecordsView(liver, uploader) {
-            const streamer = streamerRecords.find(s => s.liver === liver);
+        async function showRecordsView(liver, uploader) {
+            const streamer = manifest.streamers.find(s => s.liver === liver);
             if (!streamer) { nagigateToIndex(); return; }
-            
-            const uploaderData = streamer.uploaders.find(u => u.userName === uploader);
-            if (!uploaderData || uploaderData.records.length === 0) {
-                alert("暂无数据"); nagigateToIndex(); return;
-            }
 
-            currentStreamerIndex = streamerRecords.indexOf(streamer);
-            currentUploaderData = uploaderData;
+            const uploaderInfo = streamer.uploaders.find(u => u.userName === uploader);
+            if (!uploaderInfo) { alert("暂无数据"); nagigateToIndex(); return; }
+
+            // 先占据本次请求的 token: 之后所有 await 点都要比对它
+            const token = ++requestToken;
+            currentStreamerIndex = manifest.streamers.indexOf(streamer);
+            currentUploaderData = null;
             renderStreamerList(); // Update active
 
             viewSelect.style.display = 'none';
             viewRecords.style.display = 'flex';
             recTitle.textContent = liver === uploader
-                ? \`$\{ liver }\`
-                : \`$\{ liver } · $\{ uploader }\`;
-            
-            initRecordsView(uploaderData);
+                ? \`\${ liver }\`
+                : \`\${ liver } · \${ uploader }\`;
+
+            backToSelectBtn.onclick = () => {
+                currentStreamerIndex = manifest.streamers.indexOf(streamer);
+                renderStreamerList();
+                nagigateToIndex();
+            };
+
+            renderLoadingState(uploaderInfo.userName);
+
+            let data;
+            try {
+                data = await loadUploaderData(uploaderInfo);
+            } catch (error) {
+                if (token !== requestToken) return;
+                renderErrorState(liver, uploader, error);
+                return;
+            }
+            // 期间用户已经切到别处, 这份数据不再属于当前页面
+            if (token !== requestToken) return;
+
+            if (!data.records || data.records.length === 0) {
+                alert("暂无数据"); nagigateToIndex(); return;
+            }
+
+            currentUploaderData = data;
+            initRecordsView(data);
+        }
+
+        // --- DATA LOADING ---
+        /**
+         * 计算每条记录的 Part 序号
+         *
+         * 序号在「同一个上传者文件内」按游戏累加（与原服务端行为一致）:
+         * 拆文件之后每份数据只属于一个主播, 因此前端可以直接还原, 无需后端预计算。
+         */
+        function attachGlobalPartMap(records) {
+            const counter = {};
+            [...records].sort((a, b) => a.liveTime - b.liveTime).forEach(record => {
+                const partMap = {};
+                record.playGame.forEach(game => {
+                    counter[game] = (counter[game] || 0) + 1;
+                    partMap[game] = counter[game];
+                });
+                record._globalPartMap = partMap;
+            });
+        }
+
+        function loadUploaderData(uploaderInfo) {
+            const key = uploaderInfo.dataFile;
+            if (!dataCache.has(key)) {
+                const promise = fetch(key)
+                    .then(response => {
+                        if (!response.ok) throw new Error(\`HTTP \${ response.status }\`);
+                        return response.json();
+                    })
+                    .then(data => {
+                        attachGlobalPartMap(data.records);
+                        return data;
+                    });
+                // 失败不进缓存, 否则「重试」只会拿到同一个 rejection
+                promise.catch(() => dataCache.delete(key));
+                dataCache.set(key, promise);
+            }
+            return dataCache.get(key);
         }
 
         // --- SIDEBAR ---
         function renderStreamerList() {
             streamerListEl.innerHTML = '';
-\t        streamerRecords.forEach((item, index) => {
+\t        manifest.streamers.forEach((item, index) => {
                 const isActive = currentStreamerIndex === index;
                 const div = document.createElement('div');
-                div.className = \`streamer-item $\{ isActive ? 'active' : '' }\`;
+                div.className = \`streamer-item \${ isActive ? 'active' : '' }\`;
                 div.onclick = () => {
                     currentStreamerIndex = index;
                     renderStreamerList();
@@ -498,10 +581,10 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
                     // Or just update UI. Let's just update UI for grid view.
                 };
                 div.innerHTML = \`
-                    <div class="avatar">$\{ item.liver.slice( 0, 2 ).toUpperCase() }</div>
+                    <div class="avatar">\${ item.liver.slice( 0, 2 ).toUpperCase() }</div>
                     <div class="streamer-info">
-                        <div class="s-name">$\{ item.liver }</div>
-                        <div class="s-meta">$\{ item.uploaders.length } 位上传者</div>
+                        <div class="s-name">\${ item.liver }</div>
+                        <div class="s-meta">\${ item.uploaders.length } 位上传者</div>
                     </div>
                 \`;
                 streamerListEl.appendChild(div);
@@ -518,31 +601,33 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
             }
             emptyState.style.display = 'none';
             selectContent.style.display = 'block';
-            
-            const streamer = streamerRecords[currentStreamerIndex];
-            selectTitle.textContent = \`$\{ streamer.liver } 的录播上传者\`;
-            selectSub.textContent = \`共找到 $\{ streamer.uploaders.length } 个上传者账号\`;
+
+            const streamer = manifest.streamers[currentStreamerIndex];
+            selectTitle.textContent = \`\${ streamer.liver } 的录播上传者\`;
+            selectSub.textContent = \`共找到 \${ streamer.uploaders.length } 个上传者账号\`;
 
             streamer.uploaders.forEach(uploader => {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.onclick = () => navigateToRecords(streamer.liver, uploader.userName);
-                
+                // 悬停即预取, 点击时通常已经就绪
+                card.onmouseenter = () => loadUploaderData(uploader);
+
                 // REQ 3: Badge Text "本人"
                 const badgeHtml = uploader.isSelf
                     ? \`<span class="badge-self">本人</span>\`
                     : \`<span class="badge-other">第三方</span>\`;
-                
+
                 card.innerHTML = \`
-                    <div class="card-head"><div class="card-title">$\{ uploader.userName }</div>$\{ badgeHtml }</div>
+                    <div class="card-head"><div class="card-title">\${ uploader.userName }</div>\${ badgeHtml }</div>
                     <div class="card-stats">
-                        <div class="stat-item"><span class="stat-label">最新录播</span><span class="stat-val">$\{ formatDate( uploader.newestTime ) }</span></div>
-                        <div class="stat-item"><span class="stat-label">最早录播</span><span class="stat-val">$\{ formatDate( uploader.oldestTime ) }</span></div>
-                        <div class="stat-item"><span class="stat-label">数据更新</span><span class="stat-val mono">$\{ formatDate( uploader.latestUpdate ) }</span></div>
-                        <div class="stat-item"><span class="stat-label">累计视频</span><span class="stat-val mono">$\{ uploader.totalVideos }</span></div>
+                        <div class="stat-item"><span class="stat-label">最新录播</span><span class="stat-val">\${ formatDate( uploader.newestTime ) }</span></div>
+                        <div class="stat-item"><span class="stat-label">最早录播</span><span class="stat-val">\${ formatDate( uploader.oldestTime ) }</span></div>
+                        <div class="stat-item"><span class="stat-label">数据更新</span><span class="stat-val mono">\${ formatDate( uploader.latestUpdate ) }</span></div>
+                        <div class="stat-item"><span class="stat-label">累计视频</span><span class="stat-val mono">\${ uploader.totalVideos }</span></div>
                     </div>
                     <div class="card-foot">
-                        <button class="btn-enter" onclick="event.stopPropagation(); navigateToRecords('$\{ streamer.liver }', '$\{ uploader.userName }')">进入查看 <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+                        <button class="btn-enter" onclick="event.stopPropagation(); navigateToRecords('\${ streamer.liver }', '\${ uploader.userName }')">进入查看 <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
                     </div>
                 \`;
                 uploaderGrid.appendChild(card);
@@ -553,26 +638,69 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
              window.location.hash = '/'
         }
         function navigateToRecords(liver, uploader) {
-            window.location.hash = \`/liver/$\{ encodeURIComponent( liver ) }/uploader/$\{ encodeURIComponent( uploader ) }\`;
+            window.location.hash = \`/liver/\${ encodeURIComponent( liver ) }/uploader/\${ encodeURIComponent( uploader ) }\`;
+        }
+        // 卡片上的「进入查看」是内联 onclick, 走的是全局作用域, 拿不到 module 作用域里的函数
+        window.navigateToRecords = navigateToRecords;
+
+        // --- LOADING / ERROR STATE ---
+        function clearList() {
+            Array.from(listContainerEl.children).forEach(c => { if (c !== sentinelEl) listContainerEl.removeChild(c); });
+        }
+
+        function resetFiltersUi() {
+            yearSelect.disabled = true;
+            monthSelect.disabled = true;
+            gameSelect.disabled = true;
+            yearSelect.innerHTML = '<option value="">全部年份</option>';
+            monthSelect.innerHTML = '<option value="">全年</option>';
+            gameSelect.innerHTML = '<option value="">全部游戏</option>';
+            filterSumEl.textContent = '';
+        }
+
+        function prepareStateView() {
+            if (observer) observer.unobserve(sentinelEl);
+            sentinelEl.style.display = 'none';
+            clearList();
+            resetFiltersUi();
+            metaBarEl.innerHTML = '';
+        }
+
+        function renderStateBox(html) {
+            const box = document.createElement('div');
+            box.className = 'state-box';
+            box.innerHTML = html;
+            listContainerEl.insertBefore(box, sentinelEl);
+            return box;
+        }
+
+        function renderLoadingState(userName) {
+            prepareStateView();
+            renderStateBox(\`
+                <div class="spinner"></div>
+                <p>正在加载「\${ userName }」的录播记录…</p>
+            \`);
+        }
+
+        function renderErrorState(liver, uploader, error) {
+            prepareStateView();
+            const box = renderStateBox(\`
+                <p>录播数据加载失败（\${ error.message }），请检查网络后重试</p>
+                <button class="btn-enter" type="button">重试</button>
+            \`);
+            box.querySelector('button').onclick = () => showRecordsView(liver, uploader);
         }
 
         // --- RECORDS VIEW LOGIC ---
         function initRecordsView(data) {
+            sentinelEl.style.display = 'flex';
+            sentinelTextEl.textContent = '向下滚动加载更多';
+
             renderMeta(data);
             initFilters(data.records);
             setupObserver();
             applyFiltersAndRender(true);
-            
-            backToSelectBtn.onclick = () => {
-                // Go back to grid view for this streamer
-                const liver = data.records[0].liver;
-                // We need to find the streamer index to keep sidebar state
-                const sIdx = streamerRecords.findIndex(s => s.liver === liver);
-                if(sIdx !== -1) currentStreamerIndex = sIdx;
-                renderStreamerList();
-                nagigateToIndex(); // Triggers showSelectView
-            };
-            
+
             resetFilterBtn.onclick = () => {
                 yearSelect.value = ""; monthSelect.selectedIndex = 0; gameSelect.value = "";
                 applyFiltersAndRender(true);
@@ -587,23 +715,26 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
             const sortedByTime = [...recs].sort((a,b) => a.liveTime - b.liveTime);
             const oldest = sortedByTime[0];
             const newest = sortedByTime[sortedByTime.length - 1];
-            
+
             metaBarEl.innerHTML = \`
-                <div class="meta-item"><span class="meta-label">主播</span><span class="meta-val">$\{ recs[ 0 ].liver }</span></div>
-                <div class="meta-item"><span class="meta-label">上传者</span><span class="meta-val">$\{ data.userName }</span></div>
-                <div class="meta-item"><span class="meta-label">数据更新</span><span class="meta-val">$\{ formatDate( data.latestUpdate ) }</span></div>
-                <div class="meta-item"><span class="meta-label">累计视频</span><span class="meta-val tabular-nums">$\{ recs.length } 部</span></div>
-                <div class="meta-item"><span class="meta-label">最旧视频</span><a target="_blank" href="https://www.bilibili.com/video/av$\{ oldest.aid }" class="meta-link truncate">$\{ formatDate( oldest.liveTime ) } $\{ oldest.title }</a></div>
-                <div class="meta-item"><span class="meta-label">最新视频</span><a target="_blank" href="https://www.bilibili.com/video/av$\{ newest.aid }" class="meta-link truncate">$\{ formatDate( newest.liveTime ) } $\{ newest.title }</a></div>
+                <div class="meta-item"><span class="meta-label">主播</span><span class="meta-val">\${ data.liver }</span></div>
+                <div class="meta-item"><span class="meta-label">上传者</span><span class="meta-val">\${ data.userName }</span></div>
+                <div class="meta-item"><span class="meta-label">数据更新</span><span class="meta-val">\${ formatDate( data.latestUpdate ) }</span></div>
+                <div class="meta-item"><span class="meta-label">累计视频</span><span class="meta-val tabular-nums">\${ recs.length } 部</span></div>
+                <div class="meta-item"><span class="meta-label">最旧视频</span><a target="_blank" href="https://www.bilibili.com/video/av\${ oldest.aid }" class="meta-link truncate">\${ formatDate( oldest.liveTime ) } \${ oldest.title }</a></div>
+                <div class="meta-item"><span class="meta-label">最新视频</span><a target="_blank" href="https://www.bilibili.com/video/av\${ newest.aid }" class="meta-link truncate">\${ formatDate( newest.liveTime ) } \${ newest.title }</a></div>
             \`;
         }
 
         function initFilters(recs) {
+            yearSelect.disabled = false;
+            gameSelect.disabled = false;
+
             const years = [...new Set(recs.map(r => getYear(r.liveTime)))].sort((a,b) => b-a);
-            yearSelect.innerHTML = \`<option value="">全部年份</option>\` + years.map(y => \`<option value="$\{ y }">$\{ y }年</option>\`).join('');
+            yearSelect.innerHTML = \`<option value="">全部年份</option>\` + years.map(y => \`<option value="\${ y }">\${ y }年</option>\`).join('');
             updateMonthOptions();
             const allGames = [...new Set(recs.flatMap(r => r.playGame))].sort();
-            gameSelect.innerHTML = \`<option value="">全部游戏</option>\` + allGames.map(g => \`<option value="$\{ g }">$\{ g }</option>\`).join('');
+            gameSelect.innerHTML = \`<option value="">全部游戏</option>\` + allGames.map(g => \`<option value="\${ g }">\${ g }</option>\`).join('');
         }
 
         function updateMonthOptions() {
@@ -612,7 +743,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
             let months = year ? [...new Set(recs.filter(r => getYear(r.liveTime) == year).map(r => getMonth(r.liveTime)))].sort((a,b) => b-a)
                               : [...new Set(recs.map(r => getMonth(r.liveTime)))].sort((a,b) => b-a);
             const monthNames = ["","一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
-            monthSelect.innerHTML = \`<option value="">$\{ year ? "全部月份" : "全年" }</option>\` + months.map(m => \`<option value="$\{ m }">$\{ monthNames[ m ] }</option>\`).join('');
+            monthSelect.innerHTML = \`<option value="">\${ year ? "全部月份" : "全年" }</option>\` + months.map(m => \`<option value="\${ m }">\${ monthNames[ m ] }</option>\`).join('');
         }
 
         function applyFiltersAndRender(reset = false) {
@@ -647,22 +778,22 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
                     name, items, maxTime: Math.max(...items.map(i => i.liveTime))
                 })).sort((a, b) => b.maxTime - a.maxTime);
             }
-            
+
             groups.forEach(g => g.items.sort((a, b) => a.liveTime - b.liveTime));
             filteredGroups = groups;
 
 			const filteredGameList = filteredRecs.flatMap((r) => r.playGame)
-			
+
             const totalDuration = filteredRecs.reduce((acc, r) => acc + r.liveDuration, 0);
-            let summaryText = \`共 $\{ filteredGameList.length } 集 · 总时长 $\{ formatDuration( totalDuration ) }\`;
-            if (year) summaryText = \`$\{ year }年 · $\{ filteredGameList.length } 集\`;
-            if (year && month) summaryText = \`$\{ year }年$\{ month }月 · $\{ filteredGameList.length } 集\`;
-            if (game) summaryText = \`$\{ game } · $\{ filteredGroups[0].items.length } 集\`;
+            let summaryText = \`共 \${ filteredGameList.length } 集 · 总时长 \${ formatDuration( totalDuration ) }\`;
+            if (year) summaryText = \`\${ year }年 · \${ filteredGameList.length } 集\`;
+            if (year && month) summaryText = \`\${ year }年\${ month }月 · \${ filteredGameList.length } 集\`;
+            if (game) summaryText = \`\${ game } · \${ filteredGroups[0].items.length } 集\`;
             filterSumEl.innerHTML = summaryText;
 
             if (reset) {
                 currentBatchIndex = 0;
-                Array.from(listContainerEl.children).forEach(c => { if (c !== sentinelEl) listContainerEl.removeChild(c); });
+                clearList();
                 if (observer) observer.observe(sentinelEl);
                 loadNextBatch();
             }
@@ -670,7 +801,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
 
         function loadNextBatch() {
             if (currentBatchIndex >= filteredGroups.length) {
-                document.getElementById('sentinelText').textContent = "没有更多记录了";
+                sentinelTextEl.textContent = "没有更多记录了";
                 if (observer) observer.unobserve(sentinelEl);
                 return;
             }
@@ -683,7 +814,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
                 const totalDur = group.items.reduce((acc, i) => acc + i.liveDuration, 0);
                 const shouldCollapse = !isFiltered && group.items.length > 10;
                 const totalItems = group.items.length;
-                
+
                 let cardsHtml = '';
 
                 const renderItem = (item, actualIndex) => {
@@ -692,11 +823,11 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
                     return \`
                         <div class="vid-card">
                             <div class="row-1">
-                                <span class="g-name">$\{ group.name }</span>
-                                <span class="tag-part">Part $\{ partNum }</span>
-                                $\{ isLast ? '<span class="tag-end">END</span>' : '' }
+                                <span class="g-name">\${ group.name }</span>
+                                <span class="tag-part">Part \${ partNum }</span>
+                                \${ isLast ? '<span class="tag-end">END</span>' : '' }
                             </div>
-                            <div class="row-2"><a href="https://www.bilibili.com/video/av$\{ item.aid }" target="_blank">$\{ item.title }</a></div>
+                            <div class="row-2"><a href="https://www.bilibili.com/video/av\${ item.aid }" target="_blank">\${ item.title }</a></div>
                             <div class="row-3">
                                 <section class="vid-stats">
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -705,21 +836,21 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
                                     <line x1="8" y1="2" x2="8" y2="6"></line>
                                     <line x1="3" y1="10" x2="21" y2="10"></line>
                                     </svg>
-                                    <span>$\{ formatDate( item.liveTime ) }</span>
+                                    <span>\${ formatDate( item.liveTime ) }</span>
                                 </section>
                                 <section class="vid-stats">
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <polyline points="12 6 12 12 16 14"></polyline>
                                     </svg>
-                                    <span class="tabular-nums">$\{ formatDuration( item.liveDuration ) }</span>
+                                    <span class="tabular-nums">\${ formatDuration( item.liveDuration ) }</span>
                                 </section>
                                 <section class="vid-stats">
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
                                     <line x1="7" y1="7" x2="7.01" y2="7"></line>
                                     </svg>
-                                    <span class="tabular-nums">av$\{ item.aid }</span>
+                                    <span class="tabular-nums">av\${ item.aid }</span>
                                 </section>
                             </div>
                         </div>
@@ -728,7 +859,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
 
                 if (shouldCollapse) {
                     for(let i=0; i<3; i++) cardsHtml += renderItem(group.items[i], i);
-                    cardsHtml += \`<div class="ellipsis-row" onclick="toggleExpand('$\{ group.name }', $\{ totalItems })">... 隐藏了 $\{ totalItems - 6 } 条记录 (点击展开) ...</div>\`;
+                    cardsHtml += \`<div class="ellipsis-row" onclick="toggleExpand('\${ group.name }', \${ totalItems })">... 隐藏了 \${ totalItems - 6 } 条记录 (点击展开) ...</div>\`;
                     for(let i=totalItems-3; i<totalItems; i++) cardsHtml += renderItem(group.items[i], i);
                 } else {
                     for(let i=0; i<totalItems; i++) cardsHtml += renderItem(group.items[i], i);
@@ -736,10 +867,10 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
 
                 groupEl.innerHTML = \`
                     <div class="group-head">
-                        <span class="group-title" onclick="filterByGame('$\{ group.name }')">$\{ group.name }</span>
-                        <div class="group-stats"><span class="badge-cnt">$\{ totalItems }集</span><span class="badge-dur tabular-nums">$\{ formatDuration( totalDur ) }</span></div>
+                        <span class="group-title" onclick="filterByGame('\${ group.name }')">\${ group.name }</span>
+                        <div class="group-stats"><span class="badge-cnt">\${ totalItems }集</span><span class="badge-dur tabular-nums">\${ formatDuration( totalDur ) }</span></div>
                     </div>
-                    <div class="group-body" id="group-body-$\{ group.name.replace( /\s/g, '' ) }">$\{ cardsHtml }</div>
+                    <div class="group-body" id="group-body-\${ group.name.replace( /\\s/g, '' ) }">\${ cardsHtml }</div>
                 \`;
                 listContainerEl.insertBefore(groupEl, sentinelEl);
             });
@@ -755,7 +886,7 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
         };
 
         window.toggleExpand = (gameName, totalItems) => {
-            const container = document.getElementById(\`group-body-$\{ gameName.replace( /\s/g, '' ) }\`);
+            const container = document.getElementById(\`group-body-\${ gameName.replace( /\\s/g, '' ) }\`);
             if (!container) return;
             const group = filteredGroups.find(g => g.name === gameName);
             if (!group) return;
@@ -766,11 +897,11 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
                 fullHtml += \`
                     <div class="vid-card">
                         <div class="row-1">
-                            <span class="g-name">$\{ group.name }</span>
-                            <span class="tag-part">Part $\{ partNum }</span>
-                            $\{ isLast ? '<span class="tag-end">END</span>' : '' }
+                            <span class="g-name">\${ group.name }</span>
+                            <span class="tag-part">Part \${ partNum }</span>
+                            \${ isLast ? '<span class="tag-end">END</span>' : '' }
                         </div>
-                        <div class="row-2"><a href="https://www.bilibili.com/video/av$\{ item.aid }" target="_blank">$\{ item.title }</a></div>
+                        <div class="row-2"><a href="https://www.bilibili.com/video/av\${ item.aid }" target="_blank">\${ item.title }</a></div>
                         <div class="row-3">
                             <section class="vid-stats">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -779,21 +910,21 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
                                 <line x1="8" y1="2" x2="8" y2="6"></line>
                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                                 </svg>
-                                <span>$\{ formatDate( item.liveTime ) }</span>
+                                <span>\${ formatDate( item.liveTime ) }</span>
                             </section>
                             <section class="vid-stats">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <polyline points="12 6 12 12 16 14"></polyline>
                                 </svg>
-                                <span class="tabular-nums">$\{ formatDuration( item.liveDuration ) }</span>
+                                <span class="tabular-nums">\${ formatDuration( item.liveDuration ) }</span>
                             </section>
                             <section class="vid-stats">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
                                 <line x1="7" y1="7" x2="7.01" y2="7"></line>
                                 </svg>
-                                <span class="tabular-nums">av$\{ item.aid }</span>
+                                <span class="tabular-nums">av\${ item.aid }</span>
                             </section>
                         </div>
                     </div>
@@ -803,12 +934,13 @@ export const createWebIndexContent = (streamerRecords: StreamerRecord[]) => {
         };
 
         function setupObserver() {
-            if ('IntersectionObserver' in window) {
+            if (!('IntersectionObserver' in window)) return;
+            if (!observer) {
                 observer = new IntersectionObserver((entries) => {
                     if (entries[0].isIntersecting) loadNextBatch();
                 }, { root: listContainerEl, threshold: 0.2 });
-                observer.observe(sentinelEl);
             }
+            observer.observe(sentinelEl);
         }
 
         // Search Filter Logic (Sidebar)

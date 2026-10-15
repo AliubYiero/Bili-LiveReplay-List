@@ -5,12 +5,24 @@ on:
     - cron: '0 4 * * *'  # UTC 04:00 (北京时间 12:00)
   workflow_dispatch:
 
+# ✅ contents: write 用于把 data/ 与 docs/markdown/ 提交回 master
+# ✅ pages/id-token 用于通过 Actions 部署 GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# 避免两次部署互相打断（进行中的生产部署不取消）
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   generate-report:
     runs-on: ubuntu-latest
-    # ✅ 关键：声明写入权限（使 git push 生效）
-    permissions:
-      contents: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       # 1. 检出代码（启用写权限）
@@ -58,6 +70,8 @@ jobs:
         run: pnpm exec playwright install-deps chromium
 
       # 5. 生成报告（pnpm 版）
+      #    docs/index.html 与 docs/data/** 是 generateWeb 的产物，已被 .gitignore 忽略，
+      #    只作为下面的 Pages artifact 上传，不进 git
       - name: Generate report
         env:
           # 登录态：未登录时 B 站不返回空间主页投稿列表（-352 风控校验失败）
@@ -83,3 +97,17 @@ jobs:
 
           git commit -m "chore: update daily report $(date +'%Y-%m-%d')"
           git push
+
+      # 7. 部署 Pages（无论本次有没有数据变更都重新部署，幂等）
+      #    ⚠️ 需要在仓库 Settings → Pages → Source 里一次性切换为 "GitHub Actions"
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
