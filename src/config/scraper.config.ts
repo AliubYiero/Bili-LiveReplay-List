@@ -32,8 +32,6 @@ const sources: Record<VideoSourceType, ScraperSourceConfig> = {
  * 页面改版时优先改这里的选择器, 不要改采集器的控制流。
  */
 export const SCRAPER_CONFIG = {
-	/** 单个数据源最多翻多少页, 防止无限循环 */
-	limitPages: 100,
 	/** 跳页失败时重试当前页的次数 */
 	pageRetryLimit: 3,
 	/** 首个页面导航失败时重试整个流程的次数 */

@@ -322,7 +322,7 @@ export async function* playwrightStreamPages(
 		yield currentPage;
 
 		let retryCount = 0;
-		while ( !shouldStopPaging( currentPage, SCRAPER_CONFIG.limitPages ) ) {
+		while ( !shouldStopPaging( currentPage ) ) {
 			const previousPageNumber = currentPage.currentPage;
 			const nextPageNumber = previousPageNumber + 1;
 
@@ -362,14 +362,6 @@ export async function* playwrightStreamPages(
 
 			logProgress();
 			yield currentPage;
-		}
-
-		const maxPage = calcMaxPage( currentPage.total, currentPage.pageSize );
-		if ( currentPage.currentPage >= SCRAPER_CONFIG.limitPages
-			&& currentPage.currentPage < maxPage ) {
-			console.warn(
-				`用户 ${ uid } 的${ sourceConfig.label }页数超过最大限制 ${ SCRAPER_CONFIG.limitPages }, 已停止获取`,
-			);
 		}
 	}
 	finally {

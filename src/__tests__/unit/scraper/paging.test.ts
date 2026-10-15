@@ -40,32 +40,31 @@ describe('calcMaxPage', () => {
 });
 
 describe('shouldStopPaging', () => {
-  const limitPages = 100;
-
   it('当前页没有数据时停止', () => {
-    expect(shouldStopPaging(createPage(1, 0, { total: 300 }), limitPages)).toBe(true);
+    expect(shouldStopPaging(createPage(1, 0, { total: 300 }))).toBe(true);
   });
 
   it('翻到最后页的下一页时停止', () => {
     // 共 10 页：第 9 页还能继续，第 10 页之后停止
-    expect(shouldStopPaging(createPage(9, 30, { total: 300, pageSize: 30 }), limitPages)).toBe(false);
-    expect(shouldStopPaging(createPage(10, 30, { total: 300, pageSize: 30 }), limitPages)).toBe(true);
+    expect(shouldStopPaging(createPage(9, 30, { total: 300, pageSize: 30 }))).toBe(false);
+    expect(shouldStopPaging(createPage(10, 30, { total: 300, pageSize: 30 }))).toBe(true);
   });
 
   it('只有一页时第一页就停止', () => {
-    expect(shouldStopPaging(createPage(1, 5, { total: 5, pageSize: 30 }), limitPages)).toBe(true);
+    expect(shouldStopPaging(createPage(1, 5, { total: 5, pageSize: 30 }))).toBe(true);
   });
 
-  it('达到页数上限时停止', () => {
-    expect(shouldStopPaging(createPage(100, 30, { total: 100000, pageSize: 30 }), limitPages)).toBe(true);
-    expect(shouldStopPaging(createPage(99, 30, { total: 100000, pageSize: 30 }), limitPages)).toBe(false);
+  it('不再受页数上限限制', () => {
+    // 旧实现到 100 页就强制停止，现在只由总页数决定
+    expect(shouldStopPaging(createPage(101, 30, { total: 100000, pageSize: 30 }))).toBe(false);
+    expect(shouldStopPaging(createPage(3334, 30, { total: 100000, pageSize: 30 }))).toBe(true);
   });
 
   it('两种数据源使用同一套判断', () => {
     const uploadPage = createPage(1, 5, { total: 5, sourceType: 'upload' });
     const replayPage = createPage(1, 5, { total: 5, sourceType: 'replay' });
 
-    expect(shouldStopPaging(uploadPage, limitPages)).toBe(true);
-    expect(shouldStopPaging(replayPage, limitPages)).toBe(true);
+    expect(shouldStopPaging(uploadPage)).toBe(true);
+    expect(shouldStopPaging(replayPage)).toBe(true);
   });
 });

@@ -16,13 +16,8 @@ export const calcMaxPage = ( total: number, pageSize: number ): number => {
  * 停止条件（任一命中）:
  * - 当前页没有数据
  * - 已经翻到总页数
- * - 已经翻到页数上限
  */
-export const shouldStopPaging = (
-	page: NormalizedPage,
-	limitPages: number,
-): boolean => {
+export const shouldStopPaging = ( page: NormalizedPage ): boolean => {
 	if ( page.archives.length === 0 ) return true;
-	if ( page.currentPage >= limitPages ) return true;
 	return page.currentPage >= calcMaxPage( page.total, page.pageSize );
 };
