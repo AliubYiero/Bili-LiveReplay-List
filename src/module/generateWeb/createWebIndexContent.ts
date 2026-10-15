@@ -269,15 +269,34 @@ export const createWebIndexContent = (manifest: WebManifest) => {
             padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
             display: flex; align-items: center; gap: 1rem; background: #fff; flex-shrink: 0;
         }
-        .sel-wrap { position: relative; min-width: 120px; flex: 1; }
-        .sel-wrap select {
+        .sel-wrap { position: relative; flex: 0 0 200px; min-width: 0; }
+        #gameSelect {flex: 1;}
+        .dd-input, .dd-trigger {
             appearance: none; width: 100%; height: 34px; padding: 0 2rem 0 0.75rem;
             border: 1px solid var(--border); border-radius: var(--radius);
-            background: #fff; font-size: 0.875rem; color: var(--foreground); cursor: pointer;
+            background: #fff; font-size: 0.875rem; color: var(--foreground);
+            font-family: inherit; text-align: left; cursor: pointer;
         }
-        .sel-wrap select:disabled { background: #fafafa; color: var(--muted-foreground); cursor: not-allowed; }
+        .dd-input { cursor: text; }
+        .dd-input::placeholder { color: var(--muted-foreground); }
+        .dd-input:focus, .dd-trigger:focus { background: #fff; border-color: var(--ring); box-shadow: 0 0 0 2px var(--ring); }
+        .dd.disabled .dd-input, .dd.disabled .dd-trigger { background: #fafafa; color: var(--muted-foreground); cursor: not-allowed; }
+        .dd-panel {
+            position: absolute; left: 0; right: 0; top: calc(100% + 4px);
+            background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12); z-index: 40;
+            max-height: 260px; overflow-y: auto; padding: 4px; display: none;
+        }
+        .dd.open .dd-panel { display: block; }
+        .dd-option {
+            padding: 0.4rem 0.6rem; border-radius: calc(var(--radius) - 2px); font-size: 0.875rem;
+            cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .dd-option:hover, .dd-option.active { background: #eef2ff; color: var(--primary); }
+        .dd-option.selected { font-weight: 600; }
+        .dd-empty { padding: 0.5rem 0.6rem; font-size: 0.875rem; color: var(--muted-foreground); text-align: center; }
         .sel-icon { position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--muted-foreground); width: 14px; height: 14px; }
-        .filter-sum { margin-left: auto; font-size: 0.875rem; color: var(--muted-foreground); font-weight: 500; white-space: nowrap; }
+        .filter-sum { flex: 1 1 0; min-width: 0; text-align: right; overflow: hidden; text-overflow: ellipsis; font-size: 0.875rem; color: var(--muted-foreground); font-weight: 500; white-space: nowrap; }
         .filter-sum strong { color: var(--foreground); }
 
         .list-cont { flex: 1; overflow-y: auto; padding: 0 1.5rem 2rem 1.5rem; }
@@ -335,8 +354,8 @@ export const createWebIndexContent = (manifest: WebManifest) => {
 
             .meta-bar { grid-template-columns: 1fr; gap: 0.75rem; padding: 1rem 1.25rem; }
             .filter-bar { flex-wrap: wrap; padding: 0.75rem 1.25rem; gap: 0.5rem; }
-            .sel-wrap { min-width: calc(50% - 0.25rem); }
-            .filter-sum { width: 100%; margin-top: 0.25rem; font-size: 0.75rem; text-align: left; }
+            .sel-wrap { flex: 1 1 calc(50% - 0.25rem); min-width: 0; }
+            .filter-sum { flex: 1 1 100%; margin-top: 0.25rem; font-size: 0.75rem; text-align: left; }
             .list-cont { padding: 0 1.25rem 2rem 1.25rem; }
             .uploader-grid { grid-template-columns: 1fr; }
         }
@@ -400,9 +419,9 @@ export const createWebIndexContent = (manifest: WebManifest) => {
                 </div>
                 <div class="meta-bar" id="metaBar"></div>
                 <div class="filter-bar">
-                    <div class="sel-wrap"><select id="yearSelect"></select><svg class="sel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
-                    <div class="sel-wrap"><select id="monthSelect"></select><svg class="sel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
-                    <div class="sel-wrap"><select id="gameSelect"></select><svg class="sel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
+                    <div class="sel-wrap" id="yearSelect"></div>
+                    <div class="sel-wrap" id="monthSelect"></div>
+                    <div class="sel-wrap" id="gameSelect"></div>
                     <div class="filter-sum" id="filterSum"></div>
                 </div>
                 <div class="list-cont" id="listContainer">
@@ -422,10 +441,13 @@ export const createWebIndexContent = (manifest: WebManifest) => {
         const BATCH_SIZE = 5;
         let observer = null;
         let currentUploaderData = null;
+        // 当前年月范围下的可选游戏, 按最新 liveTime 降序（与下方录像分组顺序一致）
+        let currentGameCandidates = [];
         // 每次进入详情页自增: 用来丢弃「慢请求回来时用户已经切走了」的过期响应
         let requestToken = 0;
         // dataFile -> Promise<UploaderDataFile>, 命中过就不再请求
         const dataCache = new Map();
+        let dropdownUid = 0;
 
         // DOM
         const streamerListEl = document.getElementById('streamerList');
@@ -443,9 +465,9 @@ export const createWebIndexContent = (manifest: WebManifest) => {
         const listContainerEl = document.getElementById('listContainer');
         const sentinelEl = document.getElementById('sentinel');
         const sentinelTextEl = document.getElementById('sentinelText');
-        const yearSelect = document.getElementById('yearSelect');
-        const monthSelect = document.getElementById('monthSelect');
-        const gameSelect = document.getElementById('gameSelect');
+        const yearSelect = createDropdown(document.getElementById('yearSelect'), { placeholder: '全部年份' });
+        const monthSelect = createDropdown(document.getElementById('monthSelect'), { placeholder: '全年' });
+        const gameSelect = createDropdown(document.getElementById('gameSelect'), { searchable: true, placeholder: '全部游戏' });
         const filterSumEl = document.getElementById('filterSum');
         const globalSearch = document.getElementById('globalSearch');
 
@@ -459,6 +481,250 @@ export const createWebIndexContent = (manifest: WebManifest) => {
         };
         const getYear = (ts) => new Date(ts).getFullYear();
         const getMonth = (ts) => new Date(ts).getMonth() + 1;
+
+        // --- CUSTOM DROPDOWN ---
+        function throttle(fn, wait) {
+            let last = 0;
+            let timer = null;
+            return function (...args) {
+                const now = Date.now();
+                const remaining = wait - (now - last);
+                if (remaining <= 0) {
+                    last = now;
+                    fn(...args);
+                } else if (!timer) {
+                    timer = setTimeout(() => {
+                        timer = null;
+                        last = Date.now();
+                        fn(...args);
+                    }, remaining);
+                }
+            };
+        }
+
+        /**
+         * 自定义下拉框, 替代原生 select
+         *
+         * - searchable 为 true 时可输入过滤（游戏），触发节流 100ms 的 onLiveInput
+         * - searchable 为 false 时为只读触发器（年份 / 月份）
+         * - 对外接口贴近原生 select: getValue / setValue / setOptions, 另加 onSelect / onLiveInput
+         */
+        function createDropdown(mount, config) {
+            const searchable = !!(config && config.searchable);
+            const placeholder = (config && config.placeholder) || '';
+            const uid = 'dd-panel-' + (++dropdownUid);
+            const state = { options: [], value: '', disabled: false, open: false, activeIndex: -1, filtered: [] };
+            let onSelect = null;
+            let onLiveInput = null;
+
+            mount.classList.add('dd');
+            mount.innerHTML = '';
+
+            let fieldEl;
+            if (searchable) {
+                fieldEl = document.createElement('input');
+                fieldEl.type = 'text';
+                fieldEl.className = 'dd-input';
+                fieldEl.setAttribute('autocomplete', 'off');
+                fieldEl.setAttribute('spellcheck', 'false');
+                fieldEl.placeholder = placeholder;
+            } else {
+                fieldEl = document.createElement('button');
+                fieldEl.type = 'button';
+                fieldEl.className = 'dd-trigger';
+                fieldEl.appendChild(document.createElement('span')).className = 'dd-label';
+            }
+            fieldEl.setAttribute('role', 'combobox');
+            fieldEl.setAttribute('aria-autocomplete', 'list');
+            fieldEl.setAttribute('aria-expanded', 'false');
+            fieldEl.setAttribute('aria-controls', uid);
+
+            const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            icon.setAttribute('class', 'sel-icon');
+            icon.setAttribute('viewBox', '0 0 24 24');
+            icon.setAttribute('fill', 'none');
+            icon.setAttribute('stroke', 'currentColor');
+            icon.setAttribute('stroke-width', '2');
+            icon.innerHTML = '<path d="m6 9 6 6 6-6"/>';
+
+            const panel = document.createElement('div');
+            panel.className = 'dd-panel';
+            panel.id = uid;
+            panel.setAttribute('role', 'listbox');
+
+            mount.appendChild(fieldEl);
+            mount.appendChild(icon);
+            mount.appendChild(panel);
+
+            const labelOf = (v) => {
+                const hit = state.options.find(o => o.value === v);
+                return hit ? hit.label : '';
+            };
+
+            const renderField = () => {
+                mount.classList.toggle('disabled', state.disabled);
+                fieldEl.disabled = state.disabled;
+                fieldEl.setAttribute('aria-expanded', state.open ? 'true' : 'false');
+                mount.classList.toggle('open', state.open);
+                if (!searchable) fieldEl.firstChild.textContent = labelOf(state.value) || placeholder;
+            };
+
+            const renderPanel = () => {
+                const keyword = fieldEl.value.trim().toLowerCase();
+                state.filtered = (searchable && keyword !== '')
+                    ? state.options.filter(o => o.value !== '' && o.label.toLowerCase().includes(keyword))
+                    : state.options.slice();
+                panel.innerHTML = '';
+                if (state.filtered.length === 0) {
+                    state.activeIndex = -1;
+                    const empty = document.createElement('div');
+                    empty.className = 'dd-empty';
+                    empty.textContent = '无匹配结果';
+                    panel.appendChild(empty);
+                    if (searchable) fieldEl.removeAttribute('aria-activedescendant');
+                    return;
+                }
+                if (state.activeIndex >= state.filtered.length) state.activeIndex = state.filtered.length - 1;
+                state.filtered.forEach((o, i) => {
+                    const div = document.createElement('div');
+                    div.className = 'dd-option' + (i === state.activeIndex ? ' active' : '') + (o.value !== '' && o.value === state.value ? ' selected' : '');
+                    div.id = uid + '-' + i;
+                    div.dataset.index = String(i);
+                    div.setAttribute('role', 'option');
+                    div.textContent = o.label;
+                    panel.appendChild(div);
+                });
+                if (searchable) {
+                    if (state.activeIndex >= 0) fieldEl.setAttribute('aria-activedescendant', uid + '-' + state.activeIndex);
+                    else fieldEl.removeAttribute('aria-activedescendant');
+                }
+            };
+
+            const openPanel = () => {
+                if (state.disabled || state.open) return;
+                state.open = true;
+                state.activeIndex = -1;
+                renderPanel();
+                renderField();
+            };
+            const closePanel = () => {
+                if (!state.open) return;
+                state.open = false;
+                state.activeIndex = -1;
+                renderField();
+            };
+            const moveActive = (delta) => {
+                if (!state.filtered.length) return;
+                if (state.activeIndex < 0) state.activeIndex = delta > 0 ? 0 : state.filtered.length - 1;
+                else state.activeIndex = (state.activeIndex + delta + state.filtered.length) % state.filtered.length;
+                renderPanel();
+            };
+            const commitOption = (index) => {
+                const opt = state.filtered[index];
+                if (!opt) return;
+                state.value = opt.value;
+                if (searchable) fieldEl.value = opt.value === '' ? '' : opt.label;
+                closePanel();
+                renderField();
+                if (onSelect) onSelect(opt.value);
+            };
+
+            if (searchable) {
+                const notify = throttle(() => { if (onLiveInput) onLiveInput(); }, 100);
+                fieldEl.addEventListener('focus', openPanel);
+                fieldEl.addEventListener('input', () => {
+                    state.open = true;
+                    state.activeIndex = -1;
+                    renderPanel();
+                    renderField();
+                    notify();
+                });
+                fieldEl.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown') { e.preventDefault(); if (state.open) moveActive(1); else openPanel(); }
+                    else if (e.key === 'ArrowUp') { e.preventDefault(); if (state.open) moveActive(-1); else openPanel(); }
+                    else if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (state.open && state.activeIndex >= 0) { commitOption(state.activeIndex); return; }
+                        const text = fieldEl.value.trim();
+                        const exact = state.options.find(o => o.value !== '' && o.label === text);
+                        if (exact) { commitOption(state.filtered.indexOf(exact)); return; }
+                        if (text === '' && state.value !== '') { state.value = ''; renderField(); closePanel(); if (onSelect) onSelect(''); return; }
+                        closePanel();
+                    } else if (e.key === 'Escape') {
+                        e.preventDefault();
+                        fieldEl.value = state.value === '' ? '' : labelOf(state.value);
+                        closePanel();
+                        if (onLiveInput) onLiveInput();
+                    }
+                });
+                fieldEl.addEventListener('blur', () => {
+                    setTimeout(() => {
+                        if (mount.contains(document.activeElement)) return;
+                        const label = state.value === '' ? '' : labelOf(state.value);
+                        if (fieldEl.value !== label) {
+                            fieldEl.value = label;
+                            if (onLiveInput) onLiveInput();
+                        }
+                        closePanel();
+                    }, 0);
+                });
+            } else {
+                fieldEl.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (state.disabled) return;
+                    if (state.open) closePanel(); else openPanel();
+                });
+                fieldEl.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        if (state.open) moveActive(e.key === 'ArrowDown' ? 1 : -1); else openPanel();
+                    } else if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        if (state.open && state.activeIndex >= 0) commitOption(state.activeIndex);
+                        else if (state.open) closePanel();
+                        else openPanel();
+                    } else if (e.key === 'Escape') {
+                        e.preventDefault();
+                        closePanel();
+                    }
+                });
+            }
+
+            panel.addEventListener('mousedown', (e) => e.preventDefault());
+            panel.addEventListener('click', (e) => {
+                const el = e.target.closest('.dd-option');
+                if (el) commitOption(Number(el.dataset.index));
+            });
+            document.addEventListener('click', (e) => {
+                if (!mount.contains(e.target)) closePanel();
+            });
+
+            return {
+                getValue: () => state.value,
+                getText: () => searchable ? fieldEl.value : '',
+                setValue: (v) => {
+                    const value = v == null ? '' : String(v);
+                    state.value = value;
+                    if (searchable) fieldEl.value = value === '' ? '' : labelOf(value);
+                    closePanel();
+                    renderField();
+                },
+                setOptions: (list) => {
+                    state.options = (list || []).map(o => ({ value: String(o.value), label: String(o.label) }));
+                    if (state.open) renderPanel();
+                    renderField();
+                },
+                setDisabled: (b) => {
+                    state.disabled = !!b;
+                    if (state.disabled) closePanel();
+                    renderField();
+                },
+                get onSelect() { return onSelect; },
+                set onSelect(fn) { onSelect = fn; },
+                get onLiveInput() { return onLiveInput; },
+                set onLiveInput(fn) { onLiveInput = fn; },
+            };
+        }
 
         // --- ROUTING ---
         function handleRoute() {
@@ -649,12 +915,14 @@ export const createWebIndexContent = (manifest: WebManifest) => {
         }
 
         function resetFiltersUi() {
-            yearSelect.disabled = true;
-            monthSelect.disabled = true;
-            gameSelect.disabled = true;
-            yearSelect.innerHTML = '<option value="">全部年份</option>';
-            monthSelect.innerHTML = '<option value="">全年</option>';
-            gameSelect.innerHTML = '<option value="">全部游戏</option>';
+            yearSelect.setDisabled(true);
+            monthSelect.setDisabled(true);
+            gameSelect.setDisabled(true);
+            yearSelect.setOptions([{ value: '', label: '全部年份' }]);
+            monthSelect.setOptions([{ value: '', label: '全年' }]);
+            gameSelect.setOptions([{ value: '', label: '全部游戏' }]);
+            yearSelect.setValue(''); monthSelect.setValue(''); gameSelect.setValue('');
+            currentGameCandidates = [];
             filterSumEl.textContent = '';
         }
 
@@ -702,12 +970,15 @@ export const createWebIndexContent = (manifest: WebManifest) => {
             applyFiltersAndRender(true);
 
             resetFilterBtn.onclick = () => {
-                yearSelect.value = ""; monthSelect.selectedIndex = 0; gameSelect.value = "";
+                yearSelect.setValue(''); monthSelect.setValue(''); gameSelect.setValue('');
+                updateMonthOptions();
+                refreshGameOptions();
                 applyFiltersAndRender(true);
             };
-            yearSelect.onchange = () => { updateMonthOptions(); applyFiltersAndRender(true); };
-            monthSelect.onchange = () => applyFiltersAndRender(true);
-            gameSelect.onchange = () => applyFiltersAndRender(true);
+            yearSelect.onSelect = () => { updateMonthOptions(); refreshGameOptions(); applyFiltersAndRender(true); };
+            monthSelect.onSelect = () => { refreshGameOptions(); applyFiltersAndRender(true); };
+            gameSelect.onSelect = () => applyFiltersAndRender(true);
+            gameSelect.onLiveInput = () => applyFiltersAndRender(true);
         }
 
         function renderMeta(data) {
@@ -727,69 +998,105 @@ export const createWebIndexContent = (manifest: WebManifest) => {
         }
 
         function initFilters(recs) {
-            yearSelect.disabled = false;
-            gameSelect.disabled = false;
+            yearSelect.setDisabled(false);
+            gameSelect.setDisabled(false);
 
             const years = [...new Set(recs.map(r => getYear(r.liveTime)))].sort((a,b) => b-a);
-            yearSelect.innerHTML = \`<option value="">全部年份</option>\` + years.map(y => \`<option value="\${ y }">\${ y }年</option>\`).join('');
+            yearSelect.setOptions([{ value: '', label: '全部年份' }, ...years.map(y => ({ value: String(y), label: y + '年' }))]);
             updateMonthOptions();
-            const allGames = [...new Set(recs.flatMap(r => r.playGame))].sort();
-            gameSelect.innerHTML = \`<option value="">全部游戏</option>\` + allGames.map(g => \`<option value="\${ g }">\${ g }</option>\`).join('');
+            refreshGameOptions();
+        }
+
+        /**
+         * 按当前年月范围重算可选游戏, 并按「最新一场 liveTime」降序排列,
+         * 与下方录像分组顺序保持一致; 已选游戏被挤出候选时重置为「全部游戏」。
+         */
+        function refreshGameOptions() {
+            const year = yearSelect.getValue();
+            const month = monthSelect.getValue();
+            const latest = new Map();
+            currentUploaderData.records.forEach(r => {
+                if (year && getYear(r.liveTime) !== Number(year)) return;
+                if (month && getMonth(r.liveTime) !== Number(month)) return;
+                r.playGame.forEach(g => {
+                    const cur = latest.get(g);
+                    if (cur === undefined || r.liveTime > cur) latest.set(g, r.liveTime);
+                });
+            });
+            currentGameCandidates = [...latest.keys()].sort((a, b) => latest.get(b) - latest.get(a));
+
+            const prev = gameSelect.getValue();
+            gameSelect.setOptions([{ value: '', label: '全部游戏' }, ...currentGameCandidates.map(g => ({ value: g, label: g }))]);
+            if (prev && !currentGameCandidates.includes(prev)) gameSelect.setValue('');
         }
 
         function updateMonthOptions() {
-            const year = yearSelect.value;
+            const year = yearSelect.getValue();
             const recs = currentUploaderData.records;
-            let months = year ? [...new Set(recs.filter(r => getYear(r.liveTime) == year).map(r => getMonth(r.liveTime)))].sort((a,b) => b-a)
-                              : [...new Set(recs.map(r => getMonth(r.liveTime)))].sort((a,b) => b-a);
+            let months = year ? [...new Set(recs.filter(r => getYear(r.liveTime) == year).map(r => getMonth(r.liveTime)))] : [...new Set(recs.map(r => getMonth(r.liveTime)))];
+            months.sort((a, b) => b - a);
             const monthNames = ["","一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
-            monthSelect.innerHTML = \`<option value="">\${ year ? "全部月份" : "全年" }</option>\` + months.map(m => \`<option value="\${ m }">\${ monthNames[ m ] }</option>\`).join('');
+            monthSelect.setValue('');
+            monthSelect.setOptions([{ value: '', label: year ? '全部月份' : '全年' }, ...months.map(m => ({ value: String(m), label: monthNames[ m ] }))]);
+        }
+
+        /**
+         * 解析游戏输入框当前状态
+         * - 空文本: 不筛选
+         * - 文本恰为某个游戏名: 精确模式, 只保留该游戏
+         * - 其他: 模糊模式, 子串命中的所有游戏取并集
+         */
+        function getGameQuery() {
+            const text = (gameSelect.getText() || '').trim();
+            if (text === '') return { text: '', matched: null, exact: null, fuzzy: false };
+            if (currentGameCandidates.includes(text)) return { text, matched: new Set([text]), exact: text, fuzzy: false };
+            const lower = text.toLowerCase();
+            const matched = new Set(currentGameCandidates.filter(g => g.toLowerCase().includes(lower)));
+            return { text, matched, exact: null, fuzzy: true };
         }
 
         function applyFiltersAndRender(reset = false) {
-            const year = yearSelect.value;
-            const month = monthSelect.value;
-            const game = gameSelect.value;
+            const year = yearSelect.getValue();
+            const month = monthSelect.getValue();
+            const gameQuery = getGameQuery();
             const recs = currentUploaderData.records;
 
-            monthSelect.disabled = Boolean(!year)
+            monthSelect.setDisabled(Boolean(!year));
 
             let filteredRecs = recs.filter(r => {
                 if (year && getYear(r.liveTime) !== Number(year)) return false;
                 if (month && getMonth(r.liveTime) !== Number(month)) return false;
-                if (game && !r.playGame.includes(game)) return false;
+                if (gameQuery.matched && !r.playGame.some(g => gameQuery.matched.has(g))) return false;
                 return true;
             });
 
             const groupMap = new Map();
             filteredRecs.forEach(r => {
                 r.playGame.forEach(g => {
-                    if (game && g !== game) return;
+                    if (gameQuery.matched && !gameQuery.matched.has(g)) return;
                     if (!groupMap.has(g)) groupMap.set(g, []);
                     groupMap.get(g).push(r);
                 });
             });
 
-            let groups = [];
-            if (game) {
-                if (groupMap.has(game)) groups = [{ name: game, items: groupMap.get(game) }];
-            } else {
-                groups = Array.from(groupMap.entries()).map(([name, items]) => ({
-                    name, items, maxTime: Math.max(...items.map(i => i.liveTime))
-                })).sort((a, b) => b.maxTime - a.maxTime);
-            }
+            const groups = Array.from(groupMap.entries()).map(([name, items]) => ({
+                name, items, maxTime: Math.max(...items.map(i => i.liveTime))
+            })).sort((a, b) => b.maxTime - a.maxTime);
 
             groups.forEach(g => g.items.sort((a, b) => a.liveTime - b.liveTime));
             filteredGroups = groups;
 
-			const filteredGameList = filteredRecs.flatMap((r) => r.playGame)
-
+            const filteredGameList = filteredRecs.flatMap(r => r.playGame).filter(g => !gameQuery.matched || gameQuery.matched.has(g));
             const totalDuration = filteredRecs.reduce((acc, r) => acc + r.liveDuration, 0);
-            let summaryText = \`共 \${ filteredGameList.length } 集 · 总时长 \${ formatDuration( totalDuration ) }\`;
-            if (year) summaryText = \`\${ year }年 · \${ filteredGameList.length } 集\`;
-            if (year && month) summaryText = \`\${ year }年\${ month }月 · \${ filteredGameList.length } 集\`;
-            if (game) summaryText = \`\${ game } · \${ filteredGroups[0].items.length } 集\`;
-            filterSumEl.innerHTML = summaryText;
+
+            // 模糊匹配期间摘要栏保持不变, 只有精确选中游戏 / 全部游戏 / 切换年月时才更新
+            if (!gameQuery.fuzzy) {
+                let summaryText = \`共 \${ filteredGameList.length } 集 · 总时长 \${ formatDuration( totalDuration ) }\`;
+                if (year) summaryText = \`\${ year }年 · \${ filteredGameList.length } 集\`;
+                if (year && month) summaryText = \`\${ year }年\${ month }月 · \${ filteredGameList.length } 集\`;
+                if (gameQuery.exact) summaryText = \`\${ gameQuery.exact } · \${ groups[0] ? groups[0].items.length : 0 } 集\`;
+                filterSumEl.innerHTML = summaryText;
+            }
 
             if (reset) {
                 currentBatchIndex = 0;
@@ -806,7 +1113,7 @@ export const createWebIndexContent = (manifest: WebManifest) => {
                 return;
             }
             const batch = filteredGroups.slice(currentBatchIndex, currentBatchIndex + BATCH_SIZE);
-            const isFiltered = !!yearSelect.value || !!monthSelect.value || !!gameSelect.value;
+            const isFiltered = !!yearSelect.getValue() || !!monthSelect.getValue() || !!(gameSelect.getText() || '').trim();
 
             batch.forEach(group => {
                 const groupEl = document.createElement('div');
@@ -878,9 +1185,10 @@ export const createWebIndexContent = (manifest: WebManifest) => {
         }
 
         window.filterByGame = (gameName) => {
-            gameSelect.value = gameName;
-            yearSelect.value = "";
-            monthSelect.selectedIndex = 0;
+            yearSelect.setValue('');
+            updateMonthOptions();
+            refreshGameOptions();
+            gameSelect.setValue(gameName);
             applyFiltersAndRender(true);
             listContainerEl.scrollTop = 0;
         };
