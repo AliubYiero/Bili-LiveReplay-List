@@ -32,8 +32,8 @@ export const PARSE_MAPPER_CONFIG: IParseConfig[] = [
 		userName: '胧黑',
 		videoSourceType: 'upload',
 		liverEntries: [
-			{ prefix: '【机皇录播】', liver: '机皇' },
 			{ prefix: '【Quin？机皇！】', liver: '机皇' },
+			{ prefix: '【Mr.Quin】', liver: 'Mr.Quin' },
 		],
 	},
 	{
@@ -43,11 +43,9 @@ export const PARSE_MAPPER_CONFIG: IParseConfig[] = [
 		// 自行车二层会搬运多个主播的录播, 前缀表比"本人"上传者更全
 		liverEntries: [
 			{ prefix: '【机皇录播】', liver: '机皇' },
-			{ prefix: '【Quin？机皇！】', liver: '机皇' },
 			{ prefix: '【肯尼录播】', liver: '机智的肯尼' },
 			{ prefix: '【剩饭录播】', liver: '北极熊剩饭' },
 			{ prefix: '【quin录播】', liver: 'Mr.Quin' },
-			{ prefix: '【Mr.Quin】', liver: 'Mr.Quin' },
 		],
 	},
 	{
@@ -60,6 +58,16 @@ export const PARSE_MAPPER_CONFIG: IParseConfig[] = [
 		userName: '勾檀Mayumi',
 		videoSourceType: 'replay',
 		seriesId: 91376,
+	},
+	{
+		uid: 1957464,
+		userName: 'Cyan_Rose_Sea',
+		videoSourceType: 'upload',
+		liverEntries: [
+			{ prefix: '【少年Pi】', liver: '少年Pi' },
+			{ prefix: '【傲慢的小肉包】', liver: '傲慢的小肉包' },
+			{ prefix: '【C酱です】', liver: '傲慢的小肉包' },
+		],
 	},
 ];
 

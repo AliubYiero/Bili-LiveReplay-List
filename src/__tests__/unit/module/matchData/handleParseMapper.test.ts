@@ -14,22 +14,31 @@ describe( 'handleParseMapper', () => {
 	describe( 'PARSE_MAPPER_CONFIG liver entries', () => {
 		it( 'should declare each uploader\u2019s prefixes', () => {
 			expect( PARSE_MAPPER_BY_UID[ 245335 ].liverEntries ).toEqual( [
-				{ prefix: '【机皇录播】', liver: '机皇' },
 				{ prefix: '【Quin？机皇！】', liver: '机皇' },
+				{ prefix: '【Mr.Quin】', liver: 'Mr.Quin' },
 			] );
 			expect( PARSE_MAPPER_BY_UID[ 1400350754 ].liverEntries ).toEqual( [
 				{ prefix: '【机皇录播】', liver: '机皇' },
-				{ prefix: '【Quin？机皇！】', liver: '机皇' },
 				{ prefix: '【肯尼录播】', liver: '机智的肯尼' },
 				{ prefix: '【剩饭录播】', liver: '北极熊剩饭' },
 				{ prefix: '【quin录播】', liver: 'Mr.Quin' },
-				{ prefix: '【Mr.Quin】', liver: 'Mr.Quin' },
+			] );
+			expect( PARSE_MAPPER_BY_UID[ 1957464 ].liverEntries ).toEqual( [
+				{ prefix: '【少年Pi】', liver: '少年Pi' },
+				{ prefix: '【傲慢的小肉包】', liver: '傲慢的小肉包' },
+				{ prefix: '【C酱です】', liver: '傲慢的小肉包' },
 			] );
 		} );
 
 		it( 'should not declare prefixes for uploaders that do not parse a liver', () => {
 			expect( PARSE_MAPPER_BY_UID[ 15810 ].liverEntries ).toBeUndefined();
 			expect( PARSE_MAPPER_BY_UID[ 690608693 ].liverEntries ).toBeUndefined();
+		} );
+
+		it( 'should map the legacy C酱です prefix to 傲慢的小肉包', () => {
+			const entries = PARSE_MAPPER_BY_UID[ 1957464 ].liverEntries ?? [];
+			const legacy = entries.find( ( { prefix } ) => prefix === '【C酱です】' );
+			expect( legacy?.liver ).toBe( '傲慢的小肉包' );
 		} );
 
 		it( 'should keep prefixes unnormalized in config', () => {
@@ -41,9 +50,9 @@ describe( 'handleParseMapper', () => {
 	} );
 
 	describe( 'handleParseMapper array', () => {
-		it( 'should contain all four uploaders', () => {
-			expect( handleParseMapper ).toHaveLength( 4 );
-			expect( handleParseMapper.map( item => item.uid ) ).toEqual( [ 245335, 1400350754, 15810, 690608693 ] );
+		it( 'should contain all five uploaders', () => {
+			expect( handleParseMapper ).toHaveLength( 5 );
+			expect( handleParseMapper.map( item => item.uid ) ).toEqual( [ 245335, 1400350754, 15810, 690608693, 1957464 ] );
 		} );
 
 		it( 'should have correct user names', () => {
@@ -52,6 +61,7 @@ describe( 'handleParseMapper', () => {
 			expect( userNames ).toContain( '自行车二层' );
 			expect( userNames ).toContain( 'Mr.Quin' );
 			expect( userNames ).toContain( '勾檀Mayumi' );
+			expect( userNames ).toContain( 'Cyan_Rose_Sea' );
 		} );
 
 		it( 'should declare a video source type for every uploader', () => {
@@ -64,7 +74,7 @@ describe( 'handleParseMapper', () => {
 			const uploadUids = handleParseMapper
 				.filter( item => item.videoSourceType === 'upload' )
 				.map( item => item.uid );
-			expect( uploadUids ).toEqual( [ 245335, 1400350754, 15810 ] );
+			expect( uploadUids ).toEqual( [ 245335, 1400350754, 15810, 1957464 ] );
 		} );
 
 		it( 'should pair the replay source with a series id', () => {
@@ -128,7 +138,7 @@ describe( 'handleParseMapper', () => {
 			const item: UnparseRecordItem = {
 				aid: 123456789,
 				bvId: 'BV1xx411c7mD',
-				title: '【机皇录播】2024-01-15《艾尔登法环》',
+				title: '【Quin？机皇！】2024-01-15《艾尔登法环》',
 				publishTime: 1705312800,
 				liveDuration: 3600,
 			};
@@ -145,7 +155,7 @@ describe( 'handleParseMapper', () => {
 			const item: UnparseRecordItem = {
 				aid: 123456790,
 				bvId: 'BV1xx411c7mE',
-				title: '【机皇录播】2024-01-15《艾尔登法环》《只狼》《黑暗之魂》',
+				title: '【Quin？机皇！】2024-01-15《艾尔登法环》《只狼》《黑暗之魂》',
 				publishTime: 1705312800,
 				liveDuration: 7200,
 			};
@@ -174,7 +184,7 @@ describe( 'handleParseMapper', () => {
 			const item: UnparseRecordItem = {
 				aid: 123456792,
 				bvId: 'BV1xx411c7mG',
-				title: '【机皇录播】2024-01-15 只是聊天',
+				title: '【Quin？机皇！】2024-01-15 只是聊天',
 				publishTime: 1705312800,
 				liveDuration: 3600,
 			};
@@ -188,7 +198,7 @@ describe( 'handleParseMapper', () => {
 			const item: UnparseRecordItem = {
 				aid: 123456793,
 				bvId: 'BV1xx411c7mH',
-				title: '【机皇录播】2024-1-5《只狼》',
+				title: '【Quin？机皇！】2024-1-5《只狼》',
 				publishTime: 1705312800,
 				liveDuration: 3600,
 			};
@@ -600,6 +610,116 @@ describe( 'handleParseMapper', () => {
 
 			expect( result ).not.toBeNull();
 			expect( result?.playGame ).toEqual( [ '艾尔登法环' ] );
+		} );
+	} );
+
+	describe( 'Cyan_Rose_Sea parser (uid: 1957464)', () => {
+		let parser: IParseItem;
+
+		beforeEach( () => {
+			parser = handleParseMapper.find( item => item.uid === 1957464 )!;
+		} );
+
+		it( 'should parse 少年Pi replay with games placed after the date', async () => {
+			const item: UnparseRecordItem = {
+				aid: 123456819,
+				bvId: 'BV1xx411c7nh',
+				title: '【直播录像】【少年Pi】（直播弹幕SC内压）261010（杀戮尖塔、Living Hell、火焰纹章：万缕千丝）',
+				publishTime: 1760000000000,
+				liveDuration: 28800,
+			};
+
+			const result = await parser.onParse( item );
+
+			expect( result ).not.toBeNull();
+			expect( result?.liver ).toBe( '少年Pi' );
+			expect( result?.liveTime ).toBe( new Date( 2026, 9, 10 ).getTime() );
+			expect( result?.playGame ).toEqual( [ '杀戮尖塔', 'Living Hell', '火焰纹章：万缕千丝' ] );
+		} );
+
+		it( 'should parse 傲慢的小肉包 replay with games placed before the status marker', async () => {
+			const item: UnparseRecordItem = {
+				aid: 123456820,
+				bvId: 'BV1xx411c7ni',
+				title: '【直播录像】【傲慢的小肉包】261010（看视频、Living Hell、深空当铺、星布谷地）（直播弹幕SC内压）',
+				publishTime: 1760000000000,
+				liveDuration: 28800,
+			};
+
+			const result = await parser.onParse( item );
+
+			expect( result ).not.toBeNull();
+			expect( result?.liver ).toBe( '傲慢的小肉包' );
+			expect( result?.liveTime ).toBe( new Date( 2026, 9, 10 ).getTime() );
+			expect( result?.playGame ).toEqual( [ '看视频', 'Living Hell', '深空当铺', '星布谷地' ] );
+		} );
+
+		it( 'should fall back to 无标记 when no game marker exists', async () => {
+			const item: UnparseRecordItem = {
+				aid: 123456821,
+				bvId: 'BV1xx411c7nj',
+				title: '【直播录像】【少年Pi】（直播弹幕SC内压）261015',
+				publishTime: 1760000000000,
+				liveDuration: 9000,
+			};
+
+			const result = await parser.onParse( item );
+
+			expect( result ).not.toBeNull();
+			expect( result?.playGame ).toEqual( [ '无标记' ] );
+		} );
+
+		it( 'should parse the legacy 直播弹幕内压 format from 2023', async () => {
+			const item: UnparseRecordItem = {
+				aid: 123456822,
+				bvId: 'BV1xx411c7nk',
+				title: '【直播录像】【C酱です】230501（直播弹幕内压）',
+				publishTime: 1683000000000,
+				liveDuration: 9000,
+			};
+
+			const result = await parser.onParse( item );
+
+			expect( result ).not.toBeNull();
+			expect( result?.liver ).toBe( '傲慢的小肉包' );
+			expect( result?.liveTime ).toBe( new Date( 2023, 4, 1 ).getTime() );
+			expect( result?.playGame ).toEqual( [ '无标记' ] );
+		} );
+
+		it( 'should reject the 无弹幕纯净流 duplicate', async () => {
+			const item: UnparseRecordItem = {
+				aid: 123456823,
+				bvId: 'BV1xx411c7nl',
+				title: '【直播录像】【少年Pi】（无弹幕纯净流）261015',
+				publishTime: 1760000000000,
+				liveDuration: 9000,
+			};
+
+			expect( await parser.onParse( item ) ).toBeNull();
+		} );
+
+		it( 'should reject non-replay videos from the same uploader', async () => {
+			const item: UnparseRecordItem = {
+				aid: 123456824,
+				bvId: 'BV1xx411c7nm',
+				title: '【火山的女儿】【少年Pi】完美结局（弹幕付）（生鱼片）',
+				publishTime: 1683000000000,
+				liveDuration: 109,
+			};
+
+			expect( await parser.onParse( item ) ).toBeNull();
+		} );
+
+		it( 'should return null when the liver prefix is unknown', async () => {
+			const item: UnparseRecordItem = {
+				aid: 123456825,
+				bvId: 'BV1xx411c7nn',
+				title: '【直播录像】【奶茶☆】261015（直播弹幕SC内压）',
+				publishTime: 1760000000000,
+				liveDuration: 9000,
+			};
+
+			expect( await parser.onParse( item ) ).toBeNull();
 		} );
 	} );
 } );

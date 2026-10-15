@@ -117,4 +117,41 @@ export const PARSERS: Record<number, Parser> = {
 			liver: '勾檀Mayumi',
 		};
 	},
+	1957464: async ( item, entries ) => {
+		// 1. 匹配播主前缀
+		const liver = extractLiver( item.title, entries );
+		if ( !liver ) return null;
+		
+		// 2. 过滤非直播录像和无弹幕纯净流
+		if ( !item.title.startsWith( '【直播录像】' )
+			|| item.title.includes( '无弹幕' ) ) {
+			return null;
+		}
+		
+		// 3. 提取直播日期（yymmdd, 恒为 6 位数字）
+		const dateMatch = item.title.match( /(?<!\d)(\d{6})(?!\d)/ );
+		if ( !dateMatch ) return null;
+		const yymmdd = dateMatch[ 1 ];
+		const liveTime = new Date(
+			2000 + Number( yymmdd.slice( 0, 2 ) ),
+			Number( yymmdd.slice( 2, 4 ) ) - 1,
+			Number( yymmdd.slice( 4, 6 ) ),
+		).getTime();
+		
+		// 4. 提取游戏标记: 标题里除状态标记外的括号内容, 以顿号分隔
+		const playGameList = ( item.title.match( /（[^）]*）/g ) ?? [] )
+			.map( marker => marker.slice( 1, -1 ) )
+			.filter( marker => !marker.includes( '弹幕' ) )
+			.flatMap( marker => marker.split( '、' ) )
+			.map( name => name.trim() )
+			.filter( name => name.length > 0 ); // 过滤空名称
+		
+		return {
+			...item,
+			liveTime,
+			// 不存在游戏标记时占位为「无标记」
+			playGame: playGameList.length > 0 ? playGameList : [ '无标记' ],
+			liver,
+		};
+	},
 };
