@@ -185,28 +185,48 @@ npm run edit
 
 ---
 
-> 1. 进入文件 \`src/module/matchData/handleParseMapper.ts\` 文件
-> 2. 在 \`handleParseMapper\` 数组中新增一个对象, 对象必须包含以下内容:
+> 1. 在文件 \`src/config/parseMapper.config.ts\` 的 \`PARSE_MAPPER_CONFIG\` 数组中新增一条配置(声明式数据)
+> 2. 在文件 \`src/module/matchData/parsers.ts\` 的 \`PARSERS\` 中, 用相同的 \`uid\` 添加对应的解析函数
 
-| 属性       | 类型                                                        | 描述             |
-| ---------- | ----------------------------------------------------------- | ---------------- |
-| \`uid\`      | \`number\`                                                    | 上传者的uid      |
-| \`userName\` | \`string\`                                                    | 上传者的用户名称 |
-| \`onParse\`  | \`( item: UnparseRecordItem ) => Promise<RecordItem | null>\` | 解析函数         |
+**配置项 (\`IParseConfig\`)**
+
+| 属性              | 类型                | 描述                                     |
+| ----------------- | ------------------- | ---------------------------------------- |
+| \`uid\`             | \`number\`            | 上传者的 uid                             |
+| \`userName\`        | \`string\`            | 上传者的用户名称                         |
+| \`videoSourceType\` | \`VideoSourceOption\` | 数据源类型: upload / replay / both        |
+| \`seriesId\`        | \`number\`            | 直播回放合集 ID, replay / both 时必需     |
+| \`liverEntries\`    | \`ILiverEntry[]\`     | 标题前缀 → 主播 的匹配表, 不解析主播时可省略 |
 
 \`\`\`ts
-export interface IParseItem {
+export interface IParseConfig {
 \tuid: number;
 \tuserName: string;
-\tonParse: ( item: UnparseRecordItem ) => Promise<RecordItem | null>;
+\tvideoSourceType: VideoSourceOption;
+\tseriesId?: number;
+\tliverEntries?: ILiverEntry[];
+}
+
+export interface ILiverEntry {
+\tprefix: string;
+\tliver: string;
 }
 \`\`\`
 
 ---
 
-**\`onParse\` 函数**
+**解析函数 (\`PARSERS\`)**
 
-\`onParse\` 函数传入的参数是一个未被解析的原始视频数据 \`UnparseRecordItem\` , 内容如下:
+解析函数类型如下:
+
+\`\`\`ts
+export type Parser = (
+\titem: UnparseRecordItem,
+\tentries: ILiverEntry[],
+) => Promise<RecordItem | null>;
+\`\`\`
+
+解析函数传入的参数是一个未被解析的原始视频数据 \`UnparseRecordItem\` , 内容如下:
 
 | 属性           | 类型     | 描述                          |
 | -------------- | -------- | ----------------------------- |
@@ -216,7 +236,7 @@ export interface IParseItem {
 | \`liveDuration\` | \`number\` | 视频的时长 (秒)               |
 | \`title\`        | \`string\` | 视频标题                      |
 
-\`onParse\` 函数需要返回一个解析完成后视频数据 \`RecordItem\` , 内容如下:
+解析函数需要返回一个解析完成后视频数据 \`RecordItem\` , 内容如下:
 
 | 属性           | 类型            | 描述                          |
 | -------------- | --------------- | ----------------------------- |

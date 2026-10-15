@@ -2,25 +2,41 @@ import {
 	assertValidParseMapper,
 	handleParseMapper,
 	IParseItem,
-	LIVER_ENTRIES,
 } from '../../../../module/matchData/handleParseMapper.ts';
+import { Parser } from '../../../../module/matchData/parsers.ts';
+import {
+	PARSE_MAPPER_BY_UID,
+	PARSE_MAPPER_CONFIG,
+} from '../../../../config/parseMapper.config.ts';
 import { UnparseRecordItem } from '../../../../interface/IRecord.ts';
 
 describe( 'handleParseMapper', () => {
-	describe( 'LIVER_ENTRIES', () => {
-		it( 'should contain expected liver mappings', () => {
-			expect( LIVER_ENTRIES ).toHaveLength( 6 );
-			expect( LIVER_ENTRIES ).toContainEqual( [ '【机皇录播】', '机皇' ] );
-			expect( LIVER_ENTRIES ).toContainEqual( [ '【quin录播】', 'Mr.Quin' ] );
-			expect( LIVER_ENTRIES ).toContainEqual( [ '【肯尼录播】', '机智的肯尼' ] );
-			expect( LIVER_ENTRIES ).toContainEqual( [ '【剩饭录播】', '北极熊剩饭' ] );
+	describe( 'PARSE_MAPPER_CONFIG liver entries', () => {
+		it( 'should declare each uploader\u2019s prefixes', () => {
+			expect( PARSE_MAPPER_BY_UID[ 245335 ].liverEntries ).toEqual( [
+				{ prefix: '【机皇录播】', liver: '机皇' },
+				{ prefix: '【Quin？机皇！】', liver: '机皇' },
+			] );
+			expect( PARSE_MAPPER_BY_UID[ 1400350754 ].liverEntries ).toEqual( [
+				{ prefix: '【机皇录播】', liver: '机皇' },
+				{ prefix: '【Quin？机皇！】', liver: '机皇' },
+				{ prefix: '【肯尼录播】', liver: '机智的肯尼' },
+				{ prefix: '【剩饭录播】', liver: '北极熊剩饭' },
+				{ prefix: '【quin录播】', liver: 'Mr.Quin' },
+				{ prefix: '【Mr.Quin】', liver: 'Mr.Quin' },
+			] );
 		} );
 
-		it( 'should have lowercase entries for Quin patterns', () => {
-			const lowerCaseEntries = LIVER_ENTRIES.filter( ( [ prefix ] ) =>
-				prefix === '【quin录播】' || prefix === '【quin？机皇！】' || prefix === '【mr.quin】'
-			);
-			expect( lowerCaseEntries ).toHaveLength( 3 );
+		it( 'should not declare prefixes for uploaders that do not parse a liver', () => {
+			expect( PARSE_MAPPER_BY_UID[ 15810 ].liverEntries ).toBeUndefined();
+			expect( PARSE_MAPPER_BY_UID[ 690608693 ].liverEntries ).toBeUndefined();
+		} );
+
+		it( 'should keep prefixes unnormalized in config', () => {
+			const hasUppercase = PARSE_MAPPER_CONFIG
+				.flatMap( config => config.liverEntries ?? [] )
+				.some( ( { prefix } ) => prefix !== prefix.toLocaleLowerCase() );
+			expect( hasUppercase ).toBe( true );
 		} );
 	} );
 
@@ -59,32 +75,45 @@ describe( 'handleParseMapper', () => {
 	} );
 
 	describe( 'assertValidParseMapper', () => {
+		const noop: Parser = async () => null;
+
 		it( 'accepts the built-in mapper', () => {
 			expect( () => assertValidParseMapper() ).not.toThrow();
 		} );
 
 		it( 'rejects a replay source without seriesId', () => {
 			expect( () => assertValidParseMapper( [
-				{ uid: 1, userName: 'a', videoSourceType: 'replay', onParse: async () => null },
-			] ) ).toThrow( /必须同时配置 seriesId/ );
+				{ uid: 1, userName: 'a', videoSourceType: 'replay' },
+			], { 1: noop } ) ).toThrow( /必须同时配置 seriesId/ );
 		} );
 
 		it( 'rejects a both source without seriesId', () => {
 			expect( () => assertValidParseMapper( [
-				{ uid: 2, userName: 'b', videoSourceType: 'both', onParse: async () => null },
-			] ) ).toThrow( /必须同时配置 seriesId/ );
+				{ uid: 2, userName: 'b', videoSourceType: 'both' },
+			], { 2: noop } ) ).toThrow( /必须同时配置 seriesId/ );
 		} );
 
 		it( 'accepts a replay source with seriesId', () => {
 			expect( () => assertValidParseMapper( [
-				{ uid: 3, userName: 'c', videoSourceType: 'replay', seriesId: 1, onParse: async () => null },
-			] ) ).not.toThrow();
+				{ uid: 3, userName: 'c', videoSourceType: 'replay', seriesId: 1 },
+			], { 3: noop } ) ).not.toThrow();
 		} );
 
 		it( 'accepts an upload source without seriesId', () => {
 			expect( () => assertValidParseMapper( [
-				{ uid: 4, userName: 'd', videoSourceType: 'upload', onParse: async () => null },
-			] ) ).not.toThrow();
+				{ uid: 4, userName: 'd', videoSourceType: 'upload' },
+			], { 4: noop } ) ).not.toThrow();
+		} );
+
+		it( 'rejects a config uid that has no parser', () => {
+			expect( () => assertValidParseMapper( [
+				{ uid: 5, userName: 'e', videoSourceType: 'upload' },
+			], {} ) ).toThrow( /PARSERS 中没有对应的解析函数/ );
+		} );
+
+		it( 'rejects a parser uid that has no config', () => {
+			expect( () => assertValidParseMapper( [], { 6: noop } ) )
+				.toThrow( /PARSE_MAPPER_CONFIG 中没有对应的配置/ );
 		} );
 	} );
 

@@ -1,4 +1,4 @@
-import { LIVER_ENTRIES } from './handleParseMapper.ts';
+import { ILiverEntry } from '../../config/parseMapper.config.ts';
 
 /**
  * 从标题中提取直播日期
@@ -38,16 +38,16 @@ export function extractLiveDate( title: string, fallbackDate: number ): number {
 
 /**
  * 从标题中提取直播主播
+ * @param title - 需要解析的标题字符串
+ * @param entries - 当前上传者的前缀表
  */
-export function extractLiver( title: string ): string | null {
+export function extractLiver( title: string, entries: ILiverEntry[] ): string | null {
 	const normalizedTitle = title.toLocaleLowerCase();
-	const liverEntry = LIVER_ENTRIES.find( ( [ prefix ] ) =>
-		normalizedTitle.includes( prefix ),
+	const liverEntry = entries.find( ( { prefix } ) =>
+		normalizedTitle.includes( prefix.toLocaleLowerCase() ),
 	);
 	
-	if ( !liverEntry ) return null;
-	const [ , liver ] = liverEntry;
-	return liver;
+	return liverEntry?.liver ?? null;
 }
 
 /**

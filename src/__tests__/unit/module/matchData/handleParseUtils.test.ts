@@ -3,6 +3,9 @@ import {
   extractLiver,
   cleanGameName,
 } from '../../../../module/matchData/handleParseUtils';
+import { PARSE_MAPPER_CONFIG } from '../../../../config/parseMapper.config';
+
+const allLiverEntries = PARSE_MAPPER_CONFIG.flatMap((config) => config.liverEntries ?? []);
 
 describe('handleParseUtils', () => {
   describe('extractLiveDate', () => {
@@ -56,39 +59,43 @@ describe('handleParseUtils', () => {
 
   describe('extractLiver', () => {
     it('should extract 机皇 from 【机皇录播】', () => {
-      expect(extractLiver('【机皇录播】游戏名 2024-1-1')).toBe('机皇');
+      expect(extractLiver('【机皇录播】游戏名 2024-1-1', allLiverEntries)).toBe('机皇');
     });
 
     it('should extract 机皇 from 【Quin？机皇！】', () => {
-      expect(extractLiver('【Quin？机皇！】游戏名 2024-1-1')).toBe('机皇');
+      expect(extractLiver('【Quin？机皇！】游戏名 2024-1-1', allLiverEntries)).toBe('机皇');
     });
 
     it('should extract 机智的肯尼 from 【肯尼录播】', () => {
-      expect(extractLiver('【肯尼录播】游戏名 2024-1-1')).toBe('机智的肯尼');
+      expect(extractLiver('【肯尼录播】游戏名 2024-1-1', allLiverEntries)).toBe('机智的肯尼');
     });
 
     it('should extract 北极熊剩饭 from 【剩饭录播】', () => {
-      expect(extractLiver('【剩饭录播】游戏名 2024-1-1')).toBe('北极熊剩饭');
+      expect(extractLiver('【剩饭录播】游戏名 2024-1-1', allLiverEntries)).toBe('北极熊剩饭');
     });
 
     it('should extract Mr.Quin from 【quin录播】', () => {
-      expect(extractLiver('【quin录播】游戏名 2024-1-1')).toBe('Mr.Quin');
+      expect(extractLiver('【quin录播】游戏名 2024-1-1', allLiverEntries)).toBe('Mr.Quin');
     });
 
     it('should extract Mr.Quin from 【Mr.Quin】', () => {
-      expect(extractLiver('【Mr.Quin】游戏名 2024-1-1')).toBe('Mr.Quin');
+      expect(extractLiver('【Mr.Quin】游戏名 2024-1-1', allLiverEntries)).toBe('Mr.Quin');
     });
 
     it('should be case-insensitive for 【quin录播】', () => {
-      expect(extractLiver('【QUIN录播】游戏名 2024-1-1')).toBe('Mr.Quin');
+      expect(extractLiver('【QUIN录播】游戏名 2024-1-1', allLiverEntries)).toBe('Mr.Quin');
     });
 
     it('should return null for unknown prefix', () => {
-      expect(extractLiver('【未知主播】游戏名 2024-1-1')).toBeNull();
+      expect(extractLiver('【未知主播】游戏名 2024-1-1', allLiverEntries)).toBeNull();
     });
 
     it('should return null for empty string', () => {
-      expect(extractLiver('')).toBeNull();
+      expect(extractLiver('', allLiverEntries)).toBeNull();
+    });
+
+    it('should return null when entries are empty', () => {
+      expect(extractLiver('【机皇录播】游戏名 2024-1-1', [])).toBeNull();
     });
   });
 
