@@ -2,6 +2,7 @@
 	"name": "node",
 	"version": "0.0.0",
 	"type": "module",
+	"packageManager": "pnpm@11.22.0",
 	"exports": {
 		".": {
 			"require": "./dist/index.cjs"
