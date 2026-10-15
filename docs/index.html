@@ -1,13 +1,11 @@
-import { WebManifest } from './generateWeb.ts';
+<!DOCTYPE html>
+<!--
+	此文件是手维护的静态页面, 不再由代码生成。
 
-/**
- * 创建 index.html 内容
- *
- * 页面只内联 `manifest`（主播列表 + 上传者摘要），单个上传者的录播记录在进入
- * 详情页时才 fetch `data/<主播>/<上传者>.json`，因此首屏体积不随数据量增长。
- */
-export const createWebIndexContent = (manifest: WebManifest) => {
-	return `<!DOCTYPE html>
+	- 清单数据来自同级的 manifest.json（由 generateWebData 生成, 前端 fetch 加载）
+	- 单个上传者的录播记录按需 fetch data/<主播>/<上传者>.json
+	- 本地预览: npm run preview（必须走 http, file:// 下 fetch 会被 CORS 拦下）
+-->
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -359,6 +357,14 @@ export const createWebIndexContent = (manifest: WebManifest) => {
             .list-cont { padding: 0 1.25rem 2rem 1.25rem; }
             .uploader-grid { grid-template-columns: 1fr; }
         }
+
+        /* --- Manifest 加载 / 失败态（侧栏） --- */
+        .manifest-state {
+            display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+            padding: 1.5rem 1.25rem; color: var(--muted-foreground);
+            font-size: 0.875rem; text-align: center;
+        }
+        .manifest-state p { line-height: 1.5; word-break: break-word; }
     </style>
 </head>
 <body>
@@ -432,7 +438,9 @@ export const createWebIndexContent = (manifest: WebManifest) => {
     </main>
 
     <script type="module">
-        const manifest = ${ JSON.stringify( manifest ) };
+        // 清单由 generateWebData() 生成, 与 index.html 同级; 静态页不再内联数据
+        const MANIFEST_URL = './manifest.json';
+        let manifest = null;
 
         // State
         let currentStreamerIndex = null;
@@ -477,7 +485,7 @@ export const createWebIndexContent = (manifest: WebManifest) => {
             const h = Math.floor(seconds / 3600);
             const m = Math.floor((seconds % 3600) / 60);
             const s = seconds % 60;
-            return \`\${ h.toString().padStart( 2, '0' ) }:\${ m.toString().padStart( 2, '0' ) }:\${ s.toString().padStart( 2, '0' ) }\`;
+            return `${ h.toString().padStart( 2, '0' ) }:${ m.toString().padStart( 2, '0' ) }:${ s.toString().padStart( 2, '0' ) }`;
         };
         const getYear = (ts) => new Date(ts).getFullYear();
         const getMonth = (ts) => new Date(ts).getMonth() + 1;
@@ -729,7 +737,7 @@ export const createWebIndexContent = (manifest: WebManifest) => {
         // --- ROUTING ---
         function handleRoute() {
             const hash = window.location.hash;
-            const match = hash.match(/liver\\/([^\\/]+)\\/uploader\\/([^\\/]+)/);
+            const match = hash.match(/liver\/([^\/]+)\/uploader\/([^\/]+)/);
 
             if (match) {
                 const liver = decodeURIComponent(match[1]);
@@ -763,8 +771,8 @@ export const createWebIndexContent = (manifest: WebManifest) => {
             viewSelect.style.display = 'none';
             viewRecords.style.display = 'flex';
             recTitle.textContent = liver === uploader
-                ? \`\${ liver }\`
-                : \`\${ liver } · \${ uploader }\`;
+                ? `${ liver }`
+                : `${ liver } · ${ uploader }`;
 
             backToSelectBtn.onclick = () => {
                 currentStreamerIndex = manifest.streamers.indexOf(streamer);
@@ -817,7 +825,7 @@ export const createWebIndexContent = (manifest: WebManifest) => {
             if (!dataCache.has(key)) {
                 const promise = fetch(key)
                     .then(response => {
-                        if (!response.ok) throw new Error(\`HTTP \${ response.status }\`);
+                        if (!response.ok) throw new Error(`HTTP ${ response.status }`);
                         return response.json();
                     })
                     .then(data => {
@@ -834,10 +842,10 @@ export const createWebIndexContent = (manifest: WebManifest) => {
         // --- SIDEBAR ---
         function renderStreamerList() {
             streamerListEl.innerHTML = '';
-\t        manifest.streamers.forEach((item, index) => {
+	        manifest.streamers.forEach((item, index) => {
                 const isActive = currentStreamerIndex === index;
                 const div = document.createElement('div');
-                div.className = \`streamer-item \${ isActive ? 'active' : '' }\`;
+                div.className = `streamer-item ${ isActive ? 'active' : '' }`;
                 div.onclick = () => {
                     currentStreamerIndex = index;
                     renderStreamerList();
@@ -846,13 +854,13 @@ export const createWebIndexContent = (manifest: WebManifest) => {
                     // Update URL to reflect selection but stay on grid view?
                     // Or just update UI. Let's just update UI for grid view.
                 };
-                div.innerHTML = \`
-                    <div class="avatar">\${ item.liver.slice( 0, 2 ).toUpperCase() }</div>
+                div.innerHTML = `
+                    <div class="avatar">${ item.liver.slice( 0, 2 ).toUpperCase() }</div>
                     <div class="streamer-info">
-                        <div class="s-name">\${ item.liver }</div>
-                        <div class="s-meta">\${ item.uploaders.length } 位上传者</div>
+                        <div class="s-name">${ item.liver }</div>
+                        <div class="s-meta">${ item.uploaders.length } 位上传者</div>
                     </div>
-                \`;
+                `;
                 streamerListEl.appendChild(div);
             });
         }
@@ -869,8 +877,8 @@ export const createWebIndexContent = (manifest: WebManifest) => {
             selectContent.style.display = 'block';
 
             const streamer = manifest.streamers[currentStreamerIndex];
-            selectTitle.textContent = \`\${ streamer.liver } 的录播上传者\`;
-            selectSub.textContent = \`共找到 \${ streamer.uploaders.length } 个上传者账号\`;
+            selectTitle.textContent = `${ streamer.liver } 的录播上传者`;
+            selectSub.textContent = `共找到 ${ streamer.uploaders.length } 个上传者账号`;
 
             streamer.uploaders.forEach(uploader => {
                 const card = document.createElement('div');
@@ -881,21 +889,21 @@ export const createWebIndexContent = (manifest: WebManifest) => {
 
                 // REQ 3: Badge Text "本人"
                 const badgeHtml = uploader.isSelf
-                    ? \`<span class="badge-self">本人</span>\`
-                    : \`<span class="badge-other">第三方</span>\`;
+                    ? `<span class="badge-self">本人</span>`
+                    : `<span class="badge-other">第三方</span>`;
 
-                card.innerHTML = \`
-                    <div class="card-head"><div class="card-title">\${ uploader.userName }</div>\${ badgeHtml }</div>
+                card.innerHTML = `
+                    <div class="card-head"><div class="card-title">${ uploader.userName }</div>${ badgeHtml }</div>
                     <div class="card-stats">
-                        <div class="stat-item"><span class="stat-label">最新录播</span><span class="stat-val">\${ formatDate( uploader.newestTime ) }</span></div>
-                        <div class="stat-item"><span class="stat-label">最早录播</span><span class="stat-val">\${ formatDate( uploader.oldestTime ) }</span></div>
-                        <div class="stat-item"><span class="stat-label">数据更新</span><span class="stat-val mono">\${ formatDate( uploader.latestUpdate ) }</span></div>
-                        <div class="stat-item"><span class="stat-label">累计视频</span><span class="stat-val mono">\${ uploader.totalVideos }</span></div>
+                        <div class="stat-item"><span class="stat-label">最新录播</span><span class="stat-val">${ formatDate( uploader.newestTime ) }</span></div>
+                        <div class="stat-item"><span class="stat-label">最早录播</span><span class="stat-val">${ formatDate( uploader.oldestTime ) }</span></div>
+                        <div class="stat-item"><span class="stat-label">数据更新</span><span class="stat-val mono">${ formatDate( uploader.latestUpdate ) }</span></div>
+                        <div class="stat-item"><span class="stat-label">累计视频</span><span class="stat-val mono">${ uploader.totalVideos }</span></div>
                     </div>
                     <div class="card-foot">
-                        <button class="btn-enter" onclick="event.stopPropagation(); navigateToRecords('\${ streamer.liver }', '\${ uploader.userName }')">进入查看 <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+                        <button class="btn-enter" onclick="event.stopPropagation(); navigateToRecords('${ streamer.liver }', '${ uploader.userName }')">进入查看 <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
                     </div>
-                \`;
+                `;
                 uploaderGrid.appendChild(card);
             });
         }
@@ -904,7 +912,7 @@ export const createWebIndexContent = (manifest: WebManifest) => {
              window.location.hash = '/'
         }
         function navigateToRecords(liver, uploader) {
-            window.location.hash = \`/liver/\${ encodeURIComponent( liver ) }/uploader/\${ encodeURIComponent( uploader ) }\`;
+            window.location.hash = `/liver/${ encodeURIComponent( liver ) }/uploader/${ encodeURIComponent( uploader ) }`;
         }
         // 卡片上的「进入查看」是内联 onclick, 走的是全局作用域, 拿不到 module 作用域里的函数
         window.navigateToRecords = navigateToRecords;
@@ -944,18 +952,18 @@ export const createWebIndexContent = (manifest: WebManifest) => {
 
         function renderLoadingState(userName) {
             prepareStateView();
-            renderStateBox(\`
+            renderStateBox(`
                 <div class="spinner"></div>
-                <p>正在加载「\${ userName }」的录播记录…</p>
-            \`);
+                <p>正在加载「${ userName }」的录播记录…</p>
+            `);
         }
 
         function renderErrorState(liver, uploader, error) {
             prepareStateView();
-            const box = renderStateBox(\`
-                <p>录播数据加载失败（\${ error.message }），请检查网络后重试</p>
+            const box = renderStateBox(`
+                <p>录播数据加载失败（${ error.message }），请检查网络后重试</p>
                 <button class="btn-enter" type="button">重试</button>
-            \`);
+            `);
             box.querySelector('button').onclick = () => showRecordsView(liver, uploader);
         }
 
@@ -987,14 +995,14 @@ export const createWebIndexContent = (manifest: WebManifest) => {
             const oldest = sortedByTime[0];
             const newest = sortedByTime[sortedByTime.length - 1];
 
-            metaBarEl.innerHTML = \`
-                <div class="meta-item"><span class="meta-label">主播</span><span class="meta-val">\${ data.liver }</span></div>
-                <div class="meta-item"><span class="meta-label">上传者</span><span class="meta-val">\${ data.userName }</span></div>
-                <div class="meta-item"><span class="meta-label">数据更新</span><span class="meta-val">\${ formatDate( data.latestUpdate ) }</span></div>
-                <div class="meta-item"><span class="meta-label">累计视频</span><span class="meta-val tabular-nums">\${ recs.length } 部</span></div>
-                <div class="meta-item"><span class="meta-label">最旧视频</span><a target="_blank" href="https://www.bilibili.com/video/av\${ oldest.aid }" class="meta-link truncate">\${ formatDate( oldest.liveTime ) } \${ oldest.title }</a></div>
-                <div class="meta-item"><span class="meta-label">最新视频</span><a target="_blank" href="https://www.bilibili.com/video/av\${ newest.aid }" class="meta-link truncate">\${ formatDate( newest.liveTime ) } \${ newest.title }</a></div>
-            \`;
+            metaBarEl.innerHTML = `
+                <div class="meta-item"><span class="meta-label">主播</span><span class="meta-val">${ data.liver }</span></div>
+                <div class="meta-item"><span class="meta-label">上传者</span><span class="meta-val">${ data.userName }</span></div>
+                <div class="meta-item"><span class="meta-label">数据更新</span><span class="meta-val">${ formatDate( data.latestUpdate ) }</span></div>
+                <div class="meta-item"><span class="meta-label">累计视频</span><span class="meta-val tabular-nums">${ recs.length } 部</span></div>
+                <div class="meta-item"><span class="meta-label">最旧视频</span><a target="_blank" href="https://www.bilibili.com/video/av${ oldest.aid }" class="meta-link truncate">${ formatDate( oldest.liveTime ) } ${ oldest.title }</a></div>
+                <div class="meta-item"><span class="meta-label">最新视频</span><a target="_blank" href="https://www.bilibili.com/video/av${ newest.aid }" class="meta-link truncate">${ formatDate( newest.liveTime ) } ${ newest.title }</a></div>
+            `;
         }
 
         function initFilters(recs) {
@@ -1091,10 +1099,10 @@ export const createWebIndexContent = (manifest: WebManifest) => {
 
             // 模糊匹配期间摘要栏保持不变, 只有精确选中游戏 / 全部游戏 / 切换年月时才更新
             if (!gameQuery.fuzzy) {
-                let summaryText = \`共 \${ filteredGameList.length } 集 · 总时长 \${ formatDuration( totalDuration ) }\`;
-                if (year) summaryText = \`\${ year }年 · \${ filteredGameList.length } 集\`;
-                if (year && month) summaryText = \`\${ year }年\${ month }月 · \${ filteredGameList.length } 集\`;
-                if (gameQuery.exact) summaryText = \`\${ gameQuery.exact } · \${ groups[0] ? groups[0].items.length : 0 } 集\`;
+                let summaryText = `共 ${ filteredGameList.length } 集 · 总时长 ${ formatDuration( totalDuration ) }`;
+                if (year) summaryText = `${ year }年 · ${ filteredGameList.length } 集`;
+                if (year && month) summaryText = `${ year }年${ month }月 · ${ filteredGameList.length } 集`;
+                if (gameQuery.exact) summaryText = `${ gameQuery.exact } · ${ groups[0] ? groups[0].items.length : 0 } 集`;
                 filterSumEl.innerHTML = summaryText;
             }
 
@@ -1127,14 +1135,14 @@ export const createWebIndexContent = (manifest: WebManifest) => {
                 const renderItem = (item, actualIndex) => {
                     const partNum = item._globalPartMap[group.name];
                     const isLast = actualIndex === totalItems - 1;
-                    return \`
+                    return `
                         <div class="vid-card">
                             <div class="row-1">
-                                <span class="g-name">\${ group.name }</span>
-                                <span class="tag-part">Part \${ partNum }</span>
-                                \${ isLast ? '<span class="tag-end">END</span>' : '' }
+                                <span class="g-name">${ group.name }</span>
+                                <span class="tag-part">Part ${ partNum }</span>
+                                ${ isLast ? '<span class="tag-end">END</span>' : '' }
                             </div>
-                            <div class="row-2"><a href="https://www.bilibili.com/video/av\${ item.aid }" target="_blank">\${ item.title }</a></div>
+                            <div class="row-2"><a href="https://www.bilibili.com/video/av${ item.aid }" target="_blank">${ item.title }</a></div>
                             <div class="row-3">
                                 <section class="vid-stats">
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1143,42 +1151,42 @@ export const createWebIndexContent = (manifest: WebManifest) => {
                                     <line x1="8" y1="2" x2="8" y2="6"></line>
                                     <line x1="3" y1="10" x2="21" y2="10"></line>
                                     </svg>
-                                    <span>\${ formatDate( item.liveTime ) }</span>
+                                    <span>${ formatDate( item.liveTime ) }</span>
                                 </section>
                                 <section class="vid-stats">
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <polyline points="12 6 12 12 16 14"></polyline>
                                     </svg>
-                                    <span class="tabular-nums">\${ formatDuration( item.liveDuration ) }</span>
+                                    <span class="tabular-nums">${ formatDuration( item.liveDuration ) }</span>
                                 </section>
                                 <section class="vid-stats">
                                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
                                     <line x1="7" y1="7" x2="7.01" y2="7"></line>
                                     </svg>
-                                    <span class="tabular-nums">av\${ item.aid }</span>
+                                    <span class="tabular-nums">av${ item.aid }</span>
                                 </section>
                             </div>
                         </div>
-                    \`;
+                    `;
                 };
 
                 if (shouldCollapse) {
                     for(let i=0; i<3; i++) cardsHtml += renderItem(group.items[i], i);
-                    cardsHtml += \`<div class="ellipsis-row" onclick="toggleExpand('\${ group.name }', \${ totalItems })">... 隐藏了 \${ totalItems - 6 } 条记录 (点击展开) ...</div>\`;
+                    cardsHtml += `<div class="ellipsis-row" onclick="toggleExpand('${ group.name }', ${ totalItems })">... 隐藏了 ${ totalItems - 6 } 条记录 (点击展开) ...</div>`;
                     for(let i=totalItems-3; i<totalItems; i++) cardsHtml += renderItem(group.items[i], i);
                 } else {
                     for(let i=0; i<totalItems; i++) cardsHtml += renderItem(group.items[i], i);
                 }
 
-                groupEl.innerHTML = \`
+                groupEl.innerHTML = `
                     <div class="group-head">
-                        <span class="group-title" onclick="filterByGame('\${ group.name }')">\${ group.name }</span>
-                        <div class="group-stats"><span class="badge-cnt">\${ totalItems }集</span><span class="badge-dur tabular-nums">\${ formatDuration( totalDur ) }</span></div>
+                        <span class="group-title" onclick="filterByGame('${ group.name }')">${ group.name }</span>
+                        <div class="group-stats"><span class="badge-cnt">${ totalItems }集</span><span class="badge-dur tabular-nums">${ formatDuration( totalDur ) }</span></div>
                     </div>
-                    <div class="group-body" id="group-body-\${ group.name.replace( /\\s/g, '' ) }">\${ cardsHtml }</div>
-                \`;
+                    <div class="group-body" id="group-body-${ group.name.replace( /\s/g, '' ) }">${ cardsHtml }</div>
+                `;
                 listContainerEl.insertBefore(groupEl, sentinelEl);
             });
             currentBatchIndex += BATCH_SIZE;
@@ -1194,7 +1202,7 @@ export const createWebIndexContent = (manifest: WebManifest) => {
         };
 
         window.toggleExpand = (gameName, totalItems) => {
-            const container = document.getElementById(\`group-body-\${ gameName.replace( /\\s/g, '' ) }\`);
+            const container = document.getElementById(`group-body-${ gameName.replace( /\s/g, '' ) }`);
             if (!container) return;
             const group = filteredGroups.find(g => g.name === gameName);
             if (!group) return;
@@ -1202,14 +1210,14 @@ export const createWebIndexContent = (manifest: WebManifest) => {
             group.items.forEach((item, idx) => {
                 const partNum = item._globalPartMap[group.name];
                 const isLast = idx === totalItems - 1;
-                fullHtml += \`
+                fullHtml += `
                     <div class="vid-card">
                         <div class="row-1">
-                            <span class="g-name">\${ group.name }</span>
-                            <span class="tag-part">Part \${ partNum }</span>
-                            \${ isLast ? '<span class="tag-end">END</span>' : '' }
+                            <span class="g-name">${ group.name }</span>
+                            <span class="tag-part">Part ${ partNum }</span>
+                            ${ isLast ? '<span class="tag-end">END</span>' : '' }
                         </div>
-                        <div class="row-2"><a href="https://www.bilibili.com/video/av\${ item.aid }" target="_blank">\${ item.title }</a></div>
+                        <div class="row-2"><a href="https://www.bilibili.com/video/av${ item.aid }" target="_blank">${ item.title }</a></div>
                         <div class="row-3">
                             <section class="vid-stats">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1218,25 +1226,25 @@ export const createWebIndexContent = (manifest: WebManifest) => {
                                 <line x1="8" y1="2" x2="8" y2="6"></line>
                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                                 </svg>
-                                <span>\${ formatDate( item.liveTime ) }</span>
+                                <span>${ formatDate( item.liveTime ) }</span>
                             </section>
                             <section class="vid-stats">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <polyline points="12 6 12 12 16 14"></polyline>
                                 </svg>
-                                <span class="tabular-nums">\${ formatDuration( item.liveDuration ) }</span>
+                                <span class="tabular-nums">${ formatDuration( item.liveDuration ) }</span>
                             </section>
                             <section class="vid-stats">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
                                 <line x1="7" y1="7" x2="7.01" y2="7"></line>
                                 </svg>
-                                <span class="tabular-nums">av\${ item.aid }</span>
+                                <span class="tabular-nums">av${ item.aid }</span>
                             </section>
                         </div>
                     </div>
-                \`;
+                `;
             });
             container.innerHTML = fullHtml;
         };
@@ -1261,12 +1269,45 @@ export const createWebIndexContent = (manifest: WebManifest) => {
             });
         });
 
-        // Init
-        window.addEventListener('hashchange', handleRoute);
-        handleRoute();
+        // --- INIT ---
+        /**
+         * 加载清单
+         *
+         * 静态页与数据完全分离: 首屏必须先拿到 manifest 才能渲染侧栏与上传者卡片。
+         * no-store: manifest 每天更新一次, 避免浏览器 / CDN 缓存导致显示旧清单。
+         */
+        async function loadManifest() {
+            const response = await fetch(MANIFEST_URL, { cache: 'no-store' });
+            if (!response.ok) throw new Error(`HTTP ${ response.status }`);
+            return response.json();
+        }
+
+        function renderManifestState(html) {
+            streamerListEl.innerHTML = '';
+            const box = document.createElement('div');
+            box.className = 'manifest-state';
+            box.innerHTML = html;
+            streamerListEl.appendChild(box);
+            return box;
+        }
+
+        async function init() {
+            renderManifestState('<div class="spinner"></div><p>正在加载清单…</p>');
+
+            try {
+                manifest = await loadManifest();
+            } catch (error) {
+                const box = renderManifestState(`<p>清单加载失败（${ error.message }）</p><button class="btn-enter" type="button">重试</button>`);
+                box.querySelector('button').onclick = () => init();
+                return;
+            }
+
+            window.addEventListener('hashchange', handleRoute);
+            handleRoute();
+        }
+
+        init();
 
     </script>
 </body>
 </html>
-`
-}

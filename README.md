@@ -178,10 +178,13 @@ npm run edit
 
 > 生成
 
-`npm run start` 除了更新 Markdown 文档与 README, 还会生成静态回放索引页:
+`npm run start` 除了更新 Markdown 文档与 README, 还会生成静态回放索引页所需的**数据**:
 
-- `docs/index.html` —— 页面外壳, 内联 CSS / JS 与主播 / 上传者清单
+- `docs/manifest.json` —— 全部主播与上传者的清单, 页面首屏加载它就能渲染侧栏与上传者卡片
 - `docs/data/<主播>/<上传者>.json` —— 每个 (主播, 上传者) 单独的录播数据, 进入该上传者的详情页时才加载
+
+`docs/index.html` 是**手维护的静态页**, 提交进 git、不参与生成:
+首屏 `fetch` 同级的 `manifest.json` , 进详情页时再 `fetch` 对应的数据文件.
 
 > 本地预览
 
@@ -190,13 +193,13 @@ npm run preview
 ```
 
 默认监听 `http://127.0.0.1:3000` , 端口被占用时用 `PORT=4000 npm run preview` 换一个.
-索引页会 `fetch` `docs/data/**` , 因此**必须通过 http server 打开**;
-直接双击 `docs/index.html` 会被浏览器的 CORS 拦下, 数据文件加载不出来.
+索引页会 `fetch` `docs/manifest.json` 与 `docs/data/**` , 因此**必须通过 http server 打开**;
+直接双击 `docs/index.html` 会被浏览器的 CORS 拦下, 数据加载不出来.
 
 > 线上部署
 
-`docs/index.html` 与 `docs/data/**` 都是生成产物, 不进 git,
-由 GitHub Actions 采集后上传 Pages artifact 部署: https://aliubyiero.github.io/Bili-LiveReplay-List/
+`docs/manifest.json` 与 `docs/data/**` 是生成产物, 不进 git;
+由 GitHub Actions 采集后连同提交进仓库的 `docs/index.html` 一起上传 Pages artifact 部署: https://aliubyiero.github.io/Bili-LiveReplay-List/
 
 ### 自定义主播解析
 

@@ -13,7 +13,7 @@ import {
 } from './module/generateReadme/generateMarkdownRecord.ts';
 import { generateREADME } from './module/generateReadme/generateREADME.ts';
 import { AidMapperStore } from './store/AidMapperStore.ts';
-import { generateWeb } from './module/generateWeb/generateWeb.ts';
+import { generateWebData } from './module/generateWeb/generateWebData.ts';
 import { assertBilibiliCookie } from './scraper/bilibiliCookie.ts';
 
 
@@ -52,8 +52,8 @@ const main = async () => {
 
 	// 更新 README
 	generateREADME();
-	// 更新 web ui
-	generateWeb().catch( console.error )
+	// 更新 web ui 的数据（index.html 为手维护静态页, 不在这里生成）
+	generateWebData().catch( console.error )
 };
 
 main().catch( console.error );

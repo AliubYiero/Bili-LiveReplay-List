@@ -65,8 +65,9 @@ data/SpellingCorrections.json.lock
 data/*/*.aid.json.bak
 data/*/*.aid.json.lock
 
-# generateWeb 产物（改由 GitHub Actions 上传 artifact 部署 Pages，不进 git）
-/docs/index.html
+# generateWebData 产物（改由 GitHub Actions 上传 artifact 部署 Pages，不进 git）
+# 注意: /docs/index.html 是手维护的静态页, 需要提交, 不在此列
+/docs/manifest.json
 /docs/data/
 
 .claude/

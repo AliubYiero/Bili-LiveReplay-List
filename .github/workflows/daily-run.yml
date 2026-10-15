@@ -70,8 +70,8 @@ jobs:
         run: pnpm exec playwright install-deps chromium
 
       # 5. 生成报告（pnpm 版）
-      #    docs/index.html 与 docs/data/** 是 generateWeb 的产物，已被 .gitignore 忽略，
-      #    只作为下面的 Pages artifact 上传，不进 git
+      #    docs/manifest.json 与 docs/data/** 是 generateWebData 的产物，已被 .gitignore 忽略，
+      #    只作为下面的 Pages artifact 上传，不进 git（docs/index.html 是提交进仓库的静态页）
       - name: Generate report
         env:
           # 登录态：未登录时 B 站不返回空间主页投稿列表（-352 风控校验失败）

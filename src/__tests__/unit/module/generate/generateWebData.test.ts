@@ -4,11 +4,15 @@ import { join } from 'path';
 import { cwd } from 'process';
 import {
   buildDataFileLocation,
-  generateWeb,
+  generateWebData,
   summarizeLiveTimes,
-} from '../../../../module/generateWeb/generateWeb.ts';
+} from '../../../../module/generateWeb/generateWebData.ts';
 
 const CACHE_TIMESTAMP = 1700000000000;
+
+/** 手维护的静态页哨兵: generateWebData 既不该生成它, 也不该改它 */
+const STATIC_INDEX_HTML =
+  '<!DOCTYPE html>\n<html lang="zh-CN"><head></head><body>static index</body></html>';
 
 /** Mr.Quin 本人上传: 两条记录, 一条靠拼写纠正, 一条靠 aidMapper 人工映射覆盖 */
 const quinRecordFile = {
@@ -83,29 +87,25 @@ const setupMockFs = () => {
     },
     'docs': {
       'icon.svg': '<svg/>',
+      // 手维护的静态页
+      'index.html': STATIC_INDEX_HTML,
       // 上一轮生成留下的孤儿文件, 生成时应被清掉
       'data': { 'Stale': { 'old.json': '{}' } },
     },
   });
 };
 
-const readIndexHtml = () => readFileSync(resolveDocs('index.html'), 'utf8');
-
 const resolveDocs = (...segments: string[]) => join(cwd(), 'docs', ...segments);
 
+const readDocsFile = (...segments: string[]) => readFileSync(resolveDocs(...segments), 'utf8');
+
+/** docs/manifest.json 反序列化 */
+const readManifest = () => JSON.parse(readDocsFile('manifest.json'));
+
 const readDataFile = (liver: string, userName: string) =>
-  JSON.parse(readFileSync(resolveDocs('data', liver, `${userName}.json`), 'utf8'));
+  JSON.parse(readDocsFile('data', liver, `${userName}.json`));
 
-/** index.html 里的 `const manifest = {...};` 反解出来 */
-const readInlinedManifest = () => {
-  const html = readIndexHtml();
-  const marker = 'const manifest = ';
-  const start = html.indexOf(marker) + marker.length;
-  const end = html.indexOf('\n', start);
-  return JSON.parse(html.slice(start, end).trim().replace(/;$/, ''));
-};
-
-describe('generateWeb', () => {
+describe('generateWebData', () => {
   let consoleLogSpy: jest.SpyInstance;
   let consoleWarnSpy: jest.SpyInstance;
 
@@ -121,24 +121,32 @@ describe('generateWeb', () => {
     consoleWarnSpy.mockRestore();
   });
 
-  describe('index.html', () => {
-    it('只内联 manifest, 不携带任何录播记录', async () => {
-      await generateWeb();
+  describe('静态 index.html', () => {
+    it('不生成也不修改手维护的 docs/index.html', async () => {
+      await generateWebData();
 
-      const html = readIndexHtml();
+      expect(readDocsFile('index.html')).toBe(STATIC_INDEX_HTML);
+    });
+  });
 
-      expect(html).toContain('const manifest =');
-      // 数据里的记录级字段与标题都不该出现在外壳里（`_globalPartMap` 只作为前端属性名出现）
-      expect(html).not.toContain('"_globalPartMap"');
-      expect(html).not.toContain('"bvId"');
-      expect(html).not.toContain('"publishTime"');
-      expect(html).not.toContain('塞尔达 1');
+  describe('manifest.json', () => {
+    it('是独立数据源, 只含主播 / 上传者摘要, 不携带任何录播记录', async () => {
+      await generateWebData();
+
+      const raw = readDocsFile('manifest.json');
+
+      expect(raw).toContain('"streamers"');
+      // 记录级字段与标题都不该出现在清单里
+      expect(raw).not.toContain('"records"');
+      expect(raw).not.toContain('"bvId"');
+      expect(raw).not.toContain('"publishTime"');
+      expect(raw).not.toContain('塞尔达 1');
     });
 
-    it('manifest 按主播分组, 上传者摘要不含 records', async () => {
-      await generateWeb();
+    it('按主播分组, 上传者摘要不含 records', async () => {
+      await generateWebData();
 
-      const manifest = readInlinedManifest();
+      const manifest = readManifest();
 
       expect(manifest.streamers.map((s: { liver: string }) => s.liver).sort())
         .toEqual(['Mr.Quin', '机皇']);
@@ -170,7 +178,7 @@ describe('generateWeb', () => {
 
   describe('数据文件', () => {
     it('按 (主播, 上传者) 拆分, 同一文件里的多个主播各写一份', async () => {
-      await generateWeb();
+      await generateWebData();
 
       expect(existsSync(resolveDocs('data', 'Mr.Quin', 'Mr.Quin.json'))).toBe(true);
       expect(existsSync(resolveDocs('data', 'Mr.Quin', '胧黑.json'))).toBe(true);
@@ -178,7 +186,7 @@ describe('generateWeb', () => {
     });
 
     it('只保留前端用得到的字段, 按 liveTime 升序, 并应用映射与拼写纠正', async () => {
-      await generateWeb();
+      await generateWebData();
 
       expect(readDataFile('Mr.Quin', 'Mr.Quin')).toEqual({
         liver: 'Mr.Quin',
@@ -206,10 +214,11 @@ describe('generateWeb', () => {
     });
 
     it('生成前清空 data/ 目录, 但不影响 docs 下的其他文件', async () => {
-      await generateWeb();
+      await generateWebData();
 
       expect(existsSync(resolveDocs('data', 'Stale'))).toBe(false);
       expect(existsSync(resolveDocs('icon.svg'))).toBe(true);
+      expect(existsSync(resolveDocs('index.html'))).toBe(true);
     });
   });
 });

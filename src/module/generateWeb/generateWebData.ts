@@ -5,7 +5,6 @@ import { safeFilename } from '../../utils/filename.ts';
 import { group } from 'radash';
 import { SpellingCorrection } from '../generateReadme/SpellingCorrection.ts';
 import { AidMapperStore } from '../../store/AidMapperStore.ts';
-import { createWebIndexContent } from './createWebIndexContent.ts';
 import path from 'path';
 
 /**
@@ -55,7 +54,7 @@ export interface StreamerManifest {
 }
 
 /**
- * 内联进 `index.html` 的清单: 首屏只需要它就能渲染主播列表和上传者卡片
+ * 独立于 `index.html` 的清单数据源（`docs/manifest.json`）: 首屏只需要它就能渲染主播列表和上传者卡片
  */
 export interface WebManifest {
 	streamers: StreamerManifest[];
@@ -241,14 +240,16 @@ export const buildWebOutput = (): WebOutput => {
 };
 
 /**
- * 生成 Web 页面
+ * 生成 Web 索引页所需的全部数据
  *
- * - `docs/index.html`: 外壳 + 内联 manifest（不随数据量增长）
+ * - `docs/manifest.json`: 主播 / 上传者清单（唯一入口, 前端首屏 fetch）
  * - `docs/data/<主播>/<上传者>.json`: 每个 (主播, 上传者) 一份, 进详情页时才加载
+ *
+ * `docs/index.html` 是手维护的静态页面, 不在这里生成, 也不嵌入任何数据。
  */
-export const generateWeb = async () => {
+export const generateWebData = async () => {
 	console.log('='.repeat(40));
-	console.log('Starting web page generation...');
+	console.log('Starting web data generation...');
 	console.log('='.repeat(40));
 
 	const { manifest, dataFiles } = buildWebOutput();
@@ -264,9 +265,10 @@ export const generateWeb = async () => {
 	// 先清空: 被移除的上传者不该留下孤儿文件
 	rmSync(dataDir, { recursive: true, force: true });
 
-	const indexPath = path.join(webDir, 'index.html');
-	writeFileSync(indexPath, createWebIndexContent(manifest), 'utf8');
-	console.log(`\n✓ Successfully generated web page: ${indexPath}`);
+	// manifest 与 index.html 同级, 前端用 ./manifest.json 直接 fetch
+	const manifestPath = path.join(webDir, 'manifest.json');
+	writeFileSync(manifestPath, JSON.stringify(manifest), 'utf8');
+	console.log(`\n✓ Successfully generated manifest: ${manifestPath}`);
 
 	for (const { relativePath, content } of dataFiles) {
 		const targetPath = path.join(webDir, relativePath);

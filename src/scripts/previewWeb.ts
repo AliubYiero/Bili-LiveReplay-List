@@ -12,15 +12,15 @@ const DEFAULT_PORT = 3000;
 /**
  * 启动回放索引页的本地预览
  *
- * 生成物（docs/index.html + docs/data/**）拆成了多个文件，直接双击 index.html
- * 会因 file:// 下 fetch 被 CORS 拦下而加载不到数据，必须通过 http 访问。
+ * 数据（docs/manifest.json + docs/data/**）与静态页分开，页面通过 fetch 加载，
+ * 直接双击 index.html 会因 file:// 下 fetch 被 CORS 拦下而加载不到数据，必须通过 http 访问。
  */
 export function startWebPreview(): Server {
 	const port = Number( process.env.PORT ) || DEFAULT_PORT;
 	const docsDir = join( process.cwd(), 'docs' );
 
-	if ( !existsSync( join( docsDir, 'index.html' ) ) ) {
-		console.warn( '未找到 docs/index.html，请先运行 `npm run start` 生成产物。' );
+	if ( !existsSync( join( docsDir, 'manifest.json' ) ) ) {
+		console.warn( '未找到 docs/manifest.json，请先运行 `npm run start` 生成数据。' );
 	}
 
 	const app = express();
