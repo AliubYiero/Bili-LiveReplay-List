@@ -6,10 +6,14 @@
 	- [Mr.Quin直播回放列表(from Mr.Quin)](./docs/markdown/Mr.Quin/Mr.Quin%E7%9B%B4%E6%92%AD%E5%9B%9E%E6%94%BE%E5%88%97%E8%A1%A8(from%20Mr.Quin).md)
 	- [Mr.Quin直播回放列表(from 胧黑)](./docs/markdown/Mr.Quin/Mr.Quin%E7%9B%B4%E6%92%AD%E5%9B%9E%E6%94%BE%E5%88%97%E8%A1%A8(from%20%E8%83%A7%E9%BB%91).md)
 	- [Mr.Quin直播回放列表(from 自行车二层)](./docs/markdown/Mr.Quin/Mr.Quin%E7%9B%B4%E6%92%AD%E5%9B%9E%E6%94%BE%E5%88%97%E8%A1%A8(from%20%E8%87%AA%E8%A1%8C%E8%BD%A6%E4%BA%8C%E5%B1%82).md)
+- [[**傲慢的小肉包**]](./docs/markdown/傲慢的小肉包):
+	- [傲慢的小肉包直播回放列表(from Cyan_Rose_Sea)](./docs/markdown/%E5%82%B2%E6%85%A2%E7%9A%84%E5%B0%8F%E8%82%89%E5%8C%85/%E5%82%B2%E6%85%A2%E7%9A%84%E5%B0%8F%E8%82%89%E5%8C%85%E7%9B%B4%E6%92%AD%E5%9B%9E%E6%94%BE%E5%88%97%E8%A1%A8(from%20Cyan_Rose_Sea).md)
 - [[**勾檀Mayumi**]](./docs/markdown/勾檀Mayumi):
 	- [勾檀Mayumi直播回放列表(from 勾檀Mayumi)](./docs/markdown/%E5%8B%BE%E6%AA%80Mayumi/%E5%8B%BE%E6%AA%80Mayumi%E7%9B%B4%E6%92%AD%E5%9B%9E%E6%94%BE%E5%88%97%E8%A1%A8(from%20%E5%8B%BE%E6%AA%80Mayumi).md)
 - [[**北极熊剩饭**]](./docs/markdown/北极熊剩饭):
 	- [北极熊剩饭直播回放列表(from 自行车二层)](./docs/markdown/%E5%8C%97%E6%9E%81%E7%86%8A%E5%89%A9%E9%A5%AD/%E5%8C%97%E6%9E%81%E7%86%8A%E5%89%A9%E9%A5%AD%E7%9B%B4%E6%92%AD%E5%9B%9E%E6%94%BE%E5%88%97%E8%A1%A8(from%20%E8%87%AA%E8%A1%8C%E8%BD%A6%E4%BA%8C%E5%B1%82).md)
+- [[**少年Pi**]](./docs/markdown/少年Pi):
+	- [少年Pi直播回放列表(from Cyan_Rose_Sea)](./docs/markdown/%E5%B0%91%E5%B9%B4Pi/%E5%B0%91%E5%B9%B4Pi%E7%9B%B4%E6%92%AD%E5%9B%9E%E6%94%BE%E5%88%97%E8%A1%A8(from%20Cyan_Rose_Sea).md)
 - [[**机智的肯尼**]](./docs/markdown/机智的肯尼):
 	- [机智的肯尼直播回放列表(from 自行车二层)](./docs/markdown/%E6%9C%BA%E6%99%BA%E7%9A%84%E8%82%AF%E5%B0%BC/%E6%9C%BA%E6%99%BA%E7%9A%84%E8%82%AF%E5%B0%BC%E7%9B%B4%E6%92%AD%E5%9B%9E%E6%94%BE%E5%88%97%E8%A1%A8(from%20%E8%87%AA%E8%A1%8C%E8%BD%A6%E4%BA%8C%E5%B1%82).md)
 - [[**机皇**]](./docs/markdown/机皇):
@@ -175,28 +179,48 @@ npm run edit
 
 ---
 
-> 1. 进入文件 `src/module/matchData/handleParseMapper.ts` 文件
-> 2. 在 `handleParseMapper` 数组中新增一个对象, 对象必须包含以下内容:
+> 1. 在文件 `src/config/parseMapper.config.ts` 的 `PARSE_MAPPER_CONFIG` 数组中新增一条配置(声明式数据)
+> 2. 在文件 `src/module/matchData/parsers.ts` 的 `PARSERS` 中, 用相同的 `uid` 添加对应的解析函数
 
-| 属性       | 类型                                                        | 描述             |
-| ---------- | ----------------------------------------------------------- | ---------------- |
-| `uid`      | `number`                                                    | 上传者的uid      |
-| `userName` | `string`                                                    | 上传者的用户名称 |
-| `onParse`  | `( item: UnparseRecordItem ) => Promise<RecordItem | null>` | 解析函数         |
+**配置项 (`IParseConfig`)**
+
+| 属性              | 类型                | 描述                                     |
+| ----------------- | ------------------- | ---------------------------------------- |
+| `uid`             | `number`            | 上传者的 uid                             |
+| `userName`        | `string`            | 上传者的用户名称                         |
+| `videoSourceType` | `VideoSourceOption` | 数据源类型: upload / replay / both        |
+| `seriesId`        | `number`            | 直播回放合集 ID, replay / both 时必需     |
+| `liverEntries`    | `ILiverEntry[]`     | 标题前缀 → 主播 的匹配表, 不解析主播时可省略 |
 
 ```ts
-export interface IParseItem {
+export interface IParseConfig {
 	uid: number;
 	userName: string;
-	onParse: ( item: UnparseRecordItem ) => Promise<RecordItem | null>;
+	videoSourceType: VideoSourceOption;
+	seriesId?: number;
+	liverEntries?: ILiverEntry[];
+}
+
+export interface ILiverEntry {
+	prefix: string;
+	liver: string;
 }
 ```
 
 ---
 
-**`onParse` 函数**
+**解析函数 (`PARSERS`)**
 
-`onParse` 函数传入的参数是一个未被解析的原始视频数据 `UnparseRecordItem` , 内容如下:
+解析函数类型如下:
+
+```ts
+export type Parser = (
+	item: UnparseRecordItem,
+	entries: ILiverEntry[],
+) => Promise<RecordItem | null>;
+```
+
+解析函数传入的参数是一个未被解析的原始视频数据 `UnparseRecordItem` , 内容如下:
 
 | 属性           | 类型     | 描述                          |
 | -------------- | -------- | ----------------------------- |
@@ -206,7 +230,7 @@ export interface IParseItem {
 | `liveDuration` | `number` | 视频的时长 (秒)               |
 | `title`        | `string` | 视频标题                      |
 
-`onParse` 函数需要返回一个解析完成后视频数据 `RecordItem` , 内容如下:
+解析函数需要返回一个解析完成后视频数据 `RecordItem` , 内容如下:
 
 | 属性           | 类型            | 描述                          |
 | -------------- | --------------- | ----------------------------- |
