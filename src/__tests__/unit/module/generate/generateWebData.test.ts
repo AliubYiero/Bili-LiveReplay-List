@@ -7,6 +7,7 @@ import {
   generateWebData,
   summarizeLiveTimes,
 } from '../../../../module/generateWeb/generateWebData.ts';
+import { LIVER_AVATAR_MAP } from '../../../../config/parseMapper.config.ts';
 
 const CACHE_TIMESTAMP = 1700000000000;
 
@@ -220,6 +221,73 @@ describe('generateWebData', () => {
       expect(existsSync(resolveDocs('icon.svg'))).toBe(true);
       expect(existsSync(resolveDocs('index.html'))).toBe(true);
     });
+  });
+});
+
+describe('manifest.avatar (LIVER_AVATAR_MAP)', () => {
+  let consoleLogSpy: jest.SpyInstance;
+  let consoleWarnSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
+    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+    mockFs({
+      'data': {
+        'SpellingCorrections.json': JSON.stringify({
+          version: '2.0',
+          global: { rules: [] },
+          uidRules: {},
+        }),
+        '15810': {
+          'Mr.Quin.record.json': JSON.stringify({
+            cache: { uid: 15810, userName: 'Mr.Quin', aid: 1, timestamp: CACHE_TIMESTAMP },
+            records: [
+              {
+                aid: 1, bvId: 'BV1', publishTime: 1600000001000, liveDuration: 3600,
+                title: 'x', liveTime: 1600000000000, playGame: ['a'], liver: 'Mr.Quin',
+              },
+            ],
+          }),
+          'Mr.Quin.aid.json': JSON.stringify({}),
+        },
+        // 未在 LIVER_AVATAR_MAP 中登记的主播
+        '99999': {
+          '未知上传者.record.json': JSON.stringify({
+            cache: { uid: 99999, userName: '未知上传者', aid: 2, timestamp: CACHE_TIMESTAMP },
+            records: [
+              {
+                aid: 2, bvId: 'BV2', publishTime: 1600000001000, liveDuration: 3600,
+                title: 'y', liveTime: 1600000000000, playGame: ['b'], liver: '未登记主播',
+              },
+            ],
+          }),
+          '未知上传者.aid.json': JSON.stringify({}),
+        },
+      },
+      'docs': { 'icon.svg': '<svg/>', 'index.html': STATIC_INDEX_HTML },
+    });
+  });
+
+  afterEach(() => {
+    mockFs.restore();
+    consoleLogSpy.mockRestore();
+    consoleWarnSpy.mockRestore();
+  });
+
+  it('有映射的主播在 manifest 里携带 avatar', async () => {
+    await generateWebData();
+
+    const quin = readManifest().streamers.find((s: { liver: string }) => s.liver === 'Mr.Quin');
+
+    expect(quin.avatar).toBe(LIVER_AVATAR_MAP['Mr.Quin']);
+  });
+
+  it('未映射的主播省略 avatar 字段', async () => {
+    await generateWebData();
+
+    const unknown = readManifest().streamers.find((s: { liver: string }) => s.liver === '未登记主播');
+
+    expect(unknown).not.toHaveProperty('avatar');
   });
 });
 

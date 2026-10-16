@@ -134,6 +134,7 @@
             font-size: 0.75rem; font-weight: 600; color: #52525b; flex-shrink: 0;
         }
         .streamer-item.active .avatar { background: #c7d2fe; color: var(--primary); }
+        .avatar .avatar-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
         .streamer-info { flex: 1; min-width: 0; }
         .s-name { font-weight: 500; font-size: 0.875rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .s-meta { font-size: 0.75rem; color: var(--muted-foreground); margin-top: 2px; }
@@ -855,14 +856,29 @@
                     // Or just update UI. Let's just update UI for grid view.
                 };
                 div.innerHTML = `
-                    <div class="avatar">${ item.liver.slice( 0, 2 ).toUpperCase() }</div>
+                    <div class="avatar">${ renderAvatarInner( item ) }</div>
                     <div class="streamer-info">
                         <div class="s-name">${ item.liver }</div>
                         <div class="s-meta">${ item.uploaders.length } 位上传者</div>
                     </div>
                 `;
+                // 头像加载失败时回退到首字母占位 (referrerpolicy 已绕过 B站防盗链, 这里兜底网络异常)
+                const avatarImg = div.querySelector('.avatar-img');
+                if (avatarImg) {
+                    avatarImg.onerror = () => { avatarImg.parentElement.textContent = avatarInitials( item.liver ); };
+                }
                 streamerListEl.appendChild(div);
             });
+        }
+
+        function avatarInitials(liver) {
+            return liver.slice( 0, 2 ).toUpperCase();
+        }
+
+        // 有配置头像则输出 <img>, 否则维持首字母占位
+        function renderAvatarInner(item) {
+            if (!item.avatar) return avatarInitials( item.liver );
+            return `<img class="avatar-img" src="${ item.avatar }" alt="${ item.liver }" referrerpolicy="no-referrer">`;
         }
 
         // --- SELECT VIEW (GRID) ---

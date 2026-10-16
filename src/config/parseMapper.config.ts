@@ -75,3 +75,23 @@ export const PARSE_MAPPER_CONFIG: IParseConfig[] = [
 export const PARSE_MAPPER_BY_UID: Record<number, IParseConfig> = Object.fromEntries(
 	PARSE_MAPPER_CONFIG.map( config => [ config.uid, config ] ),
 );
+
+/**
+ * 主播 → 头像图片直链
+ *
+ * 键是 `record.liver` 的原文（与解析结果严格一致），值是可直接访问的图片 URL。
+ * 头像属于「主播这个人」，与上传者 / 标题前缀无关，所以独立成一张扁平表。
+ * 未配置的主播由前端回退到首字母占位。
+ */
+export const LIVER_AVATAR_MAP: Record<string, string> = {
+	'Mr.Quin': 'https://i1.hdslb.com/bfs/face/04831670be98280c50119dfa2dd13367899a7b41.jpg',
+	'机皇': 'https://i1.hdslb.com/bfs/face/6c1489ba7ce6cc1f864271f68cb451bb0411cf41.jpg',
+	'机智的肯尼': 'https://i1.hdslb.com/bfs/face/179b2747277b2e7d4264c931d643d8a6afd5d147.jpg',
+	'北极熊剩饭': 'https://i1.hdslb.com/bfs/face/ea72dd637350e917be1cc4a222e504255adb6cde.jpg',
+	'勾檀Mayumi': 'https://i1.hdslb.com/bfs/face/1fb69d482db5d033fe1e43ed112a51821f2c6ec2.jpg',
+	'少年Pi': 'https://i1.hdslb.com/bfs/face/cd27b3173735e514795e455f0651108ae8891bd8.jpg',
+	'傲慢的小肉包': 'https://i1.hdslb.com/bfs/garb/4d938df699cb9e367c8725f09afa249e96a5c505.png',
+};
+
+/** 查主播头像直链, 未配置返回 undefined */
+export const getLiverAvatar = (liver: string): string | undefined => LIVER_AVATAR_MAP[ liver ];

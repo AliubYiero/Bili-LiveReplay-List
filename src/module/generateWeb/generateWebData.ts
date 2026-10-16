@@ -5,6 +5,7 @@ import { safeFilename } from '../../utils/filename.ts';
 import { group } from 'radash';
 import { SpellingCorrection } from '../generateReadme/SpellingCorrection.ts';
 import { AidMapperStore } from '../../store/AidMapperStore.ts';
+import { getLiverAvatar } from '../../config/parseMapper.config.ts';
 import path from 'path';
 
 /**
@@ -50,6 +51,8 @@ export interface UploaderManifest {
  */
 export interface StreamerManifest {
 	liver: string;
+	/** 主播头像图片直链, 未配置时省略该字段, 由前端回退到首字母占位 */
+	avatar?: string;
 	uploaders: UploaderManifest[];
 }
 
@@ -214,21 +217,27 @@ export const buildWebOutput = (): WebOutput => {
 	const groupedByLiver = group(dataFiles, item => item.content.liver);
 
 	const streamers: StreamerManifest[] = Object.entries(groupedByLiver).map(
-		([liver, items]) => ({
-			liver,
-			uploaders: items!.map(({ content }) => {
-				const { oldestTime, newestTime } = summarizeLiveTimes(content.records);
-				return {
-					userName: content.userName,
-					totalVideos: content.records.length,
-					latestUpdate: content.latestUpdate,
-					oldestTime,
-					newestTime,
-					isSelf: content.userName === liver,
-					dataFile: buildDataFileLocation(content.liver, content.userName).url,
-				};
-			}),
-		}),
+		([liver, items]) => {
+			// 未配置头像的主播不写该字段, 保持 manifest 精简
+			const avatar = getLiverAvatar(liver);
+
+			return {
+				liver,
+				...(avatar ? { avatar } : {}),
+				uploaders: items!.map(({ content }) => {
+					const { oldestTime, newestTime } = summarizeLiveTimes(content.records);
+					return {
+						userName: content.userName,
+						totalVideos: content.records.length,
+						latestUpdate: content.latestUpdate,
+						oldestTime,
+						newestTime,
+						isSelf: content.userName === liver,
+						dataFile: buildDataFileLocation(content.liver, content.userName).url,
+					};
+				}),
+			};
+		},
 	);
 
 	streamers.sort((a, b) => a.liver.localeCompare(b.liver, 'zh-CN'));
