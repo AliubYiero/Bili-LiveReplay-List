@@ -1,5 +1,6 @@
 import mockFs from 'mock-fs';
 import type { Browser } from 'playwright';
+import { mountFs } from '../../../helpers/mockFs';
 import { matchVideoList } from '../../../../module/matchData/matchVideoList.ts';
 import * as getIncrementalVideoListModule from '../../../../module/matchData/getIncrementalVideoList.ts';
 import { UnparseRecordItem, RecordItem } from '../../../../interface/IRecord.ts';
@@ -13,8 +14,7 @@ describe('matchVideoList', () => {
   const fakeBrowser = {} as Browser;
 
   beforeEach(() => {
-    mockFs({
-      'node_modules': mockFs.load('node_modules'),
+    mountFs({
       'data': {},
       'config': {}
     });
@@ -375,8 +375,7 @@ describe('matchVideoList', () => {
       const dataDir = `data/${testUid}`;
       
       mockFs.restore();
-      mockFs({
-        'node_modules': mockFs.load('node_modules'),
+      mountFs({
         [dataDir]: {
           [`${testUserName}.record.json`]: JSON.stringify({
             cache: {
@@ -416,8 +415,7 @@ describe('matchVideoList', () => {
       const dataDir = `data/${testUid}`;
       
       mockFs.restore();
-      mockFs({
-        'node_modules': mockFs.load('node_modules'),
+      mountFs({
         [dataDir]: {
           [`${testUserName}.record.json`]: JSON.stringify({
             cache: {

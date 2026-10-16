@@ -4,6 +4,7 @@ import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 import { cwd } from 'process';
 import mockFs from 'mock-fs';
+import { mountFs } from '../../helpers/mockFs';
 
 describe('migrateSpellingCorrections', () => {
 	const configPath = join(cwd(), 'data', 'SpellingCorrections.json');
@@ -13,8 +14,7 @@ describe('migrateSpellingCorrections', () => {
 	});
 
 	test('creates default config when file does not exist', async () => {
-		mockFs({
-			'node_modules': mockFs.load('node_modules'),
+		mountFs({
 			'data': {}
 		});
 
@@ -36,8 +36,7 @@ describe('migrateSpellingCorrections', () => {
 			global: { rules: [{ from: 'test', to: 'Test' }] },
 			uidRules: {}
 		};
-		mockFs({
-			'node_modules': mockFs.load('node_modules'),
+		mountFs({
 			'data': {
 				'SpellingCorrections.json': JSON.stringify(v2Config)
 			}
@@ -55,8 +54,7 @@ describe('migrateSpellingCorrections', () => {
 			'data2': 'dota2',
 			'塞尔达': '塞尔达传说：旷野之息'
 		};
-		mockFs({
-			'node_modules': mockFs.load('node_modules'),
+		mountFs({
 			'data': {
 				'SpellingCorrections.json': JSON.stringify(v1Config)
 			}
@@ -84,8 +82,7 @@ describe('migrateSpellingCorrections', () => {
 	});
 
 	test('handles empty V1 config', async () => {
-		mockFs({
-			'node_modules': mockFs.load('node_modules'),
+		mountFs({
 			'data': {
 				'SpellingCorrections.json': JSON.stringify({})
 			}
@@ -102,8 +99,7 @@ describe('migrateSpellingCorrections', () => {
 	});
 
 	test('exits on invalid config format', async () => {
-		mockFs({
-			'node_modules': mockFs.load('node_modules'),
+		mountFs({
 			'data': {
 				'SpellingCorrections.json': JSON.stringify([]) // 数组是无效的
 			}

@@ -1,5 +1,6 @@
 import mockFs from 'mock-fs';
 import type { Browser } from 'playwright';
+import { mountFs } from '../../../helpers/mockFs';
 import {
   getIncrementalVideoList,
   mergeSourceVideoList,
@@ -97,9 +98,8 @@ describe('getIncrementalVideoList', () => {
   });
 
   beforeEach(() => {
-    mockFs({
+    mountFs({
       [dataDir]: {},
-      node_modules: mockFs.load('node_modules'),
     });
     jest.clearAllMocks();
   });

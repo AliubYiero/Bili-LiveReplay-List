@@ -1,19 +1,3 @@
-import { existsSync, rmSync } from 'fs';
-import { resolve } from 'path';
-
 // 设置测试环境
+// 该标记被 scripts/ 下的入口读取, 用于跳过真实副作用 (启动服务 / 执行主流程)
 process.env.NODE_ENV = 'test';
-
-const testConfigDir = resolve(process.cwd(), 'config-test');
-
-beforeAll(() => {
-	if (existsSync(testConfigDir)) {
-		rmSync(testConfigDir, { recursive: true });
-	}
-});
-
-afterAll(() => {
-	if (existsSync(testConfigDir)) {
-		rmSync(testConfigDir, { recursive: true });
-	}
-});

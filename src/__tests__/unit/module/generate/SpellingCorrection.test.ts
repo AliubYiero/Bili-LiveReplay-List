@@ -1,5 +1,6 @@
 import { SpellingCorrection } from '../../../../module/generateReadme/SpellingCorrection';
 import mockFs from 'mock-fs';
+import { mountFs } from '../../../helpers/mockFs';
 
 describe('SpellingCorrection V2', () => {
   afterEach(() => {
@@ -14,8 +15,7 @@ describe('SpellingCorrection V2', () => {
       },
       uidRules: {}
     };
-    mockFs({
-      'node_modules': mockFs.load('node_modules'),
+    mountFs({
       'data': {
         'SpellingCorrections.json': JSON.stringify(config)
       }
@@ -37,8 +37,7 @@ describe('SpellingCorrection V2', () => {
         }
       }
     };
-    mockFs({
-      'node_modules': mockFs.load('node_modules'),
+    mountFs({
       'data': {
         'SpellingCorrections.json': JSON.stringify(config)
       }
@@ -62,8 +61,7 @@ describe('SpellingCorrection V2', () => {
         }
       }
     };
-    mockFs({
-      'node_modules': mockFs.load('node_modules'),
+    mountFs({
       'data': {
         'SpellingCorrections.json': JSON.stringify(config)
       }
@@ -82,8 +80,7 @@ describe('SpellingCorrection V2', () => {
       global: { rules: [] },
       uidRules: {}
     };
-    mockFs({
-      'node_modules': mockFs.load('node_modules'),
+    mountFs({
       'data': {
         'SpellingCorrections.json': JSON.stringify(config)
       }
@@ -107,8 +104,7 @@ describe('SpellingCorrection V2', () => {
         }
       }
     };
-    mockFs({
-      'node_modules': mockFs.load('node_modules'),
+    mountFs({
       'data': {
         'SpellingCorrections.json': JSON.stringify(config)
       }
@@ -122,8 +118,7 @@ describe('SpellingCorrection V2', () => {
   });
 
   test('uses empty config when file does not exist', () => {
-    mockFs({
-      'node_modules': mockFs.load('node_modules'),
+    mountFs({
       'data': {}
     });
 
@@ -137,8 +132,7 @@ describe('SpellingCorrection V2', () => {
 
   test('uses empty config when version is invalid', () => {
     const v1Config = { 'data2': 'dota2' };
-    mockFs({
-      'node_modules': mockFs.load('node_modules'),
+    mountFs({
       'data': {
         'SpellingCorrections.json': JSON.stringify(v1Config)
       }

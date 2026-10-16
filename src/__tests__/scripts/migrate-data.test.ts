@@ -5,17 +5,17 @@ import { join } from 'path';
 import { cwd } from 'process';
 import mockFs from 'mock-fs';
 import { mkdirSync, writeFileSync } from 'fs';
+import { mountFs } from '../helpers/mockFs';
 
 describe('migrate-data', () => {
   const configDir = join(cwd(), 'config');
   const dataDir = join(cwd(), 'data');
 
   beforeEach(() => {
-    // 使用 mock-fs 隔离文件系统，但保留 node_modules 以避免拦截 Jest 内部文件
-    mockFs({
+    // 使用 mock-fs 隔离文件系统
+    mountFs({
       'config': {},
-      'data': {},
-      'node_modules': mockFs.load(join(cwd(), 'node_modules'))
+      'data': {}
     });
   });
 
@@ -89,9 +89,8 @@ describe('migrate-data', () => {
   test('should handle missing config directory', async () => {
     // 模拟 config 目录不存在
     mockFs.restore();
-    mockFs({
-      'data': {},
-      'node_modules': mockFs.load(join(cwd(), 'node_modules'))
+    mountFs({
+      'data': {}
     });
 
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
