@@ -4,10 +4,15 @@ import { mountFs } from '../../helpers/mockFs';
 import {
 	formatFailureSummary,
 	runDailyUpdate,
+	shouldFailRun,
 } from '../../../module/runDailyUpdate.ts';
+import { ScraperHealthError } from '../../../scraper/playwrightStreamPages.ts';
 import * as matchVideoListModule from '../../../module/matchData/matchVideoList.ts';
 import * as generateMarkdownRecordModule from '../../../module/generateReadme/generateMarkdownRecord.ts';
 import type { IParseItem } from '../../../module/matchData/handleParseMapper.ts';
+
+const createRiskError = ( uid = 1 ) =>
+	new ScraperHealthError( uid, 'upload', '接口返回错误码 -352: 风控校验失败', -352 );
 
 const createItem = ( uid: number, userName: string ): IParseItem => ( {
 	uid,
@@ -16,6 +21,8 @@ const createItem = ( uid: number, userName: string ): IParseItem => ( {
 	seriesId: undefined,
 	onParse: jest.fn(),
 } ) as unknown as IParseItem;
+
+const fastOptions = { intervalMs: 0, riskControlBackoffMs: 0 };
 
 describe('runDailyUpdate', () => {
 	const fakeBrowser = {} as Browser;
@@ -31,6 +38,7 @@ describe('runDailyUpdate', () => {
 		jest.clearAllMocks();
 		jest.spyOn( console, 'error' ).mockImplementation();
 		jest.spyOn( console, 'warn' ).mockImplementation();
+		jest.spyOn( console, 'info' ).mockImplementation();
 		jest.spyOn( generateMarkdownRecordModule, 'generateMarkdownRecord' )
 			.mockImplementation();
 	} );
@@ -44,12 +52,11 @@ describe('runDailyUpdate', () => {
 		const items = [ createItem( 1, 'A' ), createItem( 2, 'B' ), createItem( 3, 'C' ) ];
 
 		jest.spyOn( matchVideoListModule, 'matchVideoList' )
-			.mockResolvedValue( false )
 			.mockResolvedValueOnce( false )
-			.mockRejectedValueOnce( new Error( '-352 风控校验失败' ) )
+			.mockRejectedValueOnce( new Error( 'boom' ) )
 			.mockResolvedValueOnce( false );
 
-		const result = await runDailyUpdate( items, fakeBrowser, 0 );
+		const result = await runDailyUpdate( items, fakeBrowser, fastOptions );
 
 		expect( result.total ).toBe( 3 );
 		expect( result.failures ).toHaveLength( 1 );
@@ -68,7 +75,7 @@ describe('runDailyUpdate', () => {
 			.mockRejectedValueOnce( new Error( 'boom' ) )
 			.mockResolvedValueOnce( false );
 
-		await runDailyUpdate( items, fakeBrowser, 0 );
+		await runDailyUpdate( items, fakeBrowser, fastOptions );
 
 		expect( generateMarkdownRecordModule.generateMarkdownRecord )
 			.toHaveBeenCalledTimes( 2 );
@@ -83,7 +90,7 @@ describe('runDailyUpdate', () => {
 				throw new Error( 'write failed' );
 			} );
 
-		const result = await runDailyUpdate( items, fakeBrowser, 0 );
+		const result = await runDailyUpdate( items, fakeBrowser, fastOptions );
 
 		expect( result.failures ).toHaveLength( 1 );
 		expect( result.failures[ 0 ] ).toMatchObject( { uid: 1, stage: 'generate' } );
@@ -94,11 +101,82 @@ describe('runDailyUpdate', () => {
 
 		jest.spyOn( matchVideoListModule, 'matchVideoList' ).mockResolvedValue( false );
 
-		const result = await runDailyUpdate( items, fakeBrowser, 0 );
+		const result = await runDailyUpdate( items, fakeBrowser, fastOptions );
 
 		expect( result.failures ).toEqual( [] );
 		expect( generateMarkdownRecordModule.generateMarkdownRecord )
 			.toHaveBeenCalledTimes( 2 );
+	} );
+
+	it('风控失败冷却后换新会话重试成功', async () => {
+		const items = [ createItem( 1, 'A' ) ];
+
+		jest.spyOn( matchVideoListModule, 'matchVideoList' )
+			.mockRejectedValueOnce( createRiskError( 1 ) )
+			.mockResolvedValueOnce( false );
+
+		const result = await runDailyUpdate( items, fakeBrowser, fastOptions );
+
+		expect( matchVideoListModule.matchVideoList ).toHaveBeenCalledTimes( 2 );
+		expect( result.failures ).toEqual( [] );
+	} );
+
+	it('风控重试仍失败时保留失败记录', async () => {
+		const items = [ createItem( 1, 'A' ) ];
+
+		jest.spyOn( matchVideoListModule, 'matchVideoList' )
+			.mockRejectedValueOnce( createRiskError( 1 ) )
+			.mockRejectedValueOnce( createRiskError( 1 ) );
+
+		const result = await runDailyUpdate( items, fakeBrowser, fastOptions );
+
+		expect( matchVideoListModule.matchVideoList ).toHaveBeenCalledTimes( 2 );
+		expect( result.failures ).toHaveLength( 1 );
+		expect( result.failures[ 0 ] ).toMatchObject( { uid: 1, stage: 'collect' } );
+	} );
+
+	it('非风控错误不做重试', async () => {
+		const items = [ createItem( 1, 'A' ) ];
+
+		jest.spyOn( matchVideoListModule, 'matchVideoList' )
+			.mockRejectedValueOnce( new Error( 'boom' ) );
+
+		await runDailyUpdate( items, fakeBrowser, fastOptions );
+
+		expect( matchVideoListModule.matchVideoList ).toHaveBeenCalledTimes( 1 );
+	} );
+
+	it('只重试风控失败的上传者', async () => {
+		const items = [ createItem( 1, 'A' ), createItem( 2, 'B' ) ];
+
+		jest.spyOn( matchVideoListModule, 'matchVideoList' )
+			.mockRejectedValueOnce( new Error( 'boom' ) )
+			.mockRejectedValueOnce( createRiskError( 2 ) )
+			.mockResolvedValueOnce( false );
+
+		const result = await runDailyUpdate( items, fakeBrowser, fastOptions );
+
+		expect( matchVideoListModule.matchVideoList ).toHaveBeenCalledTimes( 3 );
+		expect( result.failures ).toHaveLength( 1 );
+		expect( result.failures[ 0 ] ).toMatchObject( { uid: 1, stage: 'collect' } );
+	} );
+} );
+
+describe('shouldFailRun', () => {
+	it('只有采集层失败时不算硬失败', () => {
+		expect( shouldFailRun( [
+			{ uid: 15810, userName: 'Mr.Quin', stage: 'collect', error: new Error( '-352' ) },
+		] ) ).toBe( false );
+	} );
+
+	it('文档生成失败算硬失败', () => {
+		expect( shouldFailRun( [
+			{ uid: 15810, userName: 'Mr.Quin', stage: 'generate', error: new Error( 'boom' ) },
+		] ) ).toBe( true );
+	} );
+
+	it('没有失败时不算硬失败', () => {
+		expect( shouldFailRun( [] ) ).toBe( false );
 	} );
 } );
 

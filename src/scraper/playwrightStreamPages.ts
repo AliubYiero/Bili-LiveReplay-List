@@ -1,6 +1,6 @@
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { Browser, Locator, Page } from 'playwright';
+import { Browser, BrowserContext, Locator, Page, Response } from 'playwright';
 import { sleep } from 'radash';
 import { SCRAPER_CONFIG } from '../config/scraper.config.ts';
 import { VideoSourceType } from '../interface/IRecord.ts';
@@ -15,7 +15,8 @@ import { calcMaxPage, shouldStopPaging } from './paging.ts';
 /**
  * 采集层抛出的明确错误
  *
- * 带上 uid 与数据源类型, 便于在日志里直接定位是哪个主播的哪个数据源出了问题。
+ * 只携带上下文, 不拼日志前缀: 「[采集失败] 谁(uid)」由调用方统一拼一次,
+ * 否则错误被重新包装时会叠出多层 `[采集失败]`。
  */
 export class ScraperHealthError extends Error {
 	constructor(
@@ -24,8 +25,12 @@ export class ScraperHealthError extends Error {
 		message: string,
 		/** 接口返回的业务错误码（如 `-352` 风控校验失败） */
 		public readonly code?: number,
+		/** 出错时请求的接口地址 */
+		public readonly requestUrl?: string,
+		/** 接口响应体原文（已截断） */
+		public readonly responseBody?: string,
 	) {
-		super( `[采集失败] uid=${ uid } source=${ sourceType }: ${ message }` );
+		super( message );
 		this.name = 'ScraperHealthError';
 	}
 }
@@ -34,7 +39,8 @@ export class ScraperHealthError extends Error {
  * 登录态失效 / 风控类错误码
  *
  * -101 账号未登录, -352 风控校验失败, -412 请求被拦截。
- * 这类错误重试只会加重风控, 必须立刻失败并提示更新 cookie。
+ * 采集层不原地重试（连续打同一接口只会加重风控）, 由 `runDailyUpdate`
+ * 冷却后换一个新的 context 重试一次。
  */
 const RISK_CONTROL_CODES = new Set( [ -101, -352, -412 ] );
 
@@ -45,6 +51,95 @@ export const isRiskControlError = ( error: unknown ): error is ScraperHealthErro
 
 const errorMessage = ( error: unknown ) =>
 	error instanceof Error ? error.message : String( error );
+
+/** 日志里保留的响应体长度上限, 避免把整页 JSON 打进 CI 日志 */
+const RESPONSE_BODY_LOG_LIMIT = 300;
+
+const truncate = ( text: string, limit = RESPONSE_BODY_LOG_LIMIT ) =>
+	text.length > limit ? `${ text.slice( 0, limit ) }…` : text;
+
+/**
+ * 打印登录态与 cookie 概况
+ *
+ * 用来区分「cookie 真的过期了」和「接口临时风控」: 前者 `isLogin=false`,
+ * 后者往往 `isLogin=true` 但空间接口仍返回 -352。只打印 cookie 名字, 不打印值。
+ */
+const logLoginDiagnostics = async (
+	context: BrowserContext,
+	uid: number,
+	sourceType: VideoSourceType,
+): Promise<boolean | undefined> => {
+	let isLogin: boolean | undefined;
+
+	try {
+		const navResponse = await context.request.get( SCRAPER_CONFIG.navApiUrl );
+		const nav = await navResponse.json() as {
+			code?: number;
+			message?: string;
+			data?: { isLogin?: boolean; mid?: number; uname?: string };
+		};
+		isLogin = nav?.data?.isLogin;
+
+		console.error(
+			`[采集诊断] uid=${ uid } source=${ sourceType } `
+			+ `nav: code=${ nav?.code } isLogin=${ isLogin } mid=${ nav?.data?.mid }`
+			+ ( nav?.data?.uname ? ` uname=${ nav.data.uname }` : '' ),
+		);
+	}
+	catch ( error ) {
+		console.error( `[采集诊断] 读取 nav 失败: ${ errorMessage( error ) }` );
+	}
+
+	try {
+		const names = ( await context.cookies() )
+			.map( cookie => cookie.name )
+			.sort();
+
+		console.error(
+			`[采集诊断] context 内 cookie (${ names.length }): ${ names.join( ', ' ) }`,
+		);
+	}
+	catch ( error ) {
+		console.error( `[采集诊断] 读取 cookie 失败: ${ errorMessage( error ) }` );
+	}
+
+	return isLogin;
+};
+
+/**
+ * 风控类失败时打印可复现的上下文
+ *
+ * 请求地址 + 响应体 + 登录态一起看, 才能判断是 cookie 过期还是接口级风控。
+ */
+const logRiskControlDiagnostics = async (
+	context: BrowserContext,
+	error: ScraperHealthError,
+): Promise<boolean | undefined> => {
+	if ( error.requestUrl ) {
+		console.error( `[采集诊断] 失败请求: ${ error.requestUrl }` );
+	}
+	if ( error.responseBody ) {
+		console.error( `[采集诊断] 响应体: ${ error.responseBody }` );
+	}
+
+	return logLoginDiagnostics( context, error.uid, error.sourceType );
+};
+
+/**
+ * 把登录态一并写进错误文案: `isLogin=false` 时直接点明 cookie 已失效
+ */
+const describeRiskControlFailure = (
+	isLogin: boolean | undefined,
+	error: ScraperHealthError,
+) => {
+	if ( isLogin === false ) {
+		return 'BILI_COOKIE 已失效（nav 接口返回未登录）, '
+			+ '请重新获取 BILI_COOKIE（DevTools → Application → Cookies, SESSDATA 是 HttpOnly 项）';
+	}
+
+	return `登录态失效或被风控（${ errorMessage( error ) }）, `
+		+ '请重新获取 BILI_COOKIE（DevTools → Application → Cookies, SESSDATA 是 HttpOnly 项）';
+};
 
 /**
  * 采集失败时保存截图, 方便排查页面改版
@@ -93,20 +188,56 @@ const waitForArchivesResponse = (
 
 /**
  * 校验接口响应并归一化
+ *
+ * 直接读取 `Response` 而不是调用方先 `json()`, 这样业务错误码能带上
+ * 请求地址与响应体原文, CI 日志里才能看出到底是风控还是别的业务错误。
  */
-const readPage = (
+const readPage = async (
 	uid: number,
 	sourceType: VideoSourceType,
-	payload: unknown,
-): NormalizedPage => {
-	const response = payload as { code?: number; message?: string };
+	response: Response,
+): Promise<NormalizedPage> => {
+	const requestUrl = response.url();
 
-	if ( response?.code !== 0 ) {
+	let body: string;
+	try {
+		body = await response.text();
+	}
+	catch ( error ) {
 		throw new ScraperHealthError(
 			uid,
 			sourceType,
-			`接口返回错误码 ${ response?.code }: ${ response?.message ?? '未知错误' }`,
-			response?.code,
+			`读取接口响应失败: ${ errorMessage( error ) }`,
+			undefined,
+			requestUrl,
+		);
+	}
+
+	let payload: unknown;
+	try {
+		payload = JSON.parse( body );
+	}
+	catch {
+		throw new ScraperHealthError(
+			uid,
+			sourceType,
+			'接口响应不是合法 JSON',
+			undefined,
+			requestUrl,
+			truncate( body ),
+		);
+	}
+
+	const result = payload as { code?: number; message?: string };
+
+	if ( result?.code !== 0 ) {
+		throw new ScraperHealthError(
+			uid,
+			sourceType,
+			`接口返回错误码 ${ result?.code }: ${ result?.message ?? '未知错误' }`,
+			result?.code,
+			requestUrl,
+			truncate( body ),
 		);
 	}
 
@@ -120,6 +251,9 @@ const readPage = (
 			uid,
 			sourceType,
 			`接口声明共有 ${ normalized.total } 条数据, 但第 ${ normalized.currentPage } 页解析结果为空, 响应结构可能已改版`,
+			undefined,
+			requestUrl,
+			truncate( body ),
 		);
 	}
 
@@ -236,8 +370,7 @@ const gotoPage = async (
 
 	await jumpToPage( page, uid, sourceType, pageNumber );
 
-	const response = await responsePromise;
-	return readPage( uid, sourceType, await response.json() );
+	return readPage( uid, sourceType, await responsePromise );
 };
 
 /**
@@ -267,6 +400,7 @@ const warmUp = async ( page: Page ) => {
  * 不重试, 直接失败。
  */
 const openFirstPage = async (
+	context: BrowserContext,
 	page: Page,
 	uid: number,
 	sourceType: VideoSourceType,
@@ -295,7 +429,7 @@ const openFirstPage = async (
 			} );
 
 			const response = await responsePromise;
-			const normalized = readPage( uid, sourceType, await response.json() );
+			const normalized = await readPage( uid, sourceType, response );
 			await assertPaginationRendered( page, uid, sourceType, normalized );
 			return normalized;
 		}
@@ -310,12 +444,14 @@ const openFirstPage = async (
 	await captureDebugScreenshot( page, uid, sourceType );
 
 	if ( isRiskControlError( lastError ) ) {
+		const isLogin = await logRiskControlDiagnostics( context, lastError );
 		throw new ScraperHealthError(
 			uid,
 			sourceType,
-			`登录态失效或被风控（${ errorMessage( lastError ) }）, `
-			+ '请重新获取 BILI_COOKIE（DevTools → Application → Cookies, SESSDATA 是 HttpOnly 项）',
+			describeRiskControlFailure( isLogin, lastError ),
 			lastError.code,
+			lastError.requestUrl,
+			lastError.responseBody,
 		);
 	}
 
@@ -366,7 +502,7 @@ export async function* playwrightStreamPages(
 		if ( sourceType === 'upload' ) await warmUp( page );
 
 		const targetUrl = sourceConfig.buildTargetUrl( uid, seriesId );
-		let currentPage = await openFirstPage( page, uid, sourceType, targetUrl );
+		let currentPage = await openFirstPage( context, page, uid, sourceType, targetUrl );
 
 		const logProgress = () => {
 			const maxPage = calcMaxPage( currentPage.total, currentPage.pageSize );
@@ -388,14 +524,17 @@ export async function* playwrightStreamPages(
 				retryCount = 0;
 			}
 			catch ( error ) {
-				// 翻页时也可能触发风控, 同样不重试
+				// 翻页时也可能触发风控, 同样不原地重试
 				if ( isRiskControlError( error ) ) {
 					await captureDebugScreenshot( page, uid, sourceType );
+					const isLogin = await logRiskControlDiagnostics( context, error );
 					throw new ScraperHealthError(
 						uid,
 						sourceType,
-						`第 ${ nextPageNumber } 页触发风控或登录态失效: ${ errorMessage( error ) }`,
+						`第 ${ nextPageNumber } 页采集失败: ${ describeRiskControlFailure( isLogin, error ) }`,
 						error.code,
+						error.requestUrl,
+						error.responseBody,
 					);
 				}
 

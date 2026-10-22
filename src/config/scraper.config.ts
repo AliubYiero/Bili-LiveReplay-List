@@ -38,6 +38,15 @@ export const SCRAPER_CONFIG = {
 	navigationRetryLimit: 3,
 	/** 导航重试的退避时间（毫秒）, 超出长度后取最后一个 */
 	navigationBackoffMs: [ 20_000, 40_000, 80_000 ],
+	/**
+	 * 风控 / 登录态错误（-352 等）的额外重试次数
+	 *
+	 * 这类错误多数是瞬时的: 换一个新的 context + 重新预热往往就能通过,
+	 * 所以冷却后重试一次, 而不是直接放弃一整天。
+	 */
+	riskControlRetryLimit: 1,
+	/** 风控重试前的冷却时间（毫秒）, 超出长度后取最后一个 */
+	riskControlBackoffMs: [ 60_000 ],
 	/** 跳页重试的间隔基数（毫秒）, 第 n 次重试等待 n 倍 */
 	pageRetryDelayMs: 3_000,
 	/** 等待接口响应的超时（毫秒） */
@@ -54,6 +63,8 @@ export const SCRAPER_CONFIG = {
 	uploaderIntervalMs: 4_000,
 	/** 注入 cookie 后先访问的预热页, 让 B 站补齐 buvid3 / buvid4 等风控 cookie */
 	warmupUrl: 'https://www.bilibili.com',
+	/** 登录态查询接口, 采集失败时用来判断 cookie 是否还有效 */
+	navApiUrl: 'https://api.bilibili.com/x/web-interface/nav',
 	/** 预热页导航超时（毫秒）, 失败不影响主流程 */
 	warmupTimeoutMs: 20_000,
 	/** 采集失败时保存截图的目录 */

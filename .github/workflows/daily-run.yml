@@ -75,7 +75,8 @@ jobs:
       - name: Generate report
         id: generate
         # 单个上传者采集失败时，其余上传者与 web 产物仍会正常生成；
-        # 这里先不中断，让部署照常进行，最后由 "Report failures" 把任务标红
+        # 这里先不中断，让部署照常进行。单上传者风控只输出 ::warning::（退出码 0），
+        # 由 "Report failures" 兜底真正的硬失败（构建 / 文档生成）
         continue-on-error: true
         env:
           # 登录态：未登录时 B 站不返回空间主页投稿列表（-352 风控校验失败）
@@ -87,7 +88,18 @@ jobs:
           pnpm build    # ✅ 替换为实际构建命令（如有需要）
           pnpm start # ✅ 替换为 package.json 中定义的生成命令
 
-      # 6. 校验 web 产物：缺失或为空时绝不部署，线上保留上一次成功的版本
+      # 6. 采集失败时的截图：成功时 debug/ 不存在，if-no-files-found: ignore 会直接跳过
+      #    单上传者风控现在只告警不失败，所以不能只在失败时上传
+      - name: Upload debug screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-screenshots
+          path: debug/
+          if-no-files-found: ignore
+          retention-days: 7
+
+      # 7. 校验 web 产物：缺失或为空时绝不部署，线上保留上一次成功的版本
       - name: Verify web data
         id: verify
         run: |
@@ -107,7 +119,7 @@ jobs:
           console.log('✅ manifest 校验通过，主播数: ' + count);
           "
 
-      # 7. 提交报告
+      # 8. 提交报告
       - name: Commit and push report
         if: always()
         run: |
@@ -124,7 +136,7 @@ jobs:
           git commit -m "chore: update daily report $(date +'%Y-%m-%d')"
           git push
 
-      # 8. 部署 Pages（仅在产物校验通过时，避免用半成品/空壳覆盖线上）
+      # 9. 部署 Pages（仅在产物校验通过时，避免用半成品/空壳覆盖线上）
       - name: Setup Pages
         if: always() && steps.verify.outcome == 'success'
         uses: actions/configure-pages@v5
@@ -140,16 +152,18 @@ jobs:
         if: always() && steps.verify.outcome == 'success'
         uses: actions/deploy-pages@v4
 
-      # 9. 部署完成后把这次运行标红：数据已上线，但有上传者本次没更新
+      # 10. 只有硬失败（构建 / 文档生成）才会走到这里：
+      #     单上传者风控由应用输出 ::warning:: 与 step summary，退出码为 0，不会标红。
+      #     产物校验已拦截空壳数据，所以标红时线上保留上一版。
       - name: Report failures
         if: always() && steps.generate.outcome == 'failure'
         run: |
-          echo "::warning::本次采集或生成有失败，详见 Generate report 日志中的 [采集失败] / [生成文档失败] / 本次运行有 行"
+          echo "::error::本次有硬失败（构建或文档生成），详见 Generate report 日志"
           {
             echo ""
-            echo "### ⚠️ 本次运行有上传者失败"
+            echo "### ❌ 本次运行有硬失败"
             echo ""
-            echo "线上数据已按磁盘上的 \`record.json\` 重新生成并部署，失败的上传者本次未更新。"
-            echo "详见 Generate report 日志中的 \`[采集失败]\` / \`[生成文档失败]\` / \`本次运行有\` 行。"
+            echo "构建或文档生成失败，产物可能不完整；若产物校验未通过，线上会保留上一版。"
+            echo "单上传者风控失败不会走到这里，它们只输出 \`::warning::\`。"
           } >> "$GITHUB_STEP_SUMMARY"
           exit 1
