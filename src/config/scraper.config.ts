@@ -50,6 +50,12 @@ export const SCRAPER_CONFIG = {
 	probeTimeoutMs: 5_000,
 	/** 点击跳页触发器后等待界面展开（毫秒） */
 	pageSettleMs: 800,
+	/** 相邻上传者之间的间隔（毫秒）, 避免同一 cookie 短时间连打触发风控 */
+	uploaderIntervalMs: 4_000,
+	/** 注入 cookie 后先访问的预热页, 让 B 站补齐 buvid3 / buvid4 等风控 cookie */
+	warmupUrl: 'https://www.bilibili.com',
+	/** 预热页导航超时（毫秒）, 失败不影响主流程 */
+	warmupTimeoutMs: 20_000,
 	/** 采集失败时保存截图的目录 */
 	debugDir: 'debug',
 	userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',

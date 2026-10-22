@@ -22,11 +22,29 @@ export class ScraperHealthError extends Error {
 		public readonly uid: number,
 		public readonly sourceType: VideoSourceType,
 		message: string,
+		/** 接口返回的业务错误码（如 `-352` 风控校验失败） */
+		public readonly code?: number,
 	) {
 		super( `[采集失败] uid=${ uid } source=${ sourceType }: ${ message }` );
 		this.name = 'ScraperHealthError';
 	}
 }
+
+/**
+ * 登录态失效 / 风控类错误码
+ *
+ * -101 账号未登录, -352 风控校验失败, -412 请求被拦截。
+ * 这类错误重试只会加重风控, 必须立刻失败并提示更新 cookie。
+ */
+const RISK_CONTROL_CODES = new Set( [ -101, -352, -412 ] );
+
+export const isRiskControlError = ( error: unknown ): error is ScraperHealthError =>
+	error instanceof ScraperHealthError
+	&& error.code !== undefined
+	&& RISK_CONTROL_CODES.has( error.code );
+
+const errorMessage = ( error: unknown ) =>
+	error instanceof Error ? error.message : String( error );
 
 /**
  * 采集失败时保存截图, 方便排查页面改版
@@ -88,6 +106,7 @@ const readPage = (
 			uid,
 			sourceType,
 			`接口返回错误码 ${ response?.code }: ${ response?.message ?? '未知错误' }`,
+			response?.code,
 		);
 	}
 
@@ -222,9 +241,30 @@ const gotoPage = async (
 };
 
 /**
+ * 采集前先访问一次首页, 让 B 站把 buvid3 / buvid4 等风控 cookie 补齐
+ *
+ * 只注入 SESSDATA / bili_jct / DedeUserID 时, 空间页容易被判定为 `-352 风控校验失败`。
+ * 预热失败只告警, 不阻塞采集。
+ */
+const warmUp = async ( page: Page ) => {
+	try {
+		await page.goto( SCRAPER_CONFIG.warmupUrl, {
+			waitUntil: 'domcontentloaded',
+			timeout: SCRAPER_CONFIG.warmupTimeoutMs,
+		} );
+	}
+	catch ( error ) {
+		console.warn(
+			`访问 ${ SCRAPER_CONFIG.warmupUrl } 预热失败, 继续采集: ${ errorMessage( error ) }`,
+		);
+	}
+};
+
+/**
  * 打开目标页面并读回第一页
  *
- * 导航失败时按 `navigationBackoffMs` 退避重试整个流程。
+ * 导航失败时按 `navigationBackoffMs` 退避重试整个流程; 风控 / 登录态类错误
+ * 不重试, 直接失败。
  */
 const openFirstPage = async (
 	page: Page,
@@ -261,14 +301,28 @@ const openFirstPage = async (
 		}
 		catch ( error ) {
 			lastError = error;
+
+			// 风控 / 登录态失效: 重试只会加重风控, 立刻停止
+			if ( isRiskControlError( error ) ) break;
 		}
 	}
 
 	await captureDebugScreenshot( page, uid, sourceType );
+
+	if ( isRiskControlError( lastError ) ) {
+		throw new ScraperHealthError(
+			uid,
+			sourceType,
+			`登录态失效或被风控（${ errorMessage( lastError ) }）, `
+			+ '请重新获取 BILI_COOKIE（DevTools → Application → Cookies, SESSDATA 是 HttpOnly 项）',
+			lastError.code,
+		);
+	}
+
 	throw new ScraperHealthError(
 		uid,
 		sourceType,
-		`打开页面失败, 已重试 ${ SCRAPER_CONFIG.navigationRetryLimit } 次: ${ ( lastError as Error )?.message }`,
+		`打开页面失败, 已重试 ${ SCRAPER_CONFIG.navigationRetryLimit } 次: ${ errorMessage( lastError ) }`,
 	);
 };
 
@@ -308,6 +362,9 @@ export async function* playwrightStreamPages(
 	page.setDefaultTimeout( SCRAPER_CONFIG.selectorTimeoutMs );
 
 	try {
+		// upload 依赖登录态, 先访问首页拿 buvid; replay 匿名可用, 跳过省时间
+		if ( sourceType === 'upload' ) await warmUp( page );
+
 		const targetUrl = sourceConfig.buildTargetUrl( uid, seriesId );
 		let currentPage = await openFirstPage( page, uid, sourceType, targetUrl );
 
@@ -331,6 +388,17 @@ export async function* playwrightStreamPages(
 				retryCount = 0;
 			}
 			catch ( error ) {
+				// 翻页时也可能触发风控, 同样不重试
+				if ( isRiskControlError( error ) ) {
+					await captureDebugScreenshot( page, uid, sourceType );
+					throw new ScraperHealthError(
+						uid,
+						sourceType,
+						`第 ${ nextPageNumber } 页触发风控或登录态失效: ${ errorMessage( error ) }`,
+						error.code,
+					);
+				}
+
 				retryCount++;
 				if ( retryCount > SCRAPER_CONFIG.pageRetryLimit ) {
 					await captureDebugScreenshot( page, uid, sourceType );

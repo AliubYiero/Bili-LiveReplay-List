@@ -62,14 +62,38 @@ export const applyBilibiliCookie = async (
  * 未登录状态下 B 站不返回空间主页投稿列表（接口返回 `-352 风控校验失败`，
  * 页面显示「空间主人还没投过视频」），所以只要有一个 UID 用 `upload` 就必须有登录态。
  * 直播回放（合集/系列）匿名可用，不强制要求。
+ *
+ * 另外会检查登录态是否「看起来完整」：`SESSDATA` 是 HttpOnly，`document.cookie`
+ * 读不到它，所以从控制台拷出来的 cookie 串常常是残缺的；缺 `buvid3` 则由采集层
+ * 访问首页预热补齐，这里只提示。
  */
 export const assertBilibiliCookie = ( required: boolean ) => {
-	if ( !required || hasBilibiliCookie() ) return;
+	if ( !required ) return;
 
-	throw new Error(
-		'配置错误: 存在使用 upload 数据源的 UID, 但未配置登录态。'
-		+ '未登录时 B 站不返回空间主页投稿列表（接口返回 -352 风控校验失败）。'
-		+ `请在环境变量 ${ BILIBILI_COOKIE_ENV } 中配置登录 cookie, `
-		+ '形如 "SESSDATA=xxx; bili_jct=yyy; DedeUserID=zzz"。',
-	);
+	const cookies = parseBilibiliCookie();
+
+	if ( cookies.length === 0 ) {
+		throw new Error(
+			'配置错误: 存在使用 upload 数据源的 UID, 但未配置登录态。'
+			+ '未登录时 B 站不返回空间主页投稿列表（接口返回 -352 风控校验失败）。'
+			+ `请在环境变量 ${ BILIBILI_COOKIE_ENV } 中配置登录 cookie, `
+			+ '形如 "SESSDATA=xxx; bili_jct=yyy; DedeUserID=zzz"。',
+		);
+	}
+
+	const names = new Set( cookies.map( cookie => cookie.name ) );
+
+	if ( !names.has( 'SESSDATA' ) ) {
+		console.warn(
+			`警告: ${ BILIBILI_COOKIE_ENV } 中没有 SESSDATA, 登录态无效（大概率会返回 -352）。`
+			+ 'SESSDATA 是 HttpOnly cookie, document.cookie 读不到, '
+			+ '请从 DevTools → Application → Cookies → https://www.bilibili.com 复制。',
+		);
+	}
+
+	if ( !names.has( 'buvid3' ) ) {
+		console.warn(
+			`提示: ${ BILIBILI_COOKIE_ENV } 中没有 buvid3, 采集前会先访问 B 站首页补齐风控 cookie。`,
+		);
+	}
 };

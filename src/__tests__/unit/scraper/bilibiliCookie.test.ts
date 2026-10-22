@@ -115,7 +115,7 @@ describe('assertBilibiliCookie', () => {
   } );
 
   it('需要登录且已配置时不抛错', () => {
-    process.env[ BILIBILI_COOKIE_ENV ] = 'SESSDATA=x';
+    process.env[ BILIBILI_COOKIE_ENV ] = 'SESSDATA=x; buvid3=y';
     expect( () => assertBilibiliCookie( true ) ).not.toThrow();
   } );
 
@@ -129,5 +129,41 @@ describe('assertBilibiliCookie', () => {
   it('不需要登录时未配置也不抛错', () => {
     delete process.env[ BILIBILI_COOKIE_ENV ];
     expect( () => assertBilibiliCookie( false ) ).not.toThrow();
+  } );
+
+  it('缺少 SESSDATA 时告警但不抛错', () => {
+    process.env[ BILIBILI_COOKIE_ENV ] = 'buvid3=x; bili_jct=y';
+    const warnSpy = jest.spyOn( console, 'warn' ).mockImplementation();
+
+    expect( () => assertBilibiliCookie( true ) ).not.toThrow();
+    expect( warnSpy ).toHaveBeenCalledWith(
+      expect.stringContaining( '没有 SESSDATA' ),
+    );
+
+    warnSpy.mockRestore();
+  } );
+
+  it('缺少 buvid3 时提示会预热补齐', () => {
+    process.env[ BILIBILI_COOKIE_ENV ] = 'SESSDATA=x; bili_jct=y';
+    const warnSpy = jest.spyOn( console, 'warn' ).mockImplementation();
+
+    assertBilibiliCookie( true );
+
+    expect( warnSpy ).toHaveBeenCalledWith(
+      expect.stringContaining( '没有 buvid3' ),
+    );
+
+    warnSpy.mockRestore();
+  } );
+
+  it('cookie 完整时不告警', () => {
+    process.env[ BILIBILI_COOKIE_ENV ] = 'SESSDATA=x; bili_jct=y; buvid3=z';
+    const warnSpy = jest.spyOn( console, 'warn' ).mockImplementation();
+
+    assertBilibiliCookie( true );
+
+    expect( warnSpy ).not.toHaveBeenCalled();
+
+    warnSpy.mockRestore();
   } );
 } );
