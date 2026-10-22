@@ -73,17 +73,43 @@ jobs:
       #    docs/manifest.json 与 docs/data/** 是 generateWebData 的产物，已被 .gitignore 忽略，
       #    只作为下面的 Pages artifact 上传，不进 git（docs/index.html 是提交进仓库的静态页）
       - name: Generate report
+        id: generate
+        # 单个上传者采集失败时，其余上传者与 web 产物仍会正常生成；
+        # 这里先不中断，让部署照常进行，最后由 "Report failures" 把任务标红
+        continue-on-error: true
         env:
           # 登录态：未登录时 B 站不返回空间主页投稿列表（-352 风控校验失败）
           # 在仓库 Settings → Secrets and variables → Actions 里配置，
-          # 值为浏览器 document.cookie 的原样拷贝
+          # ⚠️ SESSDATA 是 HttpOnly，document.cookie 读不到，
+          #    必须从 DevTools → Application → Cookies → https://www.bilibili.com 复制
           BILI_COOKIE: ${{ secrets.BILI_COOKIE }}
         run: |
           pnpm build    # ✅ 替换为实际构建命令（如有需要）
           pnpm start # ✅ 替换为 package.json 中定义的生成命令
 
-      # 6. 提交报告
+      # 6. 校验 web 产物：缺失或为空时绝不部署，线上保留上一次成功的版本
+      - name: Verify web data
+        id: verify
+        run: |
+          node -e "
+          const fs = require('fs');
+          const file = 'docs/manifest.json';
+          if (!fs.existsSync(file)) {
+            console.error('❌ 缺少 ' + file + '，本次不部署（线上保留上一版）');
+            process.exit(1);
+          }
+          const manifest = JSON.parse(fs.readFileSync(file, 'utf8'));
+          const count = Array.isArray(manifest.streamers) ? manifest.streamers.length : 0;
+          if (count === 0) {
+            console.error('❌ manifest.streamers 为空，本次不部署（线上保留上一版）');
+            process.exit(1);
+          }
+          console.log('✅ manifest 校验通过，主播数: ' + count);
+          "
+
+      # 7. 提交报告
       - name: Commit and push report
+        if: always()
         run: |
           git config user.email "action@github.com"
           git config user.name "GitHub Action"
@@ -98,16 +124,32 @@ jobs:
           git commit -m "chore: update daily report $(date +'%Y-%m-%d')"
           git push
 
-      # 7. 部署 Pages（无论本次有没有数据变更都重新部署，幂等）
-      #    ⚠️ 需要在仓库 Settings → Pages → Source 里一次性切换为 "GitHub Actions"
+      # 8. 部署 Pages（仅在产物校验通过时，避免用半成品/空壳覆盖线上）
       - name: Setup Pages
+        if: always() && steps.verify.outcome == 'success'
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
+        if: always() && steps.verify.outcome == 'success'
         uses: actions/upload-pages-artifact@v4
         with:
           path: docs
 
       - name: Deploy to GitHub Pages
         id: deployment
+        if: always() && steps.verify.outcome == 'success'
         uses: actions/deploy-pages@v4
+
+      # 9. 部署完成后把这次运行标红：数据已上线，但有上传者本次没更新
+      - name: Report failures
+        if: always() && steps.generate.outcome == 'failure'
+        run: |
+          echo "::warning::本次采集或生成有失败，详见 Generate report 日志中的 [采集失败] / [生成文档失败] / 本次运行有 行"
+          {
+            echo ""
+            echo "### ⚠️ 本次运行有上传者失败"
+            echo ""
+            echo "线上数据已按磁盘上的 \`record.json\` 重新生成并部署，失败的上传者本次未更新。"
+            echo "详见 Generate report 日志中的 \`[采集失败]\` / \`[生成文档失败]\` / \`本次运行有\` 行。"
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 1
