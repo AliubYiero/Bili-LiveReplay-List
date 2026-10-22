@@ -2,19 +2,18 @@
 import 'dotenv/config';
 import * as console from 'node:console';
 import { chromium } from 'playwright';
-import { matchVideoList } from './module/matchData/matchVideoList.ts';
 import {
 	assertValidParseMapper,
 	handleParseMapper,
 } from './module/matchData/handleParseMapper.ts';
-import { RecordStore } from './store/RecordStore.ts';
-import {
-	generateMarkdownRecord,
-} from './module/generateReadme/generateMarkdownRecord.ts';
 import { generateREADME } from './module/generateReadme/generateREADME.ts';
-import { AidMapperStore } from './store/AidMapperStore.ts';
 import { generateWebData } from './module/generateWeb/generateWebData.ts';
 import { assertBilibiliCookie } from './scraper/bilibiliCookie.ts';
+import {
+	formatFailureSummary,
+	runDailyUpdate,
+} from './module/runDailyUpdate.ts';
+import type { DailyUpdateResult } from './module/runDailyUpdate.ts';
 
 
 const main = async () => {
@@ -24,36 +23,48 @@ const main = async () => {
 		handleParseMapper.some( item => item.videoSourceType !== 'replay' ),
 	);
 
-	// 浏览器全局只启动一次, 每个数据源各自开一个 context
-	const browser = await chromium.launch( { headless: true } );
+	let result: DailyUpdateResult | undefined;
 
 	try {
-		for ( const {
-			uid,
-			userName,
-			videoSourceType,
-			seriesId,
-			onParse,
-		} of handleParseMapper ) {
-			// 读取新增投稿
-			await matchVideoList( uid, userName, videoSourceType, seriesId, onParse, browser );
-			// 生成 markdown 文件
-			const configStore = new RecordStore( uid, userName );
-			generateMarkdownRecord( uid, userName, configStore );
-			// 更新 aid 映射文件
-			const aidList = configStore.recordList.map( record => String( record.aid ) );
-			const aidMapperStore = new AidMapperStore( uid, userName );
-			aidMapperStore.update( aidList );
+		// 浏览器全局只启动一次, 每个数据源各自开一个 context
+		const browser = await chromium.launch( { headless: true } );
+
+		try {
+			// 单个上传者失败不影响其余上传者
+			result = await runDailyUpdate( handleParseMapper, browser );
+		}
+		finally {
+			await browser.close();
 		}
 	}
 	finally {
-		await browser.close();
+		// 无论采集结果如何都要重新生成文档与 web 产物:
+		// 数据来自磁盘上的 record.json, 保证 Pages artifact 里一定有 manifest.json
+		try {
+			generateREADME();
+		}
+		catch ( error ) {
+			console.error( '[生成 README 失败]', error );
+			process.exitCode = 1;
+		}
+
+		try {
+			await generateWebData();
+		}
+		catch ( error ) {
+			console.error( '[生成 Web 数据失败]', error );
+			process.exitCode = 1;
+		}
 	}
 
-	// 更新 README
-	generateREADME();
-	// 更新 web ui 的数据（index.html 为手维护静态页, 不在这里生成）
-	generateWebData().catch( console.error )
+	if ( result?.failures.length ) {
+		console.error( formatFailureSummary( result.failures ) );
+		// 数据已生成, 但让 CI 的这次运行标红, 避免风控问题被静默吞掉
+		process.exitCode = 1;
+	}
 };
 
-main().catch( console.error );
+main().catch( ( error ) => {
+	console.error( error );
+	process.exitCode = 1;
+} );
