@@ -3,10 +3,10 @@
 | 主播 | Mr.Quin |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **胧黑** |
-| **数据更新时间** | **2026-10-24** |
-| **累积计入视频数量** | **1032** |
+| **数据更新时间** | **2026-10-25** |
+| **累积计入视频数量** | **1033** |
 | **最旧视频** | [【Mr.Quin】2022年8月17日《异度之刃3》弹幕录像](https://www.bilibili.com/video/av644671524/) |
-| **最新视频** | [【Mr.Quin】2026年10月23日《Grand Theft Auto V 增强版》弹幕录像](https://www.bilibili.com/video/av117494433973797/) |
+| **最新视频** | [【Mr.Quin】2026年10月24日《Grand Theft Auto V 增强版》弹幕录像](https://www.bilibili.com/video/av117498997440529/) |
 
 ---
 
@@ -17,6 +17,7 @@
 | Grand Theft Auto V 增强版 | 2026-10-20 | 05:36:37 | Part 1 | [【Mr.Quin】2026年10月20日《愚者不灭》+《Grand Theft Auto V 增强版》弹幕录像](https://www.bilibili.com/video/av117475794487765/) | 117475794487765 |
 | Grand Theft Auto V 增强版 | 2026-10-21 | 05:14:36 | Part 2 | [【Mr.Quin】2026年10月21日《Grand Theft Auto V 增强版》弹幕录像](https://www.bilibili.com/video/av117481851062125/) | 117481851062125 |
 | Grand Theft Auto V 增强版 | 2026-10-23 | 07:36:21 | Part 3 | [【Mr.Quin】2026年10月23日《Grand Theft Auto V 增强版》弹幕录像](https://www.bilibili.com/video/av117494433973797/) | 117494433973797 |
+| Grand Theft Auto V 增强版 | 2026-10-24 | 05:13:27 | Part 4 | [【Mr.Quin】2026年10月24日《Grand Theft Auto V 增强版》弹幕录像](https://www.bilibili.com/video/av117498997440529/) | 117498997440529 |
 
 ## 愚者不灭
 
