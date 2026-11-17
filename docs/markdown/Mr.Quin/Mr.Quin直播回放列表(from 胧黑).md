@@ -3,12 +3,19 @@
 | 主播 | Mr.Quin |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **胧黑** |
-| **数据更新时间** | **2026-11-14** |
-| **累积计入视频数量** | **1048** |
+| **数据更新时间** | **2026-11-17** |
+| **累积计入视频数量** | **1050** |
 | **最旧视频** | [【Mr.Quin】2022年8月17日《异度之刃3》弹幕录像](https://www.bilibili.com/video/av644671524/) |
-| **最新视频** | [【Mr.Quin】2026年11月12日《塞尔达传说：时之笛 重制版》弹幕录像](https://www.bilibili.com/video/av117605935483474/) |
+| **最新视频** | [【Mr.Quin】2026年11月16日《Grand Theft Auto: Vice City》弹幕录像](https://www.bilibili.com/video/av117629641623376/) |
 
 ---
+
+## Grand Theft Auto: Vice City
+
+| 游戏名称 | 直播日期 | 时长 | 集数   | 标题 | aid |
+| -------- | :------ | :---: | :---: | --- | :-: |
+| Grand Theft Auto: Vice City | 2026-11-14 | 05:02:49 | Part 1 | [【Mr.Quin】2026年11月14日《Grand Theft Auto: Vice City》弹幕录像](https://www.bilibili.com/video/av117617914348660/) | 117617914348660 |
+| Grand Theft Auto: Vice City | 2026-11-16 | 06:38:30 | Part 2 | [【Mr.Quin】2026年11月16日《Grand Theft Auto: Vice City》弹幕录像](https://www.bilibili.com/video/av117629641623376/) | 117629641623376 |
 
 ## 塞尔达传说：时之笛 重制版
 
