@@ -3,10 +3,10 @@
 | 主播 | Mr.Quin |
 | -------------------- | ------------------------------------------------------------ |
 | **上传者** | **胧黑** |
-| **数据更新时间** | **2026-11-21** |
-| **累积计入视频数量** | **1053** |
+| **数据更新时间** | **2026-11-22** |
+| **累积计入视频数量** | **1054** |
 | **最旧视频** | [【Mr.Quin】2022年8月17日《异度之刃3》弹幕录像](https://www.bilibili.com/video/av644671524/) |
-| **最新视频** | [【Mr.Quin】2026年11月19日《Grand Theft Auto VI》弹幕录像](https://www.bilibili.com/video/av117653800748333/) |
+| **最新视频** | [【Mr.Quin】2026年11月20日《Grand Theft Auto VI》弹幕录像](https://www.bilibili.com/video/av117658766870731/) |
 
 ---
 
@@ -16,6 +16,7 @@
 | -------- | :------ | :---: | :---: | --- | :-: |
 | Grand Theft Auto VI | 2026-11-18 | 19:22:24 | Part 1 | [【Mr.Quin】2026年11月18日《Grand Theft Auto VI》弹幕录像](https://www.bilibili.com/video/av117649187015478/) | 117649187015478 |
 | Grand Theft Auto VI | 2026-11-19 | 15:39:00 | Part 2 | [【Mr.Quin】2026年11月19日《Grand Theft Auto VI》弹幕录像](https://www.bilibili.com/video/av117653800748333/) | 117653800748333 |
+| Grand Theft Auto VI | 2026-11-20 | 12:32:53 | Part 3 | [【Mr.Quin】2026年11月20日《Grand Theft Auto VI》弹幕录像](https://www.bilibili.com/video/av117658766870731/) | 117658766870731 |
 
 ## 荒野大镖客：救赎2
 
